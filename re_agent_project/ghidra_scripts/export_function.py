@@ -1,13 +1,15 @@
 # @author The Ghidra Whisperer
 # @category AI_Bridge
+# REFACTORY v2.0: Enhanced Export with Call Graph and Type Information
 
 import json
 import os
 from ghidra.app.decompiler import DecompInterface
 from ghidra.util.task import ConsoleTaskMonitor
+from ghidra.program.model.symbol import RefType
 
 def run():
-    # CONFIGURATION: Set via env var or default to /tmp
+    # CONFIGURATION
     output_dir = os.environ.get("GHIDRA_EXPORT_DIR", "/tmp/ghidra_bridge")
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -21,21 +23,17 @@ def run():
     functions = func_manager.getFunctions(True)
     
     export_data = []
+    call_graph = {}  # Maps function address to list of called function addresses
     
-    # SAFETY LIMIT: Process first 50 functions to test hardware loop
-    # Remove this limit in production
+    # Limit for testing
     count = 0
     limit = 50
 
-    print("Starting Atomic Decomposition...")
+    print("Starting Enhanced Atomic Decomposition...")
 
     for func in functions:
-        if count >= limit:
-            break
-            
-        # Skip tiny functions (thunks/wrappers)
-        if func.getBody().getNumAddresses() < 10:
-            continue
+        if count >= limit: break
+        if func.getBody().getNumAddresses() < 10: continue
 
         results = decomp.decompileFunction(func, 30, monitor)
         
@@ -44,31 +42,54 @@ def run():
             entry_point = func.getEntryPoint().toString()
             name = func.getName()
             
-            # Extract variables for the "Red Flag" validator
+            # Extract variables with type information
             vars_list = []
+            var_types = {}
             high_func = results.getHighFunction()
             if high_func:
                 lsm = high_func.getLocalSymbolMap()
                 symbols = lsm.getSymbols()
                 for sym in symbols:
-                    vars_list.append(sym.getName())
+                    var_name = sym.getName()
+                    vars_list.append(var_name)
+                    # Get data type if available
+                    data_type = sym.getDataType()
+                    if data_type:
+                        var_types[var_name] = data_type.getName()
 
-            # Filter out functions that are already named well or too small
+            # Extract call graph information
+            called_functions = []
+            for ref in func.getSymbol().getReferences():
+                ref_type = ref.getReferenceType()
+                if ref_type.isCall():
+                    to_addr = ref.getToAddress()
+                    called_func = func_manager.getFunctionAt(to_addr)
+                    if called_func:
+                        called_functions.append({
+                            "address": to_addr.toString(),
+                            "name": called_func.getName()
+                        })
+
             if len(code) > 50: 
                 export_data.append({
                     "address": entry_point,
                     "name": name,
                     "code": code,
-                    "variables": vars_list
+                    "variables": vars_list,
+                    "var_types": var_types,
+                    "calls": called_functions,
+                    "param_count": func.getParameterCount(),
+                    "return_type": func.getReturnType().getName() if func.getReturnType() else "void"
                 })
                 count += 1
-                print("Exported atomic unit: " + name)
+                print("Exported: " + name + " (calls " + str(len(called_functions)) + " functions)")
 
+    # Save main dataset
     output_file = os.path.join(output_dir, "dataset_dirty.json")
     with open(output_file, "w") as f:
         json.dump(export_data, f, indent=2)
     
-    print("Decomposition Complete. Data saved to: " + output_file)
+    print("Enhanced decomposition complete. Data saved to: " + output_file)
 
 if __name__ == "__main__":
     run()

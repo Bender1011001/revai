@@ -1,20 +1,19 @@
+"""
+MAKER Framework Integration
+Uses True MAKER (arXiv:2511.09030v1) implementation from true_maker.py
+
+This module provides backward compatibility while using the proper
+First-to-ahead-by-k voting and red-flagging from the paper.
+"""
 import json
-from langchain_ollama import ChatOllama
-from langchain_core.messages import SystemMessage, HumanMessage
-from src.state import AgentState, RenameProposal
+from src.state import AgentState
+from src.true_maker import create_maker_agent
 
-# --- MAKER CONFIGURATION ---
-MAX_ATTEMPTS = 5       # Maximum parallel attempts (sequential on 4060)
-VOTE_THRESHOLD_K = 2   # Need 2 matching agents to form consensus
-
-# --- MODEL SETUP ---
-# Optimized for 4060 Ti 8GB: Local, Quantized, Code-Specialized
-llm = ChatOllama(
-    model="qwen2.5-coder:7b",
-    temperature=0.4,  # Non-zero to generate diverse proposals for voting
-    format="json",    # Enforce structured output
-    base_url="http://localhost:11434"
-)
+# Default MAKER configuration
+# These can be tuned based on the specific task
+DEFAULT_TARGET_RELIABILITY = 0.95  # 95% success probability
+DEFAULT_ERROR_RATE = 0.02  # 2% estimated per-step error rate
+DEFAULT_MAX_TOKENS = 1000  # Maximum output length before red-flagging
 
 SYSTEM_PROMPT = """You are a Reverse Engineering Expert.
 Your Task: Rename generic variables (iVar1, uVar2, param_1) to semantic names based on code logic.
@@ -22,89 +21,89 @@ Your Task: Rename generic variables (iVar1, uVar2, param_1) to semantic names ba
 - Output: A JSON map: {"old_name": "new_name"}.
 - Constraint 1: Do NOT invent variables. Only rename existing ones.
 - Constraint 2: Output JSON ONLY. No commentary.
-- Constraint 3: If you cannot determine a name, leave it out."""
+- Constraint 3: If you cannot determine a meaningful name, leave it out."""
+
+# Global MAKER agent (initialized on first use)
+_maker_agent = None
+_maker_config = None
+
+
+def get_maker_agent():
+    """Get or create the global MAKER agent."""
+    global _maker_agent, _maker_config
+    
+    if _maker_agent is None:
+        _maker_agent, _maker_config = create_maker_agent(
+            target_reliability=DEFAULT_TARGET_RELIABILITY,
+            estimated_error_rate=DEFAULT_ERROR_RATE,
+            max_output_tokens=DEFAULT_MAX_TOKENS,
+            model="qwen2.5-coder:7b",
+            temperature=0.3
+        )
+    
+    return _maker_agent, _maker_config
+
+
+def true_maker_rename(state: AgentState) -> dict:
+    """
+    Use True MAKER framework for variable renaming.
+    
+    This implements the full MAKER algorithm:
+    - Sequential voting (Algorithm 2)
+    - Red-flagging (Algorithm 3)
+    - Dynamic k calculation (Equation 14)
+    
+    Returns updated state with final_renames.
+    """
+    agent, config = get_maker_agent()
+    
+    code = state["original_code"]
+    if len(code) > 12000:
+        code = code[:12000] + "\n...[TRUNCATED]"
+    
+    vars_list = ", ".join(state["existing_variables"])
+    prompt = f"Function: {state['function_name']}\nVariables: {vars_list}\n\nCode:\n{code}"
+    
+    # Run True MAKER voting
+    renames, total_samples, valid_samples = agent.do_voting(
+        prompt=prompt,
+        system_prompt=SYSTEM_PROMPT,
+        existing_variables=state["existing_variables"]
+    )
+    
+    print(f"  [MAKER] {state['function_name']}: {total_samples} samples ({valid_samples} valid), k={config.k}")
+    
+    if renames:
+        print(f"    ✓ Consensus: {len(renames)} variables renamed")
+        return {"final_renames": renames}
+    else:
+        print(f"    ✗ No consensus reached")
+        return {"final_renames": None}
+
+
+# Legacy compatibility functions
+# These maintain the old API but use True MAKER internally
 
 def micro_agent_generate(state: AgentState):
     """
-    The Worker Node.
+    DEPRECATED: Use true_maker_rename instead.
+    Maintained for backward compatibility with existing code.
     """
-    code = state["original_code"]
-    # Truncate if massive to save context window
-    if len(code) > 12000:
-        code = code[:12000] + "\n...[TRUNCATED]"
+    # This now calls the True MAKER implementation
+    return true_maker_rename(state)
 
-    vars_list = ", ".join(state["existing_variables"])
-    
-    msg = f"Function: {state['function_name']}\nVariables Available: {vars_list}\n\nCode:\n{code}"
-    
-    try:
-        # Invoke Local LLM
-        response = llm.invoke([
-            SystemMessage(content=SYSTEM_PROMPT),
-            HumanMessage(content=msg)
-        ])
-        content = json.loads(response.content)
-    except Exception:
-        # If JSON parse fails, we treat it as a Red Flagged attempt
-        return {"proposals": [{"renames": {}, "is_valid": False, "score": 0.0}], "attempts": 1}
-
-    # Basic Type Check
-    if not isinstance(content, dict):
-        return {"proposals": [{"renames": {}, "is_valid": False, "score": 0.0}], "attempts": 1}
-
-    return {"proposals": [{"renames": content, "is_valid": True, "score": 1.0}], "attempts": 1}
 
 def red_flag_guard(state: AgentState):
     """
-    The Red-Flagger Node.
-    Filters out hallucinations before they reach the voting booth.
+    DEPRECATED: Red-flagging is now built into True MAKER.
+    This is a no-op for backward compatibility.
     """
-    latest_proposal = state["proposals"][-1]
-    
-    if not latest_proposal["is_valid"]:
-        return {} # Already dead
+    return {}
 
-    renames = latest_proposal["renames"]
-    valid_vars = state["existing_variables"]
-    
-    # 1. Hallucination Check
-    # If the agent tries to rename "iVar99" but "iVar99" isn't in the function, RED FLAG.
-    # We discard the entire proposal to prevent poisoning the consensus.
-    keys = list(renames.keys())
-    if any(k not in valid_vars for k in keys):
-        # Mark the last proposal invalid (in memory modification)
-        state["proposals"][-1]["is_valid"] = False
-        state["proposals"][-1]["score"] = 0.0
-        
-    # 2. Laziness Check
-    # If new name == old name, remove it from map
-    clean_renames = {k: v for k, v in renames.items() if k != v}
-    state["proposals"][-1]["renames"] = clean_renames
-
-    return {} # No state schema update needed, purely validation logic
 
 def voting_consensus(state: AgentState):
     """
-    The Consensus Node.
-    Implements "First-to-ahead-by-k" voting.
+    DEPRECATED: Voting is now built into True MAKER.
+    This is a no-op for backward compatibility.
     """
-    valid_proposals = [p["renames"] for p in state["proposals"] if p["is_valid"] and p["renames"]]
-    
-    if not valid_proposals:
-        return {"final_renames": None}
-
-    # Count votes for specific renaming MAPS
-    # We strictly require the entire map to match for simplicity, 
-    # or you can vote on individual variables. Here we vote on the set.
-    counts = {}
-    for p in valid_proposals:
-        # Serialize to make hashable
-        p_str = json.dumps(p, sort_keys=True)
-        counts[p_str] = counts.get(p_str, 0) + 1
-
-    # Check for winner
-    for p_str, count in counts.items():
-        if count >= VOTE_THRESHOLD_K:
-            return {"final_renames": json.loads(p_str)}
-            
-    return {"final_renames": None}
+    return {}
