@@ -27,7 +27,7 @@ def run():
     
     # Limit for testing
     count = 0
-    limit = 50
+    limit = int(os.environ.get("GHIDRA_EXPORT_LIMIT", 50))
 
     print("Starting Enhanced Atomic Decomposition...")
 

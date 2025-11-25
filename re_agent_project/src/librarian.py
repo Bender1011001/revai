@@ -51,8 +51,13 @@ class Librarian:
         
         def dfs(func_name: str, cluster: Set[str]):
             """Depth-first search to find connected components."""
-            if func_name in visited or len(cluster) >= self.max_module_size:
+            # Soft limit: Allow up to 1.5x max_module_size to finish a connected component
+            # This prevents stranding tightly coupled functions
+            hard_limit = int(self.max_module_size * 1.5)
+            
+            if func_name in visited or len(cluster) >= hard_limit:
                 return
+            
             visited.add(func_name)
             cluster.add(func_name)
             

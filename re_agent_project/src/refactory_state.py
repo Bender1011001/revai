@@ -43,6 +43,7 @@ class RefactoryState(TypedDict):
     # Stage 1: Type Recovery
     type_proposals: Annotated[List[TypeProposal], operator.add]
     confirmed_types: Dict[str, str]  # variable -> type mapping
+    struct_definitions: List[str]  # Discovered struct definitions
     
     # Stage 2: Renaming (reusing existing MAKER logic)
     rename_proposals: Annotated[List[Dict[str, str]], operator.add]

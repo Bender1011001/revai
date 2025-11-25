@@ -59,7 +59,8 @@ def true_maker_rename(state: AgentState) -> dict:
     
     code = state["original_code"]
     if len(code) > 12000:
-        code = code[:12000] + "\n...[TRUNCATED]"
+        keep_size = 6000
+        code = code[:keep_size] + "\n...[TRUNCATED]...\n" + code[-keep_size:]
     
     vars_list = ", ".join(state["existing_variables"])
     prompt = f"Function: {state['function_name']}\nVariables: {vars_list}\n\nCode:\n{code}"

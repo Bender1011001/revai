@@ -2,6 +2,7 @@
 Refactory Agents: Multi-stage AI agents for full reverse engineering.
 """
 import json
+import re
 from langchain_ollama import ChatOllama
 from langchain_core.messages import SystemMessage, HumanMessage
 from src.refactory_state import RefactoryState, TypeProposal, RefactoringProposal
@@ -35,11 +36,16 @@ Rules:
 
 Output format:
 {
-  "variable_name": {
-    "proposed_type": "MyStruct*",
-    "confidence": 0.9,
-    "reasoning": "Used with -> operator on line 5"
-  }
+  "variables": {
+    "variable_name": {
+      "proposed_type": "MyStruct*",
+      "confidence": 0.9,
+      "reasoning": "Used with -> operator on line 5"
+    }
+  },
+  "struct_definitions": [
+    "typedef struct MyStruct { int x; int y; } MyStruct;"
+  ]
 }"""
 
 def type_recovery_agent(state: RefactoryState):
@@ -68,7 +74,15 @@ def type_recovery_agent(state: RefactoryState):
             SystemMessage(content=TYPE_RECOVERY_PROMPT),
             HumanMessage(content=msg)
         ])
-        proposals_dict = json.loads(response.content)
+        data = json.loads(response.content)
+        
+        # Support both formats (flat dict or nested with struct_definitions)
+        if "variables" in data:
+            proposals_dict = data["variables"]
+            struct_defs = data.get("struct_definitions", [])
+        else:
+            proposals_dict = data
+            struct_defs = []
         
         # Convert to TypeProposal format
         proposals = []
@@ -82,7 +96,7 @@ def type_recovery_agent(state: RefactoryState):
                     "reasoning": info.get("reasoning", "")
                 })
         
-        return {"type_proposals": proposals, "attempts": 1}
+        return {"type_proposals": proposals, "struct_definitions": struct_defs, "attempts": 1}
     
     except Exception as e:
         print(f"[Type Recovery] Error: {e}")
@@ -139,12 +153,14 @@ def refactoring_agent(state: RefactoryState):
         
         # Apply confirmed type changes
         for var, var_type in confirmed_types.items():
-            # Simple replacement - in production, use proper AST manipulation
-            code = code.replace(f"int {var}", f"{var_type} {var}")
+            # Use regex for safe replacement of declarations
+            # Matches "int var" with word boundaries
+            code = re.sub(r"\bint\s+" + re.escape(var) + r"\b", f"{var_type} {var}", code)
         
         # Apply confirmed renames
         for old_name, new_name in confirmed_renames.items():
-            code = code.replace(old_name, new_name)
+            # Use regex with word boundaries to prevent substring matching errors
+            code = re.sub(r"\b" + re.escape(old_name) + r"\b", new_name, code)
         
         # Truncate if too large
         if len(code) > 8000:
@@ -220,6 +236,13 @@ def source_code_generator(state: RefactoryState):
 
 """
     
+    # Add discovered struct definitions
+    struct_defs = state.get("struct_definitions", [])
+    if struct_defs:
+        header_content += "// Discovered Structs\n"
+        for struct_def in struct_defs:
+            header_content += f"{struct_def}\n\n"
+
     # Add function declarations
     for refactoring in refactorings:
         # Extract function signature from code

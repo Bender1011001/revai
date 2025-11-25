@@ -9,6 +9,7 @@ Implements:
 """
 import json
 import math
+import os
 from typing import Dict, Any, Optional, Tuple
 from collections import defaultdict
 from langchain_ollama import ChatOllama
@@ -171,9 +172,14 @@ class SequentialVoting:
         valid_count = 0
         
         while sample_count < self.max_samples:
+            # Temperature Decay: Force deterministic output if stuck
+            current_temp = None
+            if sample_count > 20:
+                current_temp = 0.0
+
             # Algorithm 3: get_vote with red-flagging
             vote, is_valid, reason = self._get_vote(
-                prompt, system_prompt, existing_variables
+                prompt, system_prompt, existing_variables, temperature_override=current_temp
             )
             
             sample_count += 1
@@ -218,7 +224,8 @@ class SequentialVoting:
         self,
         prompt: str,
         system_prompt: str,
-        existing_variables: list
+        existing_variables: list,
+        temperature_override: Optional[float] = None
     ) -> Tuple[Dict[str, str], bool, str]:
         """
         Implements Algorithm 3: get_vote with red-flagging.
@@ -228,16 +235,32 @@ class SequentialVoting:
         """
         try:
             # Sample from LLM
-            response = self.llm.invoke([
+            llm_to_use = self.llm
+            if temperature_override is not None:
+                llm_to_use = self.llm.bind(temperature=temperature_override)
+
+            response = llm_to_use.invoke([
                 SystemMessage(content=system_prompt),
                 HumanMessage(content=prompt)
             ])
             
             response_text = response.content
             
+            # Clean markdown code blocks
+            cleaned_text = response_text.strip()
+            if cleaned_text.startswith("```json"):
+                cleaned_text = cleaned_text[7:]
+            elif cleaned_text.startswith("```"):
+                cleaned_text = cleaned_text[3:]
+            
+            if cleaned_text.endswith("```"):
+                cleaned_text = cleaned_text[:-3]
+            
+            cleaned_text = cleaned_text.strip()
+
             # Try to parse JSON
             try:
-                parsed_data = json.loads(response_text)
+                parsed_data = json.loads(cleaned_text)
             except json.JSONDecodeError:
                 return {}, False, "json_parse_error"
             
@@ -294,7 +317,7 @@ def create_maker_agent(
         model=config.model,
         temperature=config.temperature,
         format="json",
-        base_url="http://localhost:11434"
+        base_url=os.environ.get("OLLAMA_HOST", "http://localhost:11434")
     )
     
     # Create red flag guard
