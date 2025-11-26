@@ -62,7 +62,7 @@ root.geometry("600x450")
 btn_config = tk.Button(root, text="Configure Ghidra Path", command=select_ghidra)
 btn_config.pack(pady=5)
 
-label = tk.Label(root, text="Drag and Drop APK or EXE here")
+label = tk.Label(root, text="Drag and Drop Binary here")
 label.pack(pady=10)
 
 log_window = tk.Text(root, height=15, width=70)

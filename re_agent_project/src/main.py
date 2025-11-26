@@ -124,7 +124,7 @@ def main_pipeline_wrapper(target_file: str, ghidra_path: str, output_dir: str = 
 def main():
     parser = argparse.ArgumentParser(description="Refactory Pipeline Orchestrator")
     parser.add_argument("--ghidra_path", required=True, help="Path to Ghidra installation directory")
-    parser.add_argument("--file", default=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "com-quadzillapower-iquad-80-65682565-d581ab864ca4151bc006ff39fd3a8cd0.apk"), help="Path to the target file (APK)")
+    parser.add_argument("--file", help="Path to the target file (APK)")
     parser.add_argument("--output_dir", default="./refactored_output", help="Directory for generated source code")
     parser.add_argument("--export_only", action="store_true", help="Only run Ghidra export, skip refactoring pipeline")
     parser.add_argument("--limit", type=int, default=100, help="Limit number of functions to export")

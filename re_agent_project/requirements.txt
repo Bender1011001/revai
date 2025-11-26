@@ -1,4 +1,3 @@
 langchain
-langgraph
 langchain-ollama
-pydantic
+typing_extensions
