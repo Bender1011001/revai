@@ -3,13 +3,15 @@
 
 import json
 import os
+import tempfile
 from ghidra.program.model.pcode import HighFunctionDBUtil
 from ghidra.app.decompiler import DecompInterface
 from ghidra.util.task import ConsoleTaskMonitor
 from ghidra.program.model.symbol import SourceType
 
 def run():
-    input_file = os.environ.get("GHIDRA_IMPORT_FILE", "/tmp/ghidra_bridge/renames.json")
+    default_path = os.path.join(tempfile.gettempdir(), "ghidra_bridge", "renames.json")
+    input_file = os.environ.get("GHIDRA_IMPORT_FILE", default_path)
     if not os.path.exists(input_file):
         print("No rename file found at: " + input_file)
         return

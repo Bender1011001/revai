@@ -4,6 +4,7 @@ Orchestrates the multi-stage process from binary to clean source code.
 """
 import os
 import json
+import concurrent.futures
 from typing import List, Dict
 from src.librarian import Librarian
 from src.refactory_state import ModuleGroup
@@ -33,10 +34,11 @@ class RefactoryPipeline:
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
     
-    def run(self, ghidra_export_path: str):
+    def run(self, ghidra_export_path: str, max_workers: int = 8):
         """Run the full pipeline."""
         print("=" * 60)
         print("REFACTORY PIPELINE v2.0: Full Auto Reverse Engineering")
+        print(f"Parallel Processing Enabled: {max_workers} workers")
         print("=" * 60)
         
         # Stage 0: Load and group functions
@@ -47,20 +49,35 @@ class RefactoryPipeline:
             print("[ERROR] No modules generated. Check Ghidra export.")
             return
         
-        # Process each module sequentially (RTX 4060 Ti memory constraint)
+        # Process modules in parallel
         all_source_files = {}
         all_header_files = {}
         
-        for idx, module in enumerate(modules):
-            print(f"\n{'='*60}")
-            print(f"Processing Module {idx+1}/{len(modules)}: {module['module_name']}")
-            print(f"{'='*60}")
+        print(f"\n[+] Starting parallel processing of {len(modules)} modules...")
+        
+        with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+            # Submit all tasks
+            future_to_module = {
+                executor.submit(self.process_module, module): module
+                for module in modules
+            }
             
-            result = self.process_module(module)
-            
-            if result:
-                all_source_files.update(result["source"])
-                all_header_files.update(result["headers"])
+            # Process results as they complete
+            completed_count = 0
+            for future in concurrent.futures.as_completed(future_to_module):
+                module = future_to_module[future]
+                completed_count += 1
+                
+                try:
+                    result = future.result()
+                    if result:
+                        all_source_files.update(result["source"])
+                        all_header_files.update(result["headers"])
+                    
+                    print(f"[{completed_count}/{len(modules)}] Completed module: {module['module_name']}")
+                    
+                except Exception as exc:
+                    print(f"[ERROR] Module {module['module_name']} generated an exception: {exc}")
         
         # Write all files
         self.write_output(all_source_files, all_header_files)
@@ -167,10 +184,10 @@ class RefactoryPipeline:
         
         # Create subdirectories
         src_dir = os.path.join(self.output_dir, "src")
-        include_dir = os.path.join(self.output_dir, "include")
+        # include_dir = os.path.join(self.output_dir, "include") # Not needed for C#
         
         os.makedirs(src_dir, exist_ok=True)
-        os.makedirs(include_dir, exist_ok=True)
+        # os.makedirs(include_dir, exist_ok=True)
         
         # Write source files
         for filename, content in source_files.items():
@@ -179,45 +196,35 @@ class RefactoryPipeline:
                 f.write(content)
             print(f"  [+] {filepath}")
         
-        # Write header files
-        for filename, content in header_files.items():
-            filepath = os.path.join(include_dir, filename)
-            with open(filepath, 'w') as f:
-                f.write(content)
-            print(f"  [+] {filepath}")
+        # Write header files (if any)
+        if header_files:
+            include_dir = os.path.join(self.output_dir, "include")
+            os.makedirs(include_dir, exist_ok=True)
+            for filename, content in header_files.items():
+                filepath = os.path.join(include_dir, filename)
+                with open(filepath, 'w') as f:
+                    f.write(content)
+                print(f"  [+] {filepath}")
         
-        # Create a simple Makefile
-        makefile_content = self._generate_makefile(list(source_files.keys()))
-        makefile_path = os.path.join(self.output_dir, "Makefile")
-        with open(makefile_path, 'w') as f:
-            f.write(makefile_content)
-        print(f"  [+] {makefile_path}")
+        # Create a simple .csproj file
+        csproj_content = self._generate_csproj()
+        csproj_path = os.path.join(self.output_dir, "RefactoredApp.csproj")
+        with open(csproj_path, 'w') as f:
+            f.write(csproj_content)
+        print(f"  [+] {csproj_path}")
     
-    def _generate_makefile(self, source_files: List[str]) -> str:
-        """Generate a basic Makefile for the reversed project."""
-        object_files = [f.replace(".c", ".o") for f in source_files]
-        
-        return f"""# Auto-generated Makefile
+    def _generate_csproj(self) -> str:
+        """Generate a basic .csproj for the reversed project."""
+        return """<Project Sdk="Microsoft.NET.Sdk">
 
-CC = gcc
-CFLAGS = -Wall -Wextra -Iinclude -O2
-TARGET = reversed_binary
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
 
-SRCS = {' '.join([f'src/{f}' for f in source_files])}
-OBJS = {' '.join(object_files)}
-
-all: $(TARGET)
-
-$(TARGET): $(OBJS)
-\t$(CC) $(OBJS) -o $(TARGET)
-
-%.o: src/%.c
-\t$(CC) $(CFLAGS) -c $< -o $@
-
-clean:
-\trm -f $(OBJS) $(TARGET)
-
-.PHONY: all clean
+</Project>
 """
 
 def main():

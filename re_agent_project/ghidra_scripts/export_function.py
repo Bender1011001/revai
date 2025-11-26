@@ -4,13 +4,15 @@
 
 import json
 import os
+import tempfile
 from ghidra.app.decompiler import DecompInterface
 from ghidra.util.task import ConsoleTaskMonitor
 from ghidra.program.model.symbol import RefType
 
 def run():
     # CONFIGURATION
-    output_dir = os.environ.get("GHIDRA_EXPORT_DIR", "/tmp/ghidra_bridge")
+    default_dir = os.path.join(tempfile.gettempdir(), "ghidra_bridge")
+    output_dir = os.environ.get("GHIDRA_EXPORT_DIR", default_dir)
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
@@ -34,6 +36,21 @@ def run():
     for func in functions:
         if count >= limit: break
         if func.getBody().getNumAddresses() < 10: continue
+
+        # --- FILTERING LOGIC START ---
+        # Get the full namespace path (e.g., "android::support::v4::app")
+        ns = func.getParentNamespace()
+        ns_name = ns.getName(True) if ns else ""
+
+        # Whitelist: Only process functions in the app's namespace
+        # We check for 'quadzilla' to be safe, covering 'com.quadzillapower' and 'com::quadzillapower'
+        if "quadzilla" not in ns_name:
+            continue
+
+        # Blacklist: Safety check to exclude common libraries if they somehow match
+        if any(lib in ns_name for lib in ["android", "androidx", "java", "kotlin", "google"]):
+            continue
+        # --- FILTERING LOGIC END ---
 
         results = decomp.decompileFunction(func, 30, monitor)
         

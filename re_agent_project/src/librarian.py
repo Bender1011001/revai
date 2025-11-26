@@ -49,27 +49,30 @@ class Librarian:
         # Create function lookup
         func_map = {f["name"]: f for f in functions}
         
-        def dfs(func_name: str, cluster: Set[str]):
-            """Depth-first search to find connected components."""
-            # Soft limit: Allow up to 1.5x max_module_size to finish a connected component
-            # This prevents stranding tightly coupled functions
-            hard_limit = int(self.max_module_size * 1.5)
-            
-            if func_name in visited or len(cluster) >= hard_limit:
-                return
-            
-            visited.add(func_name)
-            cluster.add(func_name)
-            
-            for neighbor in call_graph.get(func_name, []):
-                if neighbor not in visited:
-                    dfs(neighbor, cluster)
-        
         # Find all connected components
+        hard_limit = int(self.max_module_size * 1.5)
+        
         for func in functions:
             if func["name"] not in visited:
                 cluster = set()
-                dfs(func["name"], cluster)
+                # Iterative DFS to avoid recursion depth issues
+                stack = [func["name"]]
+                
+                while stack:
+                    current_func = stack.pop()
+                    
+                    if current_func in visited:
+                        continue
+                    
+                    if len(cluster) >= hard_limit:
+                        break
+                    
+                    visited.add(current_func)
+                    cluster.add(current_func)
+                    
+                    for neighbor in call_graph.get(current_func, []):
+                        if neighbor not in visited:
+                            stack.append(neighbor)
                 
                 if len(cluster) >= self.min_module_size:
                     # Create module from cluster
@@ -82,14 +85,24 @@ class Librarian:
                         "shared_types": self._extract_shared_types(module_functions)
                     })
         
+        # Collect all functions that made it into a module
+        grouped_function_names = set()
+        for m in modules:
+            for f in m["functions"]:
+                grouped_function_names.add(f["name"])
+
         # Handle orphan functions (put them in a "utilities" module)
-        orphans = [f for f in functions if f["name"] not in visited]
+        orphans = [f for f in functions if f["name"] not in grouped_function_names]
         if orphans:
-            modules.append({
-                "module_name": "utilities",
-                "functions": orphans,
-                "shared_types": []
-            })
+            # Split large utilities module into smaller chunks
+            chunk_size = self.max_module_size
+            for i in range(0, len(orphans), chunk_size):
+                chunk = orphans[i:i + chunk_size]
+                modules.append({
+                    "module_name": f"utilities_{i//chunk_size + 1}",
+                    "functions": chunk,
+                    "shared_types": []
+                })
         
         return modules
     

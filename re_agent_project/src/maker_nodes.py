@@ -6,7 +6,7 @@ This module provides backward compatibility while using the proper
 First-to-ahead-by-k voting and red-flagging from the paper.
 """
 import json
-from src.state import AgentState
+from src.refactory_state import RefactoryState as AgentState
 from src.true_maker import create_maker_agent
 
 # Default MAKER configuration

@@ -24,7 +24,7 @@ class MakerConfig:
     
     def __init__(
         self,
-        model: str = "qwen2.5-coder:7b",
+        model: str = "qwen2.5-coder:3b",
         temperature: float = 0.3,
         target_reliability: float = 0.95,
         estimated_error_rate: float = 0.01,
@@ -43,7 +43,16 @@ class MakerConfig:
         self.model = model
         self.temperature = temperature
         self.target_reliability = target_reliability
-        self.estimated_error_rate = estimated_error_rate
+        
+        # Clamp estimated_error_rate to ensure p (1 - error_rate) is in safe range [0.51, 0.99]
+        # This prevents ZeroDivisionError (p=0.5) and log(0) (p=1.0) in k calculation
+        if estimated_error_rate < 0.01:
+            self.estimated_error_rate = 0.01
+        elif estimated_error_rate > 0.49:
+            self.estimated_error_rate = 0.49
+        else:
+            self.estimated_error_rate = estimated_error_rate
+
         self.max_output_tokens = max_output_tokens
         self.k_override = k_override
         
@@ -72,9 +81,10 @@ class MakerConfig:
             )
         
         # Simplified k calculation
-        # k ≈ -ln(epsilon) / ln((1-p)/p)
+        # k ≈ -ln(epsilon) / ln(p/(1-p))
         try:
-            k_min = math.ceil(-math.log(epsilon) / math.log((1-p)/p))
+            # Use p/(1-p) (odds of success) to ensure positive denominator for p > 0.5
+            k_min = math.ceil(-math.log(epsilon) / math.log(p / (1 - p)))
         except (ValueError, ZeroDivisionError):
             # Fallback to conservative estimate
             k_min = 3
@@ -294,7 +304,7 @@ def create_maker_agent(
     target_reliability: float = 0.95,
     estimated_error_rate: float = 0.01,
     max_output_tokens: int = 1000,
-    model: str = "qwen2.5-coder:7b",
+    model: str = "qwen2.5-coder:3b",
     temperature: float = 0.3
 ) -> Tuple[SequentialVoting, MakerConfig]:
     """
