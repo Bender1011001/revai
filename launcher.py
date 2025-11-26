@@ -1,14 +1,34 @@
 import tkinter as tk
-from tkinter import filedialog, messagebox
+from tkinter import filedialog, messagebox, scrolledtext
 from tkinterdnd2 import DND_FILES, TkinterDnD
 import threading
 import os
 import json
+import sys
 
 # Import main pipeline wrapper
 from re_agent_project.src.main import main_pipeline_wrapper
 
 CONFIG_FILE = "config.json"
+
+# --- 1. LOGGING REDIRECTOR CLASS ---
+class TextRedirector(object):
+    def __init__(self, widget, tag="stdout"):
+        self.widget = widget
+        self.tag = tag
+
+    def write(self, str):
+        # Update GUI in a thread-safe way
+        self.widget.after(0, self._write, str)
+
+    def _write(self, str):
+        self.widget.configure(state='normal')
+        self.widget.insert(tk.END, str, (self.tag,))
+        self.widget.see(tk.END)
+        self.widget.configure(state='disabled')
+
+    def flush(self):
+        pass
 
 def load_config():
     if os.path.exists(CONFIG_FILE):
@@ -29,57 +49,88 @@ def select_ghidra():
         filetypes=[("Ghidra Headless", "analyzeHeadless.bat"), ("All Files", "*.*")]
     )
     if path:
-        # Verify it's the correct file
         if not path.lower().endswith("analyzeheadless.bat"):
-            messagebox.showerror("Invalid File", "Please select the 'analyzeHeadless.bat' file located in the 'support' directory of your Ghidra installation.")
+            messagebox.showerror("Invalid File", "Please select 'analyzeHeadless.bat'")
             return
-
-        # Derive the installation directory from the executable path
-        # Expected path: <ghidra_root>/support/analyzeHeadless.bat
         ghidra_root = os.path.dirname(os.path.dirname(os.path.abspath(path)))
-        
         config = load_config()
         config["ghidra_path"] = ghidra_root
         save_config(config)
-        messagebox.showinfo("Config Saved", f"Ghidra path set to:\n{ghidra_root}\n(Derived from selected executable)")
+        messagebox.showinfo("Config Saved", f"Ghidra path set to:\n{ghidra_root}")
 
-def run_analysis(file_path, log_window):
+def run_analysis(file_path, user_goal):
     config = load_config()
     ghidra_path = config.get("ghidra_path")
     
-    def log(msg):
-        log_window.after(0, lambda: log_window.insert(tk.END, msg))
-        log_window.after(0, lambda: log_window.see(tk.END))
-
     if not ghidra_path:
-        log("Error: Ghidra path not configured. Please click 'Configure Ghidra Path'.\n")
+        print("Error: Ghidra path not configured.\n")
         return
 
-    log(f"Analyzing: {file_path}...\n")
+    print(f"--- Analysis Started ---")
+    print(f"Target: {file_path}")
+    print(f"Goal: {user_goal}")
+    print(f"------------------------\n")
+    
     try:
-        # Call the wrapper function
-        main_pipeline_wrapper(file_path, ghidra_path=ghidra_path)
-        log(f"Analysis Complete for {file_path}\n")
+        # Call wrapper with the user goal
+        main_pipeline_wrapper(
+            file_path, 
+            ghidra_path=ghidra_path, 
+            user_goal=user_goal
+        )
+        print("\n--- Pipeline Complete ---")
     except Exception as e:
-        log(f"Error: {str(e)}\n")
+        print(f"\n[FATAL ERROR]: {str(e)}")
 
 def on_drop(event):
     file_path = event.data.strip('{}')
-    log_window.insert(tk.END, f"Dropped file: {file_path}\n")
-    threading.Thread(target=run_analysis, args=(file_path, log_window)).start()
+    user_goal = goal_entry.get().strip()
+    
+    if not user_goal:
+        messagebox.showwarning("Missing Info", "Please describe your goal first (e.g., 'Find the login logic')")
+        return
 
+    # Clear log
+    log_window.configure(state='normal')
+    log_window.delete(1.0, tk.END)
+    log_window.configure(state='disabled')
+    
+    threading.Thread(target=run_analysis, args=(file_path, user_goal), daemon=True).start()
+
+# --- GUI SETUP ---
 root = TkinterDnD.Tk()
-root.title("Universal Refactory")
-root.geometry("600x450")
+root.title("RevAI - Intelligent Reverse Engineering")
+root.geometry("800x600")
 
-btn_config = tk.Button(root, text="Configure Ghidra Path", command=select_ghidra)
-btn_config.pack(pady=5)
+# Top Frame for Config
+frame_top = tk.Frame(root)
+frame_top.pack(fill=tk.X, padx=10, pady=5)
 
-label = tk.Label(root, text="Drag and Drop Binary here")
-label.pack(pady=10)
+btn_config = tk.Button(frame_top, text="Configure Ghidra Path", command=select_ghidra)
+btn_config.pack(side=tk.LEFT)
 
-log_window = tk.Text(root, height=15, width=70)
-log_window.pack(pady=10)
+# Middle Frame for User Goal
+frame_mid = tk.Frame(root)
+frame_mid.pack(fill=tk.X, padx=10, pady=5)
+
+lbl_goal = tk.Label(frame_mid, text="Goal / Target Description:")
+lbl_goal.pack(anchor=tk.W)
+
+goal_entry = tk.Entry(frame_mid)
+goal_entry.pack(fill=tk.X, pady=2)
+goal_entry.insert(0, "e.g. Find the bluetooth communication protocol")
+
+lbl_drop = tk.Label(root, text="[ Drag and Drop Binary Here to Start ]", font=("Arial", 12, "bold"), bg="#e1e1e1", height=2)
+lbl_drop.pack(fill=tk.X, padx=10, pady=10)
+
+# Bottom Frame for Logs
+log_window = scrolledtext.ScrolledText(root, height=20)
+log_window.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+log_window.configure(state='disabled') # Read-only
+
+# Redirect stdout/stderr to the log window
+sys.stdout = TextRedirector(log_window, "stdout")
+sys.stderr = TextRedirector(log_window, "stderr")
 
 root.drop_target_register(DND_FILES)
 root.dnd_bind('<<Drop>>', on_drop)
@@ -87,5 +138,4 @@ root.dnd_bind('<<Drop>>', on_drop)
 try:
     root.mainloop()
 except KeyboardInterrupt:
-    print("Application interrupted by user")
     root.quit()

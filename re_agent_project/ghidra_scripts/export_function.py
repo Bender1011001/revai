@@ -31,6 +31,15 @@ def run():
     count = 0
     limit = int(os.environ.get("GHIDRA_EXPORT_LIMIT", 50))
 
+    # Load dynamic keywords from Environment
+    keywords_str = os.environ.get("GHIDRA_SEARCH_KEYWORDS", "")
+    INTERESTING_STRINGS = [k.strip() for k in keywords_str.split(",")] if keywords_str else []
+    
+    # Fallback defaults if AI failed or empty
+    if not INTERESTING_STRINGS:
+        INTERESTING_STRINGS = ["MainActivity", "onCreate"]
+
+    print("Targeting Functions containing: " + str(INTERESTING_STRINGS))
     print("Starting Enhanced Atomic Decomposition...")
 
     for func in functions:
@@ -54,6 +63,20 @@ def run():
         if any(lib in ns_name.lower() for lib in IGNORE_NAMESPACES):
             continue
         # --- FILTERING LOGIC END ---
+
+        # Check if function name matches ANY keyword
+        is_important = False
+        for kw in INTERESTING_STRINGS:
+            if kw.lower() in func.getName().lower():
+                is_important = True
+                break
+            # Check namespace/class name too
+            if ns_name and kw.lower() in ns_name.lower():
+                is_important = True
+                break
+        
+        if not is_important:
+            continue
 
         results = decomp.decompileFunction(func, 30, monitor)
         
