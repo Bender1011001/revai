@@ -76,13 +76,13 @@ def run_ghidra_export(ghidra_path: str, apk_path: str, project_dir: str, script_
         
     print(f"    Export successful: {output_json}")
 
-def main_pipeline_wrapper(target_file: str, ghidra_path: str = None, output_dir: str = "./refactored_output", limit: int = 100, export_only: bool = False):
+def main_pipeline_wrapper(target_file: str, ghidra_path: str, output_dir: str = "./refactored_output", limit: int = 100, export_only: bool = False):
     """
     Wrapper for the main pipeline logic to be called by GUI or other scripts.
     """
-    # Default Ghidra path if not provided
-    if ghidra_path is None:
-        ghidra_path = r"C:\Users\admin\Downloads\ghidra_11.4.1_PUBLIC_20250731\ghidra_11.4.1_PUBLIC"
+    # Validate Ghidra path
+    if not ghidra_path or not os.path.exists(ghidra_path):
+        raise ValueError(f"Invalid Ghidra path provided: {ghidra_path}")
 
     # Setup paths
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -123,7 +123,7 @@ def main_pipeline_wrapper(target_file: str, ghidra_path: str = None, output_dir:
 
 def main():
     parser = argparse.ArgumentParser(description="Refactory Pipeline Orchestrator")
-    parser.add_argument("--ghidra_path", default=r"C:\Users\admin\Downloads\ghidra_11.4.1_PUBLIC_20250731\ghidra_11.4.1_PUBLIC", help="Path to Ghidra installation directory")
+    parser.add_argument("--ghidra_path", required=True, help="Path to Ghidra installation directory")
     parser.add_argument("--file", default=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "com-quadzillapower-iquad-80-65682565-d581ab864ca4151bc006ff39fd3a8cd0.apk"), help="Path to the target file (APK)")
     parser.add_argument("--output_dir", default="./refactored_output", help="Directory for generated source code")
     parser.add_argument("--export_only", action="store_true", help="Only run Ghidra export, skip refactoring pipeline")

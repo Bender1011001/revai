@@ -5,6 +5,7 @@ Orchestrates the multi-stage process from binary to clean source code.
 import os
 import json
 import concurrent.futures
+import threading
 from typing import List, Dict
 from src.librarian import Librarian
 from src.refactory_state import ModuleGroup
@@ -31,6 +32,7 @@ class RefactoryPipeline:
     def __init__(self, output_dir: str = "./output"):
         self.output_dir = output_dir
         self.librarian = Librarian(min_module_size=2, max_module_size=12)
+        self.file_lock = threading.Lock()
         
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
@@ -98,13 +100,12 @@ class RefactoryPipeline:
         
         if findings:
             report_path = os.path.join(self.output_dir, "SECRETS_REPORT.md")
-            # Note: In a real concurrent environment, this file write should be locked.
-            # For this implementation, we assume atomic appends or accept minor interleaving risks.
-            with open(report_path, "a") as f:
-                f.write(f"## Module: {module['module_name']}\n")
-                for label, matches in findings.items():
-                    f.write(f"- **{label}**: {', '.join(matches)}\n")
-                f.write("\n")
+            with self.file_lock:
+                with open(report_path, "a") as f:
+                    f.write(f"## Module: {module['module_name']}\n")
+                    for label, matches in findings.items():
+                        f.write(f"- **{label}**: {', '.join(matches)}\n")
+                    f.write("\n")
             print(f"[!] Secrets detected in {module['module_name']}. Logged to SECRETS_REPORT.md")
 
         # Initialize state
