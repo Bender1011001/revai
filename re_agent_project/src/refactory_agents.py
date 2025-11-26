@@ -118,11 +118,15 @@ def type_recovery_validator(state: RefactoryState):
 
 # ==================== STAGE 2: REFACTORING ====================
 
-REFACTORING_PROMPT = """You are a code refactoring expert specializing in porting C code to C# / .NET 8.
+REFACTORING_PROMPT = """You are a code refactoring expert specializing in porting decompiled code to C# / .NET 8.
 
-Task: Transform decompiled C code into clean, readable C# source code.
+Task: Analyze the decompiled code and refactor it into clean, readable C# source code.
 
-Input: C code with GOTOs, cryptic labels, and poor structure.
+First, determine if the source is **Dalvik/Java** (high-level) or **x86/PE** (low-level C).
+*   If **Java**: Refactor to standard C# classes.
+*   If **x86**: Refactor to C# `unsafe` blocks or `IntPtr` logic to preserve memory manipulation fidelity.
+
+Input: Decompiled code with GOTOs, cryptic labels, and poor structure.
 Output: Refactored C# code with proper loops, meaningful labels, and clean structure.
 
 Transformations to apply:
@@ -131,9 +135,9 @@ Transformations to apply:
 3. Simplify nested conditions
 4. Add braces for clarity
 5. Preserve exact logic - do not change behavior
-6. Convert C types to C# equivalents (e.g., char* -> string, int -> int, structs -> classes/structs)
+6. Convert types to C# equivalents based on source architecture
 7. Use standard C# naming conventions (PascalCase for methods, camelCase for locals)
-8. Ensure methods are static if they don't rely on instance state (which is likely for decompiled C)
+8. Ensure methods are static if they don't rely on instance state
 
 Output format:
 {
@@ -141,30 +145,79 @@ Output format:
   "transformations": ["removed_goto_loop", "renamed_label_exit", "converted_to_csharp"]
 }"""
 
-def _safe_replace(code, target_pattern, replacement):
+def _safe_replace(code, target, replacement, context_next=None):
     """
-    Safely replace target_pattern with replacement, ignoring strings and comments.
+    Safely replace target identifier with replacement, ignoring strings and comments.
+    If context_next is provided, only replaces target if followed by context_next.
     """
-    # Regex to match strings, comments, OR the target
-    # 1. Strings: "..." (handling escaped quotes)
-    # 2. Single-line comments: //...
-    # 3. Multi-line comments: /*...*/
-    # 4. The target pattern
-    # Note: We use a non-capturing group for the string content to handle escaped quotes correctly.
-    string_pattern = r'"(?:\\.|[^"\\])*"'
-    comment_single = r'//.*?$'
-    comment_multi = r'/\*.*?\*/'
+    # Regex patterns for C/C++ syntax
+    pat_comment_multi = r'/\*[\s\S]*?\*/'
+    pat_comment_single = r'//.*'
+    pat_string = r'"(?:\\.|[^"\\])*"'
+    pat_char = r"'(?:\\.|[^'\\])*'"
+    pat_id = r'\b[a-zA-Z_][a-zA-Z0-9_]*\b'
     
-    full_pattern = f'({string_pattern}|{comment_single}|{comment_multi})|({target_pattern})'
+    # Combined regex
+    regex = re.compile(
+        f'(?P<COMMENT_MULTI>{pat_comment_multi})|'
+        f'(?P<COMMENT_SINGLE>{pat_comment_single})|'
+        f'(?P<STRING>{pat_string})|'
+        f'(?P<CHAR>{pat_char})|'
+        f'(?P<ID>{pat_id})',
+        re.MULTILINE
+    )
     
-    def replace_callback(match):
-        # Group 1: String or Comment (return unchanged)
-        if match.group(1):
-            return match.group(1)
-        # Group 2: Target (return replacement)
-        return replacement
+    tokens = []
+    last_pos = 0
+    for match in regex.finditer(code):
+        if match.start() > last_pos:
+            tokens.append({'type': 'GAP', 'text': code[last_pos:match.start()]})
         
-    return re.sub(full_pattern, replace_callback, code, flags=re.DOTALL | re.MULTILINE)
+        if match.group('ID'): token_type = 'ID'
+        elif match.group('STRING'): token_type = 'STRING'
+        elif match.group('COMMENT_SINGLE') or match.group('COMMENT_MULTI'): token_type = 'COMMENT'
+        else: token_type = 'OTHER' # Should be CHAR
+        
+        tokens.append({'type': token_type, 'text': match.group(0)})
+        last_pos = match.end()
+    
+    if last_pos < len(code):
+        tokens.append({'type': 'GAP', 'text': code[last_pos:]})
+        
+    output = []
+    i = 0
+    while i < len(tokens):
+        token = tokens[i]
+        if token['type'] == 'ID' and token['text'] == target:
+            should_replace = True
+            if context_next:
+                j = i + 1
+                found = False
+                while j < len(tokens):
+                    t = tokens[j]
+                    if t['type'] == 'GAP':
+                        if t['text'].strip(): # Non-whitespace in gap
+                            break
+                    elif t['type'] == 'COMMENT':
+                        pass # Skip comments
+                    elif t['type'] == 'ID':
+                        if t['text'] == context_next:
+                            found = True
+                        break
+                    else: # String, Char, etc.
+                        break
+                    j += 1
+                should_replace = found
+            
+            if should_replace:
+                output.append(replacement)
+            else:
+                output.append(token['text'])
+        else:
+            output.append(token['text'])
+        i += 1
+        
+    return "".join(output)
 
 def refactoring_agent(state: RefactoryState):
     """
@@ -181,17 +234,13 @@ def refactoring_agent(state: RefactoryState):
         
         # Apply confirmed type changes
         for var, var_type in confirmed_types.items():
-            # Use regex for safe replacement of declarations
-            # Matches "int var" with word boundaries
-            target_pattern = r"\bint\s+" + re.escape(var) + r"\b"
-            replacement = f"{var_type} {var}"
-            code = _safe_replace(code, target_pattern, replacement)
+            # Replace "int var" -> "var_type var"
+            # We replace "int" with "var_type" ONLY if followed by "var"
+            code = _safe_replace(code, "int", var_type, context_next=var)
         
         # Apply confirmed renames
         for old_name, new_name in confirmed_renames.items():
-            # Use regex with word boundaries to prevent substring matching errors
-            target_pattern = r"\b" + re.escape(old_name) + r"\b"
-            code = _safe_replace(code, target_pattern, new_name)
+            code = _safe_replace(code, old_name, new_name)
         
         # Truncate if too large
         if len(code) > 8000:
