@@ -14,6 +14,7 @@ from src.refactory_agents import (
     source_code_generator
 )
 from src.maker_nodes import true_maker_rename
+from src.inspector import inspect_module
 
 class RefactoryPipeline:
     """
@@ -91,6 +92,21 @@ class RefactoryPipeline:
     def process_module(self, module: ModuleGroup) -> Dict:
         """Process a single module through all stages."""
         
+        # Stage 0.5: Inspector (Secrets Detection)
+        module_code = "\n".join([f.get("code", "") for f in module["functions"]])
+        findings = inspect_module(module_code)
+        
+        if findings:
+            report_path = os.path.join(self.output_dir, "SECRETS_REPORT.md")
+            # Note: In a real concurrent environment, this file write should be locked.
+            # For this implementation, we assume atomic appends or accept minor interleaving risks.
+            with open(report_path, "a") as f:
+                f.write(f"## Module: {module['module_name']}\n")
+                for label, matches in findings.items():
+                    f.write(f"- **{label}**: {', '.join(matches)}\n")
+                f.write("\n")
+            print(f"[!] Secrets detected in {module['module_name']}. Logged to SECRETS_REPORT.md")
+
         # Initialize state
         state = {
             "module": module,

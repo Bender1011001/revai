@@ -35,20 +35,23 @@ def run():
 
     for func in functions:
         if count >= limit: break
-        if func.getBody().getNumAddresses() < 10: continue
+        if func.getBody().getNumAddresses() < 6: continue
 
         # --- FILTERING LOGIC START ---
         # Get the full namespace path (e.g., "android::support::v4::app")
         ns = func.getParentNamespace()
         ns_name = ns.getName(True) if ns else ""
 
-        # Whitelist: Only process functions in the app's namespace
-        # We check for 'quadzilla' to be safe, covering 'com.quadzillapower' and 'com::quadzillapower'
-        if "quadzilla" not in ns_name:
-            continue
+        if not ns_name:
+            ns_name = "Global_Functions"
 
-        # Blacklist: Safety check to exclude common libraries if they somehow match
-        if any(lib in ns_name for lib in ["android", "androidx", "java", "kotlin", "google"]):
+        # New Generic Filter Logic
+        IGNORE_NAMESPACES = [
+            "android", "androidx", "java", "kotlin", "google", # Android Standard
+            "std", "msvcrt", "kernel32", "user32", "ntdll"     # Windows/C++ Standard
+        ]
+        # Check if any ignored namespace is in the current namespace name (case-insensitive)
+        if any(lib in ns_name.lower() for lib in IGNORE_NAMESPACES):
             continue
         # --- FILTERING LOGIC END ---
 

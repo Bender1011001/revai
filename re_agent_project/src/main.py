@@ -76,16 +76,14 @@ def run_ghidra_export(ghidra_path: str, apk_path: str, project_dir: str, script_
         
     print(f"    Export successful: {output_json}")
 
-def main():
-    parser = argparse.ArgumentParser(description="Refactory Pipeline Orchestrator")
-    parser.add_argument("--ghidra_path", default=r"C:\Users\admin\Downloads\ghidra_11.4.1_PUBLIC_20250731\ghidra_11.4.1_PUBLIC", help="Path to Ghidra installation directory")
-    parser.add_argument("--file", default=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "com-quadzillapower-iquad-80-65682565-d581ab864ca4151bc006ff39fd3a8cd0.apk"), help="Path to the target file (APK)")
-    parser.add_argument("--output_dir", default="./refactored_output", help="Directory for generated source code")
-    parser.add_argument("--export_only", action="store_true", help="Only run Ghidra export, skip refactoring pipeline")
-    parser.add_argument("--limit", type=int, default=100, help="Limit number of functions to export")
-    
-    args = parser.parse_args()
-    
+def main_pipeline_wrapper(target_file: str, ghidra_path: str = None, output_dir: str = "./refactored_output", limit: int = 100, export_only: bool = False):
+    """
+    Wrapper for the main pipeline logic to be called by GUI or other scripts.
+    """
+    # Default Ghidra path if not provided
+    if ghidra_path is None:
+        ghidra_path = r"C:\Users\admin\Downloads\ghidra_11.4.1_PUBLIC_20250731\ghidra_11.4.1_PUBLIC"
+
     # Setup paths
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     ghidra_scripts_dir = os.path.join(base_dir, "ghidra_scripts")
@@ -104,15 +102,15 @@ def main():
     
     # 1. Run Ghidra Export
     run_ghidra_export(
-        ghidra_path=args.ghidra_path,
-        apk_path=args.file,
+        ghidra_path=ghidra_path,
+        apk_path=target_file,
         project_dir=ghidra_project_dir,
         script_path=export_script,
         output_json=export_json,
-        limit=args.limit
+        limit=limit
     )
     
-    if args.export_only:
+    if export_only:
         print(f"\n[+] Export only mode enabled. Skipping Refactory Pipeline.")
         print(f"    Exported data available at: {export_json}")
         return
@@ -120,8 +118,26 @@ def main():
     # 2. Run Refactory Pipeline
     print(f"\n[+] Starting Refactory Pipeline...")
     from src.refactory_pipeline import RefactoryPipeline
-    pipeline = RefactoryPipeline(output_dir=args.output_dir)
+    pipeline = RefactoryPipeline(output_dir=output_dir)
     pipeline.run(export_json)
+
+def main():
+    parser = argparse.ArgumentParser(description="Refactory Pipeline Orchestrator")
+    parser.add_argument("--ghidra_path", default=r"C:\Users\admin\Downloads\ghidra_11.4.1_PUBLIC_20250731\ghidra_11.4.1_PUBLIC", help="Path to Ghidra installation directory")
+    parser.add_argument("--file", default=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "com-quadzillapower-iquad-80-65682565-d581ab864ca4151bc006ff39fd3a8cd0.apk"), help="Path to the target file (APK)")
+    parser.add_argument("--output_dir", default="./refactored_output", help="Directory for generated source code")
+    parser.add_argument("--export_only", action="store_true", help="Only run Ghidra export, skip refactoring pipeline")
+    parser.add_argument("--limit", type=int, default=100, help="Limit number of functions to export")
+    
+    args = parser.parse_args()
+    
+    main_pipeline_wrapper(
+        target_file=args.file,
+        ghidra_path=args.ghidra_path,
+        output_dir=args.output_dir,
+        limit=args.limit,
+        export_only=args.export_only
+    )
 
 if __name__ == "__main__":
     main()
