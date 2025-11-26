@@ -12,137 +12,294 @@ namespace RefactoredApp
     {
         // Discovered Structs (Original C definitions)
         /*
-typedef struct AVFormatterData { String* value; int* flags; ArrayList* additionalData; } AVFormatterData;
+typedef struct a { int x; int y; } a;
         */
 
         /*
-typedef struct AVDTCData224 { ArrayList* DTCData; String* numberOfDTCReported; } AVDTCData224;
+typedef struct Uri { char *url; } Uri;
         */
 
-        // Original: dataFromAV
-        public static AVFormatterData dataFromAV(AVBooleanFormatter self, byte[] inputBuffer)
+        /*
+typedef struct Bundle { void *data; } Bundle;
+        */
+
+        /*
+typedef struct List { void **elements; int size; } List;
+        */
+
+        // Original: a
+        public static Iterator a()
         {
-            AVFormatterData result = new AVFormatterData();
-            long totalValue = 0;
-        
-            for (int byteIndex = 0; byteIndex < 4; byteIndex++)
-            {
-                long currentByteValue = ((long)inputBuffer[byteIndex] & 0xffU);
-                totalValue += currentByteValue << (8 * byteIndex);
-            }
-        
-            if (totalValue == 0)
-            {
-                result.flags = 1;
-            }
-            else
-            {
-                result.flags = 2;
-            }
-        
-            result.value = "Refer to flags.";
-            return result;
+            List<AndroidExceptionPreHandler> list = new List<AndroidExceptionPreHandler>();
+            AndroidExceptionPreHandler handler = new AndroidExceptionPreHandler();
+            list.Add(handler);
+            return list.GetEnumerator();
         }
 
-        // Original: AVDTCData224
-        public class AVDTCData224
+        // Original: b
+        public static Iterator b()
         {
-            private List<string> DTCData;
-        
-            public AVDTCData224()
-            {
-                this.DTCData = new List<string>();
-            }
+            List<AndroidDispatcherFactory> list = new List<AndroidDispatcherFactory>();
+            AndroidDispatcherFactory factory = new AndroidDispatcherFactory();
+            list.Add(factory);
+            return list.GetEnumerator();
         }
 
-        // Original: AVDTCData225
-        public class AVDTCData225
+        // Original: asInterface
+        public static a asInterface(IBinder binder)
         {
-            public List<string> DTCData { get; set; }
-        
-            public AVDTCData225()
+            try
             {
-                DTCData = new List<string>();
+                throw new RuntimeException("Stub!");
+            }
+            catch (RuntimeException ex)
+            {
+                return null;
             }
         }
 
-        // Original: setDTCData
-        public static void setDTCData(AVDTCData225 self, ArrayList inputBuffer)
+        // Original: asBinder
+        public static IBinder asBinder(a_a service)
         {
-        	AVFormatterData local_0;
-        	ArrayList dtcList;
-        
-        	for (local_0 = 0; local_0 < 6; local_0++)
-        	{
-        		dtcList = self.DTCData;
-        		object pOVar1 = inputBuffer.get(local_0);
-        		dtcList.add(pOVar1);
-        	}
+            RuntimeException exception = new RuntimeException("Stub!");
+            throw exception;
         }
 
-        // Original: dataFromAV
-        public static AVFormatterData dataFromAV(AVDTCFormatter224 self, byte[] inputBuffer)
+        // Original: onTransact
+        public static bool onTransact(int code, Parcel dataInput, Parcel replyOutput)
         {
-            AVFormatterData formatterData = new AVFormatterData();
-            ArrayList dtcList = new ArrayList();
-            string defaultString = "0";
-        
-            if (inputBuffer != null && inputBuffer.Length > 0)
+            try
             {
-                int numberOfDTCs = inputBuffer[2];
-                if (numberOfDTCs > 4)
-                {
-                    numberOfDTCs = 5;
-                }
+                throw new RuntimeException("Stub!");
+            }
+            catch (RuntimeException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
+        // Original: a$a
+        public class PackageInstallObserver : Binder, IPackageInstallObserver
+        {
+            public PackageInstallObserver()
+            {
+                throw new RuntimeException("Stub!");
+            }
+        }
+
+        // Original: onTransact
+        public static bool onTransact(a_a service, int requestId, Parcel dataInput, Parcel replyOutput, List flags)
+        {
+            string interfaceDescriptor = "android.support.customtabs.ICustomTabsCallback";
         
-                string currentPrefix = "P";
+            switch (requestId)
+            {
+                case 2:
+                    dataInput.enforceInterface(interfaceDescriptor);
+                    int result1 = dataInput.readInt();
+                    int methodId1 = dataInput.readInt();
+                    Bundle parcelableBundle1 = null;
         
-                for (int i = 0; i < numberOfDTCs; i++)
-                {
-                    int index = i * 2 + 3;
-                    string currentType = currentPrefix;
-        
-                    byte b1 = inputBuffer[index];
-                    byte b2 = inputBuffer[index];
-                    byte b3 = inputBuffer[index + 1];
-                    byte b4 = inputBuffer[index + 1];
-        
-                    if ((b1 & 0xC0) != 0)
+                    if (methodId1 != 0)
                     {
-                        switch (b1 & 0xC0)
-                        {
-                            case 0x40:
-                                currentType = "C";
-                                break;
-                            case 0x80:
-                                currentType = "B";
-                                break;
-                            case 0xC0:
-                                currentType = "U";
-                                break;
-                        }
+                        parcelableBundle1 = (Bundle)Bundle_CREATOR.createFromParcel(dataInput);
                     }
         
-                    formattedDataArray[0] = currentType;
-                    formattedDataArray[1] = (int)((b1 & 0x30) >> 4);
-                    formattedDataArray[2] = (int)(b2 & 0xF);
-                    formattedDataArray[3] = (int)((b3 & 0xF0) >> 4);
-                    formattedDataArray[4] = (int)(b4 & 0xF);
+                    service.r5(result1, parcelableBundle1);
+                    replyOutput.writeNoException();
+                    return true;
         
-                    string dtcString = String.Format("{0}{1}{2}{3}{4}", formattedDataArray);
-                    dtcList.Add(dtcString);
+                case 3:
+                    dataInput.enforceInterface(interfaceDescriptor);
+                    string interfaceName = dataInput.readString();
+                    int result2 = dataInput.readInt();
+                    Bundle parcelableBundle2 = null;
         
-                    currentPrefix = currentType;
-                }
+                    if (result2 != 0)
+                    {
+                        parcelableBundle2 = (Bundle)Bundle_CREATOR.createFromParcel(dataInput);
+                    }
+        
+                    service.N4(interfaceName, parcelableBundle2);
+                    replyOutput.writeNoException();
+                    return true;
+        
+                case 4:
+                    dataInput.enforceInterface(interfaceDescriptor);
+                    int result3 = dataInput.readInt();
+                    Bundle parcelableBundle3 = null;
+        
+                    if (result3 != 0)
+                    {
+                        parcelableBundle3 = (Bundle)Bundle_CREATOR.createFromParcel(dataInput);
+                    }
+        
+                    service.B6(parcelableBundle3);
+                    replyOutput.writeNoException();
+                    return true;
+        
+                case 5:
+                    dataInput.enforceInterface(interfaceDescriptor);
+                    int result4 = dataInput.readInt();
+                    int methodId2 = dataInput.readInt();
+                    Uri parcelableUri = null;
+        
+                    if (methodId2 != 0)
+                    {
+                        parcelableUri = (Uri)Uri_CREATOR.createFromParcel(dataInput);
+                    }
+        
+                    int argInt2 = dataInput.readInt();
+                    Bundle parcelableBundle4 = null;
+        
+                    if (argInt2 != 0)
+                    {
+                        parcelableBundle4 = (Bundle)Bundle_CREATOR.createFromParcel(dataInput);
+                    }
+        
+                    service.J6(result4, parcelableUri, methodId2 != 0, parcelableBundle4);
+                    replyOutput.writeNoException();
+                    return true;
+        
+                case 0x5f4e5446:
+                    dataInput.enforceInterface(interfaceDescriptor);
+                    string interfaceName2 = dataInput.readString();
+                    int result5 = dataInput.readInt();
+                    Bundle parcelableBundle5 = null;
+        
+                    if (result5 != 0)
+                    {
+                        parcelableBundle5 = (Bundle)Bundle_CREATOR.createFromParcel(dataInput);
+                    }
+        
+                    service.q6(interfaceName2, parcelableBundle5);
+                    replyOutput.writeString(interfaceDescriptor);
+                    return true;
+        
+                default:
+                    return super.onTransact(service, requestId, dataInput, replyOutput, flags);
             }
+        }
+
+        // Original: a$a
+        public class CustomTabsCallbackBinder : Binder, ICustomTabsCallback
+        {
+            public CustomTabsCallbackBinder()
+            {
+                AttachInterface(this, "android.support.customtabs.ICustomTabsCallback");
+            }
+        }
+
+        // Original: asBinder
+        public static IBinder asBinder(b_a_a service) { return service.binder; }
+
+        // Original: q1
+        public static bool Q1(b_a_a service, a requestId, Uri dataInput, Bundle replyOutput, List flags)
+        {
+            Parcel exception = Parcel.Obtain();
+            Parcel replyParcel = Parcel.Obtain();
         
-            formatterData.value = defaultString;
-            AVDTCData224 avDTCData = new AVDTCData224();
-            avDTCData.DTCData = dtcList;
-            avDTCData.numberOfDTCReported = pSVar5;
-            formatterData.additionalData = avDTCData;
+            try
+            {
+                exception.WriteInterfaceToken("android.support.customtabs.ICustomTabsService");
         
-            return formatterData;
+                IBinder binder;
+                if (requestId == null)
+                    binder = null;
+                else
+                    binder = requestId.AsBinder();
+        
+                exception.WriteStrongBinder(binder);
+        
+                if (dataInput == null)
+                    exception.WriteInt(0);
+                else
+                {
+                    exception.WriteInt(1);
+                    dataInput.WriteToParcel(exception, 0);
+                }
+        
+                if (replyOutput == null)
+                    exception.WriteInt(0);
+                else
+                {
+                    exception.WriteInt(1);
+                    replyOutput.WriteToParcel(exception, 0);
+                }
+        
+                exception.WriteTypedList(flags);
+        
+                IBinder serviceBinder = service.binder;
+                serviceBinder.Transact(4, exception, replyParcel, 0);
+        
+                replyParcel.ReadException();
+                int result = replyParcel.ReadInt();
+                return result != 0;
+            }
+            finally
+            {
+                replyParcel.Recycle();
+                exception.Recycle();
+            }
+        }
+
+        // Original: x4
+        public static bool x4(b_a_a service, a requestId)
+        {
+            Parcel exception = Parcel.obtain();
+            Parcel replyParcel = Parcel.obtain();
+        
+            try
+            {
+                exception.writeInterfaceToken("android.support.customtabs.ICustomTabsService");
+        
+                IBinder binder;
+                if (requestId == null)
+                {
+                    binder = null;
+                }
+                else
+                {
+                    binder = requestId.asBinder();
+                }
+        
+                exception.writeStrongBinder(binder);
+        
+                binder = service.binder;
+                binder.transact(3, exception, replyParcel, 0);
+                replyParcel.readException();
+        
+                return replyParcel.readInt() != 0;
+            }
+            finally
+            {
+                replyParcel.recycle();
+                exception.recycle();
+            }
+        }
+
+        // Original: p3
+        public static bool replyOutput(b_a_a service, long requestId)
+        {
+            Parcel exception = Parcel.obtain();
+            Parcel replyParcel = Parcel.obtain();
+        
+            try
+            {
+                exception.writeInterfaceToken("android.support.customtabs.ICustomTabsService");
+                exception.writeLong(requestId);
+                IBinder ref_01 = service.binder;
+                ref_01.transact(2, exception, replyParcel, 0);
+                replyParcel.readException();
+                int result = replyParcel.readInt();
+                return result != 0;
+            }
+            finally
+            {
+                replyParcel.recycle();
+                exception.recycle();
+            }
         }
 
     }

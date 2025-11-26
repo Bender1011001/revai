@@ -2,14 +2,11 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 from tkinterdnd2 import DND_FILES, TkinterDnD
 import threading
-import sys
 import os
 import json
 
-# Ensure src is in path
-current_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.join(current_dir, 're_agent_project'))
-from src.main import main_pipeline_wrapper
+# Import main pipeline wrapper
+from re_agent_project.src.main import main_pipeline_wrapper
 
 CONFIG_FILE = "config.json"
 
@@ -27,28 +24,44 @@ def save_config(config):
         json.dump(config, f, indent=4)
 
 def select_ghidra():
-    path = filedialog.askdirectory(title="Select Ghidra Installation Directory")
+    path = filedialog.askopenfilename(
+        title="Select analyzeHeadless Executable",
+        filetypes=[("Ghidra Headless", "analyzeHeadless.bat"), ("All Files", "*.*")]
+    )
     if path:
+        # Verify it's the correct file
+        if not path.lower().endswith("analyzeheadless.bat"):
+            messagebox.showerror("Invalid File", "Please select the 'analyzeHeadless.bat' file located in the 'support' directory of your Ghidra installation.")
+            return
+
+        # Derive the installation directory from the executable path
+        # Expected path: <ghidra_root>/support/analyzeHeadless.bat
+        ghidra_root = os.path.dirname(os.path.dirname(os.path.abspath(path)))
+        
         config = load_config()
-        config["ghidra_path"] = path
+        config["ghidra_path"] = ghidra_root
         save_config(config)
-        messagebox.showinfo("Config Saved", f"Ghidra path set to:\n{path}")
+        messagebox.showinfo("Config Saved", f"Ghidra path set to:\n{ghidra_root}\n(Derived from selected executable)")
 
 def run_analysis(file_path, log_window):
     config = load_config()
     ghidra_path = config.get("ghidra_path")
     
+    def log(msg):
+        log_window.after(0, lambda: log_window.insert(tk.END, msg))
+        log_window.after(0, lambda: log_window.see(tk.END))
+
     if not ghidra_path:
-        log_window.insert(tk.END, "Error: Ghidra path not configured. Please click 'Configure Ghidra Path'.\n")
+        log("Error: Ghidra path not configured. Please click 'Configure Ghidra Path'.\n")
         return
 
-    log_window.insert(tk.END, f"Analyzing: {file_path}...\n")
+    log(f"Analyzing: {file_path}...\n")
     try:
         # Call the wrapper function
         main_pipeline_wrapper(file_path, ghidra_path=ghidra_path)
-        log_window.insert(tk.END, f"Analysis Complete for {file_path}\n")
+        log(f"Analysis Complete for {file_path}\n")
     except Exception as e:
-        log_window.insert(tk.END, f"Error: {str(e)}\n")
+        log(f"Error: {str(e)}\n")
 
 def on_drop(event):
     file_path = event.data.strip('{}')
@@ -71,4 +84,8 @@ log_window.pack(pady=10)
 root.drop_target_register(DND_FILES)
 root.dnd_bind('<<Drop>>', on_drop)
 
-root.mainloop()
+try:
+    root.mainloop()
+except KeyboardInterrupt:
+    print("Application interrupted by user")
+    root.quit()
