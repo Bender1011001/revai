@@ -16,6 +16,8 @@ from src.refactory_agents import (
 )
 from src.maker_nodes import true_maker_rename
 from src.inspector import inspect_module
+from src.agent_lightning_bridge import AgentLightningClient
+from src.compiler_judge import CompilerJudge
 
 class RefactoryPipeline:
     """
@@ -33,6 +35,7 @@ class RefactoryPipeline:
         self.output_dir = output_dir
         self.librarian = Librarian(min_module_size=2, max_module_size=12)
         self.file_lock = threading.Lock()
+        self.lightning_client = AgentLightningClient(agent_name="Refactory_Orchestrator")
         
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
@@ -84,6 +87,15 @@ class RefactoryPipeline:
         
         # Write all files
         self.write_output(all_source_files, all_header_files)
+
+        # [Stage 5] The Judge
+        print(f"\n[Stage 5] The Judge: Verifying correctness...")
+        judge = CompilerJudge(
+            project_dir=self.output_dir,
+            lightning_client=self.lightning_client
+        )
+        final_score = judge.assess_build()
+        print(f"Final Architecture Score: {final_score}")
         
         print("\n" + "=" * 60)
         print("PIPELINE COMPLETE")

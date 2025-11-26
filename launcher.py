@@ -58,7 +58,7 @@ def select_ghidra():
         save_config(config)
         messagebox.showinfo("Config Saved", f"Ghidra path set to:\n{ghidra_root}")
 
-def run_analysis(file_path, user_goal):
+def run_analysis(file_path, user_goal, output_dir):
     config = load_config()
     ghidra_path = config.get("ghidra_path")
     
@@ -69,14 +69,15 @@ def run_analysis(file_path, user_goal):
     print(f"--- Analysis Started ---")
     print(f"Target: {file_path}")
     print(f"Goal: {user_goal}")
+    print(f"Project Dir: {output_dir}")
     print(f"------------------------\n")
     
     try:
-        # Call wrapper with the user goal
         main_pipeline_wrapper(
-            file_path, 
-            ghidra_path=ghidra_path, 
-            user_goal=user_goal
+            file_path,
+            ghidra_path=ghidra_path,
+            user_goal=user_goal,
+            output_dir=output_dir
         )
         print("\n--- Pipeline Complete ---")
     except Exception as e:
@@ -85,17 +86,29 @@ def run_analysis(file_path, user_goal):
 def on_drop(event):
     file_path = event.data.strip('{}')
     user_goal = goal_entry.get().strip()
+    project_name = proj_entry.get().strip()
     
     if not user_goal:
         messagebox.showwarning("Missing Info", "Please describe your goal first (e.g., 'Find the login logic')")
         return
+
+    # Auto-generate project name if empty
+    if not project_name:
+        base_name = os.path.basename(file_path)
+        project_name = os.path.splitext(base_name)[0] + "_analysis"
+        # Update the entry to show the generated name
+        proj_entry.delete(0, tk.END)
+        proj_entry.insert(0, project_name)
+    
+    # Define output directory
+    output_dir = os.path.join("projects", project_name)
 
     # Clear log
     log_window.configure(state='normal')
     log_window.delete(1.0, tk.END)
     log_window.configure(state='disabled')
     
-    threading.Thread(target=run_analysis, args=(file_path, user_goal), daemon=True).start()
+    threading.Thread(target=run_analysis, args=(file_path, user_goal, output_dir), daemon=True).start()
 
 # --- GUI SETUP ---
 root = TkinterDnD.Tk()
@@ -119,6 +132,16 @@ lbl_goal.pack(anchor=tk.W)
 goal_entry = tk.Entry(frame_mid)
 goal_entry.pack(fill=tk.X, pady=2)
 goal_entry.insert(0, "e.g. Find the bluetooth communication protocol")
+
+# Frame for Project Name
+frame_proj = tk.Frame(root)
+frame_proj.pack(fill=tk.X, padx=10, pady=5)
+
+lbl_proj = tk.Label(frame_proj, text="Project Name (Optional):")
+lbl_proj.pack(anchor=tk.W)
+
+proj_entry = tk.Entry(frame_proj)
+proj_entry.pack(fill=tk.X, pady=2)
 
 lbl_drop = tk.Label(root, text="[ Drag and Drop Binary Here to Start ]", font=("Arial", 12, "bold"), bg="#e1e1e1", height=2)
 lbl_drop.pack(fill=tk.X, padx=10, pady=10)

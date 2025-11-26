@@ -14,6 +14,7 @@ from typing import Dict, Any, Optional, Tuple
 from collections import defaultdict
 from langchain_ollama import ChatOllama
 from langchain_core.messages import SystemMessage, HumanMessage
+from re_agent_project.src.agent_lightning_bridge import AgentLightningClient, LightningLLMWrapper
 
 
 class MakerConfig:
@@ -268,31 +269,66 @@ class SequentialVoting:
             
             cleaned_text = cleaned_text.strip()
 
-            # Try to parse JSON
+            # Validation Pipeline
+            parsed_data = {}
+            is_valid = False
+            reason = "unknown"
+            
+            # 1. Parse JSON
             try:
                 parsed_data = json.loads(cleaned_text)
+                is_valid = True
+                reason = "valid"
             except json.JSONDecodeError:
-                return {}, False, "json_parse_error"
+                is_valid = False
+                reason = "json_parse_error"
             
-            # Red Flag Check
-            is_valid, reason = self.guard.check_red_flags(response_text, parsed_data)
+            # 2. Red Flag Check (if valid so far)
+            if is_valid:
+                is_valid, reason = self.guard.check_red_flags(response_text, parsed_data)
             
-            if not is_valid:
-                return {}, False, reason
-            
-            # Hallucination Check (from existing MAKER)
-            # Ensure we're not inventing variables
-            if isinstance(parsed_data, dict):
+            # 3. Hallucination Check (if valid so far)
+            if is_valid and isinstance(parsed_data, dict):
                 for var_name in parsed_data.keys():
                     if var_name not in existing_variables:
-                        return {}, False, f"hallucinated_variable: {var_name}"
+                        is_valid = False
+                        reason = f"hallucinated_variable: {var_name}"
+                        break
             
-            # Laziness Check
-            # Remove identity mappings (var -> var)
-            clean_renames = {
-                k: v for k, v in parsed_data.items()
-                if k != v and isinstance(v, str)
-            }
+            # 4. Laziness Check (if valid so far)
+            clean_renames = {}
+            if is_valid:
+                # Remove identity mappings (var -> var)
+                clean_renames = {
+                    k: v for k, v in parsed_data.items()
+                    if k != v and isinstance(v, str)
+                }
+            
+            # CALCULATE REWARD
+            reward = 0.0
+            meta = {}
+            
+            if not is_valid:
+                reward = -0.5  # Penalty for red flags (invalid JSON, too long, hallucinations)
+                meta["failure"] = reason
+            else:
+                reward = 0.1   # Small reward for valid syntax
+            
+            # LOG TRACE
+            if hasattr(self, 'lightning_client'):
+                # Ensure we read from the actual wrapper used (handling bind() creating new instances)
+                wrapper_source = llm_to_use if hasattr(llm_to_use, 'latest_prompt') else self.llm
+                
+                self.lightning_client.log_trace(
+                    state=wrapper_source.latest_prompt,
+                    action=wrapper_source.latest_response,
+                    reward=reward,
+                    next_state="voting_pool",
+                    metadata=meta
+                )
+
+            if not is_valid:
+                return {}, False, reason
             
             return clean_renames, True, "valid"
             
@@ -323,12 +359,16 @@ def create_maker_agent(
     )
     
     # Create LLM
-    llm = ChatOllama(
+    base_llm = ChatOllama(
         model=config.model,
         temperature=config.temperature,
         format="json",
         base_url=os.environ.get("OLLAMA_HOST", "http://localhost:11434")
     )
+
+    # Wrap LLM with Lightning
+    client = AgentLightningClient(agent_name="TrueMaker_Renamer")
+    wrapped_llm = LightningLLMWrapper(base_llm, client)
     
     # Create red flag guard
     guard = RedFlagGuard(
@@ -337,7 +377,8 @@ def create_maker_agent(
     )
     
     # Create voting agent
-    voting_agent = SequentialVoting(llm, config, guard)
+    voting_agent = SequentialVoting(wrapped_llm, config, guard)
+    voting_agent.lightning_client = client  # Attach client for reward logging
     
     print(f"[MAKER] Initialized with k={config.k} (reliability={target_reliability}, error_rate={estimated_error_rate})")
     

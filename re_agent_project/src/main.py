@@ -71,19 +71,29 @@ def run_ghidra_export(ghidra_path: str, apk_path: str, project_dir: str, script_
         sys.exit(1)
 
 def main_pipeline_wrapper(target_file: str, ghidra_path: str, user_goal: str, output_dir: str = "./refactored_output", limit: int = 100, export_only: bool = False):
-    # Setup paths (same as before)
+    # Setup paths
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     ghidra_scripts_dir = os.path.join(base_dir, "ghidra_scripts")
     export_script = os.path.join(ghidra_scripts_dir, "export_function.py")
     
-    temp_dir = os.path.join(base_dir, "temp_ghidra")
-    ghidra_project_dir = os.path.join(temp_dir, "project")
-    ghidra_export_dir = os.path.join(temp_dir, "export")
+    # Ensure output directory exists
+    output_dir = os.path.abspath(output_dir)
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    # Define project-specific paths
+    ghidra_project_dir = os.path.join(output_dir, "ghidra_project")
+    ghidra_export_dir = os.path.join(output_dir, "ghidra_export")
     export_json = os.path.join(ghidra_export_dir, "dataset_dirty.json")
+    refactored_output_dir = os.path.join(output_dir, "refactored_code")
     
-    if os.path.exists(temp_dir):
-        shutil.rmtree(temp_dir)
+    # Clean/Create directories
+    # Note: We might NOT want to delete the project if we want to resume, but for now let's keep it clean or handle it in run_ghidra_export
+    if os.path.exists(ghidra_export_dir):
+        shutil.rmtree(ghidra_export_dir)
     os.makedirs(ghidra_export_dir)
+    
+    # We don't delete ghidra_project_dir here because run_ghidra_export handles the project creation/overwriting via flags
     
     run_ghidra_export(
         ghidra_path=ghidra_path,
@@ -91,7 +101,7 @@ def main_pipeline_wrapper(target_file: str, ghidra_path: str, user_goal: str, ou
         project_dir=ghidra_project_dir,
         script_path=export_script,
         output_json=export_json,
-        user_goal=user_goal, # <--- PASSED DOWN
+        user_goal=user_goal,
         limit=limit
     )
     
@@ -100,5 +110,6 @@ def main_pipeline_wrapper(target_file: str, ghidra_path: str, user_goal: str, ou
 
     print(f"\n[+] Starting Refactory Pipeline...")
     from src.refactory_pipeline import RefactoryPipeline
-    pipeline = RefactoryPipeline(output_dir=output_dir)
+    # Pass the specific refactored output subfolder
+    pipeline = RefactoryPipeline(output_dir=refactored_output_dir)
     pipeline.run(export_json)

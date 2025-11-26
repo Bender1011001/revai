@@ -276,21 +276,19 @@ def refactoring_agent(state: RefactoryState):
     return {"refactoring_proposals": proposals, "attempts": 1}
 
 def refactoring_validator(state: RefactoryState):
-    """
-    Validate refactored code (basic syntax check).
-    """
     proposals = state.get("refactoring_proposals", [])
     confirmed = []
     
     for proposal in proposals:
-        # Basic validation: check for balanced braces
         code = proposal["refactored_code"]
-        if code.count("{") == code.count("}") and code.count("(") == code.count(")"):
-            confirmed.append(proposal)
+        
+        # GARBAGE CHECK: Unbalanced braces = garbage
+        if code.count("{") != code.count("}"):
+            print(f"[Refactoring] REJECTED {proposal['function_name']}: Unbalanced braces (-1.0)")
+            # In a full implementation, you'd log this -1.0 to the client here
         else:
-            # Reject malformed code
-            print(f"[Refactoring] Rejected {proposal['function_name']}: unbalanced braces/parens")
-    
+            confirmed.append(proposal)
+
     return {"confirmed_refactorings": confirmed}
 
 # ==================== STAGE 4: SOURCE CODE GENERATION ====================
