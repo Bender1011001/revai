@@ -4,13 +4,15 @@ import subprocess
 import argparse
 import shutil
 import time  # Added for delays if needed
+import threading
+from typing import Optional
 
 # Add project root to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.target_identifier import generate_search_terms
 
-def run_ghidra_export(ghidra_path: str, apk_path: str, project_dir: str, script_path: str, output_json: str, user_goal: str, limit: int = 100):
+def run_ghidra_export(ghidra_path: str, apk_path: str, project_dir: str, script_path: str, output_json: str, user_goal: str, limit: int = 100, stop_event: Optional[threading.Event] = None):
     print(f"\n[+] Starting Ghidra Headless Analysis...")
     
     # --- STEP 1: AI TARGET IDENTIFICATION ---
@@ -56,11 +58,19 @@ def run_ghidra_export(ghidra_path: str, apk_path: str, project_dir: str, script_
 
     # Read output line by line and print it (GUI will capture this)
     while True:
+        if stop_event and stop_event.is_set():
+            print("[-] Ghidra analysis stopped by user.")
+            process.terminate()
+            break
+
         line = process.stdout.readline()
         if not line and process.poll() is not None:
             break
         if line:
             print(f"Ghidra: {line.strip()}")
+
+    if stop_event and stop_event.is_set():
+        return
 
     if process.returncode != 0:
         print(f"[ERROR] Ghidra analysis failed with code {process.returncode}")
@@ -70,7 +80,7 @@ def run_ghidra_export(ghidra_path: str, apk_path: str, project_dir: str, script_
         print(f"[ERROR] Export file was not created: {output_json}")
         sys.exit(1)
 
-def main_pipeline_wrapper(target_file: str, ghidra_path: str, user_goal: str, output_dir: str = "./refactored_output", limit: int = 100, export_only: bool = False):
+def main_pipeline_wrapper(target_file: str, ghidra_path: str, user_goal: str, output_dir: str = "./refactored_output", limit: int = 100, export_only: bool = False, stop_event: Optional[threading.Event] = None, pause_event: Optional[threading.Event] = None):
     # Setup paths
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     ghidra_scripts_dir = os.path.join(base_dir, "ghidra_scripts")
@@ -102,9 +112,13 @@ def main_pipeline_wrapper(target_file: str, ghidra_path: str, user_goal: str, ou
         script_path=export_script,
         output_json=export_json,
         user_goal=user_goal,
-        limit=limit
+        limit=limit,
+        stop_event=stop_event
     )
     
+    if stop_event and stop_event.is_set():
+        return
+
     if export_only:
         return
 
@@ -112,4 +126,4 @@ def main_pipeline_wrapper(target_file: str, ghidra_path: str, user_goal: str, ou
     from src.refactory_pipeline import RefactoryPipeline
     # Pass the specific refactored output subfolder
     pipeline = RefactoryPipeline(output_dir=refactored_output_dir)
-    pipeline.run(export_json)
+    pipeline.run(export_json, stop_event=stop_event, pause_event=pause_event)

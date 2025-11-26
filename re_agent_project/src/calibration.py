@@ -1,16 +1,18 @@
 import random
 import statistics
-from typing import List
+import threading
+from typing import List, Optional
 from .refactory_state import ModuleGroup
 from .true_maker import RedFlagGuard
 from langchain_ollama import ChatOllama
 from langchain_core.messages import SystemMessage, HumanMessage
 
 def measure_model_difficulty(
-    model_name: str, 
-    test_samples: List[dict], 
+    model_name: str,
+    test_samples: List[dict],
     system_prompt: str,
-    temperature: float = 0.3
+    temperature: float = 0.3,
+    stop_event: Optional[threading.Event] = None
 ):
     """
     Estimates 'p' (Probability of Success) for the MAKER framework.
@@ -27,6 +29,10 @@ def measure_model_difficulty(
     print(f"[-] Calibrating {model_name} on {total_samples} samples...")
 
     for i, sample in enumerate(test_samples):
+        if stop_event and stop_event.is_set():
+            print("[-] Calibration stopped by user.")
+            break
+
         # Construct prompt (reuse logic from your maker_nodes.py)
         prompt = f"Function: {sample['name']}\nCode:\n{sample['code']}"
         

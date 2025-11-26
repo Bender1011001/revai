@@ -1,71 +1,92 @@
-# src/agent_lightning_bridge.py
-import time
 import json
-import threading
+import time
 import uuid
-from typing import Dict, List, Any
+import os
+from typing import List, Dict, Any, Optional
+from dataclasses import dataclass
+from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import BaseMessage
+
+@dataclass
+class Trace:
+    trace_id: str
+    step_id: int
+    state: str
+    action: str
+    reward: float
+    next_state: str
+    metadata: Dict[str, Any]
 
 class AgentLightningClient:
     """
-    Client SDK that logs 'State-Action-Reward' tuples to disk (or a remote training server).
+    Client for the Agent Lightning RL framework.
+    Logs execution traces to a local file (simulating the Lightning Server).
     """
-    def __init__(self, agent_name: str):
-        self.agent_name = agent_name
-        self.session_id = str(uuid.uuid4())
-        self._lock = threading.Lock()
-        
-    def log_trace(self, state: str, action: str, reward: float, next_state: str, metadata: Dict = None):
-        """
-        Logs a standard RL trace: (s, a, r, s')
-        """
-        payload = {
-            "session_id": self.session_id,
-            "agent": self.agent_name,
-            "timestamp": time.time(),
-            "trace": {
-                "state": state,       # The Prompt
-                "action": action,     # The Model Output
-                "reward": reward,     # The Signal (+1.0, -0.5, etc)
-                "next_state": next_state,
-            },
-            "metadata": metadata or {}
-        }
-        self._log_to_disk(payload)
+    def __init__(self, log_dir: str = "lightning_logs"):
+        self.log_dir = log_dir
+        if not os.path.exists(log_dir):
+            os.makedirs(log_dir)
+        self.current_trace_id = str(uuid.uuid4())
+        self.step_counter = 0
+        self.traces = []
 
-    def _log_to_disk(self, payload):
-        with self._lock:
-            with open("lightning_traces.jsonl", "a") as f:
-                f.write(json.dumps(payload) + "\n")
+    def log_transition(self, state: str, action: str, reward: float, next_state: str, metadata: Dict = None):
+        """Log a State-Action-Reward-State (SARS) tuple."""
+        self.step_counter += 1
+        trace = Trace(
+            trace_id=self.current_trace_id,
+            step_id=self.step_counter,
+            state=state,
+            action=action,
+            reward=reward,
+            next_state=next_state,
+            metadata=metadata or {}
+        )
+        self.traces.append(trace)
+        self._flush_to_disk()
+
+    def _flush_to_disk(self):
+        filename = os.path.join(self.log_dir, f"trace_{self.current_trace_id}.jsonl")
+        with open(filename, "a") as f:
+            # Convert dataclass to dict manually or use asdict
+            latest = self.traces[-1]
+            record = {
+                "trace_id": latest.trace_id,
+                "step": latest.step_id,
+                "state": latest.state,
+                "action": latest.action,
+                "reward": latest.reward,
+                "next_state": latest.next_state,
+                "metadata": latest.metadata,
+                "timestamp": time.time()
+            }
+            f.write(json.dumps(record) + "\n")
 
 class LightningLLMWrapper:
     """
-    Proxy that wraps ChatOllama to intercept inputs/outputs for logging.
+    Wrapper for LangChain ChatModels that intercepts invocations
+    to log actions for Agent Lightning.
     """
-    def __init__(self, wrapped_llm, client: AgentLightningClient):
-        self._llm = wrapped_llm
+    def __init__(self, llm: BaseChatModel, client: AgentLightningClient):
+        self.llm = llm
         self.client = client
-        self.latest_prompt = ""
-        self.latest_response = ""
 
-    def bind(self, **kwargs):
-        """
-        Support for LangChain's .bind() method to pass runtime args (like temperature).
-        Returns a new wrapper around the bound LLM.
-        """
-        return LightningLLMWrapper(self._llm.bind(**kwargs), self.client)
-
-    def invoke(self, input_messages: List[BaseMessage], **kwargs):
-        # 1. Capture State (Prompt)
-        if isinstance(input_messages, list):
-            prompt_str = "\n".join([m.content for m in input_messages])
-        else:
-            prompt_str = str(input_messages)
-        self.latest_prompt = prompt_str
-
-        # 2. Execute Action (Call Real Model)
-        response = self._llm.invoke(input_messages, **kwargs)
+    def invoke(self, input: List[BaseMessage], **kwargs):
+        # Capture State (Prompt)
+        prompt_str = str(input)
         
-        # 3. Capture Action (Response)
-        self.latest_response = response.content
+        # Execute Action (LLM Generation)
+        start_time = time.time()
+        response = self.llm.invoke(input, **kwargs)
+        duration = time.time() - start_time
+        
+        # We log the "Action" here. The "Reward" usually comes later
+        # from the environment (Voting or Compiler), so we might log
+        # a placeholder or use this wrapper just for prompt/response capture.
+        # For this integration, the VotingAgent handles the explicit logging.
+        
         return response
+        
+    def bind(self, **kwargs):
+        # Pass through bind calls (e.g. for temperature)
+        return LightningLLMWrapper(self.llm.bind(**kwargs), self.client)

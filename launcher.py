@@ -31,6 +31,11 @@ class TextRedirector(object):
     def flush(self):
         pass
 
+# --- GLOBAL EVENTS ---
+stop_event = threading.Event()
+pause_event = threading.Event()
+pause_event.set() # Initially running (not paused)
+
 def load_config():
     if os.path.exists(CONFIG_FILE):
         try:
@@ -68,6 +73,11 @@ def check_feasibility():
     if not file_path:
         return
 
+    # Reset events
+    stop_event.clear()
+    pause_event.set()
+    update_control_buttons(running=True)
+
     def run_calibration():
         try:
             print(f"--- Feasibility Check Started ---")
@@ -89,21 +99,26 @@ Do not include any explanation or markdown formatting."""
 
             model_name = "qwen2.5-coder:3b" # Default
             
-            p, feasible = measure_model_difficulty(model_name, samples, system_prompt)
+            p, feasible = measure_model_difficulty(model_name, samples, system_prompt, stop_event=stop_event)
             
-            print(f"\nResults:")
-            print(f"Success Rate (p): {p:.2f}")
-            print(f"Feasible: {feasible}")
-            
-            if not feasible:
-                print("Warning: Task too difficult for this model (p <= 0.5).")
+            if stop_event.is_set():
+                print("\n[!] Calibration stopped.")
             else:
-                print("Success: Model is capable of this task.")
+                print(f"\nResults:")
+                print(f"Success Rate (p): {p:.2f}")
+                print(f"Feasible: {feasible}")
+                
+                if not feasible:
+                    print("Warning: Task too difficult for this model (p <= 0.5).")
+                else:
+                    print("Success: Model is capable of this task.")
                 
             print("---------------------------------")
             
         except Exception as e:
             print(f"\n[ERROR] Calibration failed: {str(e)}")
+        finally:
+            update_control_buttons(running=False)
 
     threading.Thread(target=run_calibration, daemon=True).start()
 
@@ -113,6 +128,7 @@ def run_analysis(file_path, user_goal, output_dir):
     
     if not ghidra_path:
         print("Error: Ghidra path not configured.\n")
+        update_control_buttons(running=False)
         return
 
     print(f"--- Analysis Started ---")
@@ -126,11 +142,18 @@ def run_analysis(file_path, user_goal, output_dir):
             file_path,
             ghidra_path=ghidra_path,
             user_goal=user_goal,
-            output_dir=output_dir
+            output_dir=output_dir,
+            stop_event=stop_event,
+            pause_event=pause_event
         )
-        print("\n--- Pipeline Complete ---")
+        if stop_event.is_set():
+            print("\n[!] Pipeline stopped by user.")
+        else:
+            print("\n--- Pipeline Complete ---")
     except Exception as e:
         print(f"\n[FATAL ERROR]: {str(e)}")
+    finally:
+        update_control_buttons(running=False)
 
 def on_drop(event):
     file_path = event.data.strip('{}')
@@ -157,7 +180,41 @@ def on_drop(event):
     log_window.delete(1.0, tk.END)
     log_window.configure(state='disabled')
     
+    # Reset events
+    stop_event.clear()
+    pause_event.set()
+    update_control_buttons(running=True)
+
     threading.Thread(target=run_analysis, args=(file_path, user_goal, output_dir), daemon=True).start()
+
+def toggle_pause():
+    if pause_event.is_set():
+        pause_event.clear()
+        btn_pause.config(text="Resume")
+        print("\n[!] Paused...")
+    else:
+        pause_event.set()
+        btn_pause.config(text="Pause")
+        print("\n[>] Resumed...")
+
+def stop_execution():
+    if messagebox.askyesno("Stop", "Are you sure you want to stop the current task?"):
+        stop_event.set()
+        # Also ensure we are not paused so threads can wake up and stop
+        pause_event.set()
+        btn_pause.config(text="Pause")
+        print("\n[!] Stopping... please wait for threads to exit.")
+
+def update_control_buttons(running):
+    if running:
+        btn_pause.config(state=tk.NORMAL, text="Pause")
+        btn_stop.config(state=tk.NORMAL)
+        btn_feasibility.config(state=tk.DISABLED)
+        # Disable drag and drop? Not easily possible with TkinterDnD but we can ignore drops
+    else:
+        btn_pause.config(state=tk.DISABLED, text="Pause")
+        btn_stop.config(state=tk.DISABLED)
+        btn_feasibility.config(state=tk.NORMAL)
 
 # --- GUI SETUP ---
 root = TkinterDnD.Tk()
@@ -173,6 +230,13 @@ btn_config.pack(side=tk.LEFT)
 
 btn_feasibility = tk.Button(frame_top, text="Check Feasibility", command=check_feasibility)
 btn_feasibility.pack(side=tk.LEFT, padx=5)
+
+# Control Buttons
+btn_pause = tk.Button(frame_top, text="Pause", command=toggle_pause, state=tk.DISABLED)
+btn_pause.pack(side=tk.LEFT, padx=5)
+
+btn_stop = tk.Button(frame_top, text="Stop", command=stop_execution, state=tk.DISABLED, bg="#ffcccc")
+btn_stop.pack(side=tk.LEFT, padx=5)
 
 # Middle Frame for User Goal
 frame_mid = tk.Frame(root)

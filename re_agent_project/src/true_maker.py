@@ -14,7 +14,7 @@ from typing import Dict, Any, Optional, Tuple
 from collections import defaultdict
 from langchain_ollama import ChatOllama
 from langchain_core.messages import SystemMessage, HumanMessage
-from re_agent_project.src.agent_lightning_bridge import AgentLightningClient, LightningLLMWrapper
+from src.agent_lightning_bridge import AgentLightningClient, LightningLLMWrapper
 
 
 class MakerConfig:
@@ -198,7 +198,12 @@ class SequentialVoting:
         config: MakerConfig,
         red_flag_guard: RedFlagGuard
     ):
-        self.llm = llm
+        # Initialize Lightning Client
+        self.lightning = AgentLightningClient()
+        
+        # Wrap the LLM
+        self.llm = LightningLLMWrapper(llm, self.lightning)
+        
         self.config = config
         self.guard = red_flag_guard
         self.max_samples = 100  # Safety limit
@@ -348,29 +353,31 @@ class SequentialVoting:
             
             # CALCULATE REWARD
             reward = 0.0
-            meta = {}
             
             if not is_valid:
                 reward = -0.5  # Penalty for red flags (invalid JSON, too long, hallucinations)
-                meta["failure"] = reason
-            else:
-                reward = 0.1   # Small reward for valid syntax
-            
-            # LOG TRACE
-            if hasattr(self, 'lightning_client'):
-                # Ensure we read from the actual wrapper used (handling bind() creating new instances)
-                wrapper_source = llm_to_use if hasattr(llm_to_use, 'latest_prompt') else self.llm
                 
-                self.lightning_client.log_trace(
-                    state=wrapper_source.latest_prompt,
-                    action=wrapper_source.latest_response,
+                # Log Failure Trace
+                self.lightning.log_transition(
+                    state=prompt,
+                    action=response_text,
                     reward=reward,
-                    next_state="voting_pool",
-                    metadata=meta
+                    next_state="TERMINAL_FAILURE",
+                    metadata={"reason": reason}
                 )
-
-            if not is_valid:
                 return {}, False, reason
+            
+            # If valid:
+            reward = 0.1   # Small reward for valid syntax
+            
+            # Log Success Trace
+            self.lightning.log_transition(
+                state=prompt,
+                action=response_text,
+                reward=reward,
+                next_state="VOTING_POOL",
+                metadata={"parsed": parsed_data}
+            )
             
             return clean_renames, True, "valid"
             

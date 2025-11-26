@@ -6,7 +6,7 @@ import os
 import json
 import concurrent.futures
 import threading
-from typing import List, Dict
+from typing import List, Dict, Optional
 from src.librarian import Librarian
 from src.refactory_state import ModuleGroup
 from src.refactory_agents import (
@@ -40,7 +40,7 @@ class RefactoryPipeline:
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
     
-    def run(self, ghidra_export_path: str, max_workers: int = 8):
+    def run(self, ghidra_export_path: str, max_workers: int = 8, stop_event: Optional[threading.Event] = None, pause_event: Optional[threading.Event] = None):
         """Run the full pipeline."""
         print("=" * 60)
         print("REFACTORY PIPELINE v2.0: Full Auto Reverse Engineering")
@@ -64,13 +64,18 @@ class RefactoryPipeline:
         with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
             # Submit all tasks
             future_to_module = {
-                executor.submit(self.process_module, module): module
+                executor.submit(self.process_module, module, stop_event, pause_event): module
                 for module in modules
             }
             
             # Process results as they complete
             completed_count = 0
             for future in concurrent.futures.as_completed(future_to_module):
+                if stop_event and stop_event.is_set():
+                    print("[-] Pipeline stopped by user.")
+                    executor.shutdown(wait=False, cancel_futures=True)
+                    break
+
                 module = future_to_module[future]
                 completed_count += 1
                 
@@ -85,27 +90,32 @@ class RefactoryPipeline:
                 except Exception as exc:
                     print(f"[ERROR] Module {module['module_name']} generated an exception: {exc}")
         
+        if stop_event and stop_event.is_set():
+            return
+
         # Write all files
         self.write_output(all_source_files, all_header_files)
 
-        # [Stage 5] The Judge
-        print(f"\n[Stage 5] The Judge: Verifying correctness...")
-        judge = CompilerJudge(
-            project_dir=self.output_dir,
-            lightning_client=self.lightning_client
-        )
-        final_score = judge.assess_build()
-        print(f"Final Architecture Score: {final_score}")
+        # --- NEW STAGE 5: THE JUDGE ---
+        print(f"\n[Stage 5] The Judge: Evaluating Final Architecture...")
+        judge = CompilerJudge(self.output_dir)
+        final_score = judge.evaluate()
         
         print("\n" + "=" * 60)
-        print("PIPELINE COMPLETE")
+        print(f"PIPELINE COMPLETE (Final Score: {final_score})")
         print(f"Generated {len(all_source_files)} source files")
         print(f"Output directory: {self.output_dir}")
         print("=" * 60)
     
-    def process_module(self, module: ModuleGroup) -> Dict:
+    def process_module(self, module: ModuleGroup, stop_event: Optional[threading.Event] = None, pause_event: Optional[threading.Event] = None) -> Dict:
         """Process a single module through all stages."""
         
+        if stop_event and stop_event.is_set():
+            return {}
+
+        if pause_event:
+            pause_event.wait()
+
         # Stage 0.5: Inspector (Secrets Detection)
         module_code = "\n".join([f.get("code", "") for f in module["functions"]])
         findings = inspect_module(module_code)
@@ -135,21 +145,33 @@ class RefactoryPipeline:
             "attempts": 0
         }
         
+        if stop_event and stop_event.is_set(): return {}
+        if pause_event: pause_event.wait()
+
         # Stage 1: Type Recovery
         print(f"\n[Stage 1] Type Smith: Recovering types...")
         state = self._run_stage(state, type_recovery_agent, type_recovery_validator, "type_recovery")
         print(f"  Recovered {len(state['confirmed_types'])} types")
         
+        if stop_event and stop_event.is_set(): return {}
+        if pause_event: pause_event.wait()
+
         # Stage 2: Variable Renaming (using True MAKER)
         print(f"\n[Stage 2] The Renamer: Renaming variables...")
         state = self._run_renaming_stage(state)
         print(f"  Renamed {len(state['confirmed_renames'])} variables")
         
+        if stop_event and stop_event.is_set(): return {}
+        if pause_event: pause_event.wait()
+
         # Stage 3: Code Refactoring
         print(f"\n[Stage 3] The Architect: Refactoring code...")
         state = self._run_stage(state, refactoring_agent, refactoring_validator, "refactoring")
         print(f"  Refactored {len(state['confirmed_refactorings'])} functions")
         
+        if stop_event and stop_event.is_set(): return {}
+        if pause_event: pause_event.wait()
+
         # Stage 4: Source Code Generation
         print(f"\n[Stage 4] The Writer: Generating source files...")
         state.update(source_code_generator(state))
