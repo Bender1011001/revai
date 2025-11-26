@@ -93,6 +93,48 @@ class MakerConfig:
         # Ensure k is at least 2 (need majority)
         return max(2, k_min)
 
+    def calibrate(self, sample_data: list):
+        """
+        Calibrate the estimated error rate based on sample data.
+        Updates self.estimated_error_rate and recalculates k.
+        
+        Args:
+            sample_data: List of sample dictionaries
+            
+        Returns:
+            (p, is_feasible) tuple
+        """
+        from .calibration import measure_model_difficulty
+        
+        # Default system prompt for calibration if not provided
+        system_prompt = """You are an expert Reverse Engineer.
+Your goal is to rename variables in the provided decompiled code to make it more readable.
+Output ONLY a JSON object mapping old variable names to new, descriptive names.
+Do not include any explanation or markdown formatting."""
+        
+        p, is_feasible = measure_model_difficulty(
+            self.model,
+            sample_data,
+            system_prompt,
+            temperature=self.temperature
+        )
+        
+        # Update estimated error rate (1 - p)
+        # Clamp to safe range [0.01, 0.49]
+        new_error_rate = 1.0 - p
+        if new_error_rate < 0.01:
+            new_error_rate = 0.01
+        elif new_error_rate > 0.49:
+            new_error_rate = 0.49
+            
+        self.estimated_error_rate = new_error_rate
+        
+        # Recalculate k if not overridden
+        if self.k_override is None:
+            self.k = self._calculate_k_min()
+            
+        return p, is_feasible
+
 
 class RedFlagGuard:
     """

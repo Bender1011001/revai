@@ -8,6 +8,7 @@ import sys
 
 # Import main pipeline wrapper
 from re_agent_project.src.main import main_pipeline_wrapper
+from re_agent_project.src.calibration import measure_model_difficulty
 
 CONFIG_FILE = "config.json"
 
@@ -57,6 +58,54 @@ def select_ghidra():
         config["ghidra_path"] = ghidra_root
         save_config(config)
         messagebox.showinfo("Config Saved", f"Ghidra path set to:\n{ghidra_root}")
+
+def check_feasibility():
+    # 1. Select dataset
+    file_path = filedialog.askopenfilename(
+        title="Select dataset_dirty.json",
+        filetypes=[("JSON Files", "*.json"), ("All Files", "*.*")]
+    )
+    if not file_path:
+        return
+
+    def run_calibration():
+        try:
+            print(f"--- Feasibility Check Started ---")
+            print(f"Loading: {file_path}")
+            
+            with open(file_path, 'r') as f:
+                data = json.load(f)
+            
+            # Select samples
+            import random
+            samples = random.sample(data, min(len(data), 5))
+            print(f"Selected {len(samples)} samples for calibration.")
+            
+            # Default system prompt
+            system_prompt = """You are an expert Reverse Engineer.
+Your goal is to rename variables in the provided decompiled code to make it more readable.
+Output ONLY a JSON object mapping old variable names to new, descriptive names.
+Do not include any explanation or markdown formatting."""
+
+            model_name = "qwen2.5-coder:3b" # Default
+            
+            p, feasible = measure_model_difficulty(model_name, samples, system_prompt)
+            
+            print(f"\nResults:")
+            print(f"Success Rate (p): {p:.2f}")
+            print(f"Feasible: {feasible}")
+            
+            if not feasible:
+                print("Warning: Task too difficult for this model (p <= 0.5).")
+            else:
+                print("Success: Model is capable of this task.")
+                
+            print("---------------------------------")
+            
+        except Exception as e:
+            print(f"\n[ERROR] Calibration failed: {str(e)}")
+
+    threading.Thread(target=run_calibration, daemon=True).start()
 
 def run_analysis(file_path, user_goal, output_dir):
     config = load_config()
@@ -121,6 +170,9 @@ frame_top.pack(fill=tk.X, padx=10, pady=5)
 
 btn_config = tk.Button(frame_top, text="Configure Ghidra Path", command=select_ghidra)
 btn_config.pack(side=tk.LEFT)
+
+btn_feasibility = tk.Button(frame_top, text="Check Feasibility", command=check_feasibility)
+btn_feasibility.pack(side=tk.LEFT, padx=5)
 
 # Middle Frame for User Goal
 frame_mid = tk.Frame(root)
