@@ -31,6 +31,7 @@ def true_maker_rename(state: AgentState, agent=None) -> dict:
     Use True MAKER framework for variable renaming.
 
     This implements the full MAKER algorithm:
+    - Maximal Agentic Decomposition (MAD): One agent per variable
     - Sequential voting (Algorithm 2)
     - Red-flagging (Algorithm 3)
     - Dynamic k calculation (Equation 14)
@@ -39,6 +40,12 @@ def true_maker_rename(state: AgentState, agent=None) -> dict:
 
     Returns updated state with final_renames.
     """
+    vars_to_rename = state["existing_variables"]
+    total_steps = len(vars_to_rename)
+    
+    if total_steps == 0:
+        return {"final_renames": {}}
+
     # Create a new agent instance locally for thread safety if not provided
     if agent is None:
         agent, config = create_maker_agent(
@@ -46,7 +53,8 @@ def true_maker_rename(state: AgentState, agent=None) -> dict:
             estimated_error_rate=DEFAULT_ERROR_RATE,
             max_output_tokens=DEFAULT_MAX_TOKENS,
             model="qwen2.5-coder:7b",
-            temperature=0.3
+            temperature=0.3,
+            total_steps=total_steps  # Pass total steps for correct k calculation
         )
     else:
         config = agent.config
@@ -56,24 +64,51 @@ def true_maker_rename(state: AgentState, agent=None) -> dict:
         keep_size = 6000
         code = code[:keep_size] + "\n...[TRUNCATED]...\n" + code[-keep_size:]
 
-    vars_list = ", ".join(state["existing_variables"])
-    prompt = f"Function: {state['function_name']}\nVariables: {vars_list}\n\nCode:\n{code}"
+    print(f"  [MAKER] Processing {state['function_name']} with {total_steps} variables (k={config.k})")
+    
+    final_renames = {}
+    total_samples_all = 0
+    
+    # Maximal Decomposition: Iterate through each variable
+    for i, var_name in enumerate(vars_to_rename):
+        # Focused prompt for single variable
+        prompt = (
+            f"Function: {state['function_name']}\n"
+            f"Code:\n{code}\n\n"
+            f"Task: Rename ONLY the variable '{var_name}'.\n"
+            f"If it needs renaming, return: {{\" {var_name} \": \"new_name\"}}\n"
+            f"If it should stay as is, return: {{\" {var_name} \": \"{var_name}\"}}\n"
+            f"Do not rename any other variables."
+        )
 
-    # Run True MAKER voting
-    renames, total_samples, valid_samples = agent.do_voting(
-        prompt=prompt,
-        system_prompt=SYSTEM_PROMPT,
-        existing_variables=state["existing_variables"],
-        callback=state.get("consensus_callback")
-    )
+        # Run True MAKER voting for this single step
+        renames, total_samples, valid_samples = agent.do_voting(
+            prompt=prompt,
+            system_prompt=SYSTEM_PROMPT,
+            existing_variables=state["existing_variables"],
+            required_keys=[var_name],  # Enforce that this variable is in output
+            callback=state.get("consensus_callback")
+        )
+        
+        total_samples_all += total_samples
+        
+        if renames and var_name in renames:
+            new_name = renames[var_name]
+            if new_name != var_name:
+                final_renames[var_name] = new_name
+                print(f"    [{i+1}/{total_steps}] {var_name} -> {new_name} (k={config.k})")
+            else:
+                print(f"    [{i+1}/{total_steps}] {var_name} -> (unchanged)")
+        else:
+            print(f"    [{i+1}/{total_steps}] {var_name} -> (failed to converge)")
 
-    print(f"  [MAKER] {state['function_name']}: {total_samples} samples ({valid_samples} valid), k={config.k}")
+    print(f"  [MAKER] Completed {state['function_name']}: {total_samples_all} total samples")
 
-    if renames:
-        print(f"    ✓ Consensus: {len(renames)} variables renamed")
-        return {"final_renames": renames}
+    if final_renames:
+        print(f"    ✓ Consensus: {len(final_renames)} variables renamed")
+        return {"final_renames": final_renames}
     else:
-        print(f"    ✗ No consensus reached")
+        print(f"    ✗ No renames generated")
         return {"final_renames": None}
 
 

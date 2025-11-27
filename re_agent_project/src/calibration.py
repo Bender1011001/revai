@@ -1,6 +1,7 @@
 import random
 import statistics
 import threading
+import os
 from typing import List, Optional
 from .refactory_state import ModuleGroup
 from .true_maker import RedFlagGuard
@@ -20,7 +21,12 @@ def measure_model_difficulty(
         p_score: Estimated success rate (0.0 to 1.0)
         is_feasible: Boolean (is p > 0.5?)
     """
-    llm = ChatOllama(model=model_name, temperature=temperature, format="json")
+    llm = ChatOllama(
+        model=model_name,
+        temperature=temperature,
+        format="json",
+        base_url=os.environ.get("OLLAMA_HOST", "http://localhost:11434")
+    )
     guard = RedFlagGuard(max_output_tokens=1000)
     
     success_count = 0

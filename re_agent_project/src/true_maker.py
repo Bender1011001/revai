@@ -30,7 +30,8 @@ class MakerConfig:
         target_reliability: float = 0.95,
         estimated_error_rate: float = 0.01,
         max_output_tokens: int = 1000,
-        k_override: Optional[int] = None
+        k_override: Optional[int] = None,
+        total_steps: int = 1
     ):
         """
         Args:
@@ -40,10 +41,12 @@ class MakerConfig:
             estimated_error_rate: Estimated per-step error rate (0 < p < 0.5)
             max_output_tokens: Maximum allowed output length (red flag threshold)
             k_override: If set, override calculated k value
+            total_steps: Total number of steps (s) in the task
         """
         self.model = model
         self.temperature = temperature
         self.target_reliability = target_reliability
+        self.total_steps = max(1, total_steps)
         
         # Clamp estimated_error_rate to ensure p (1 - error_rate) is in safe range [0.51, 0.99]
         # This prevents ZeroDivisionError (p=0.5) and log(0) (p=1.0) in k calculation
@@ -59,9 +62,6 @@ class MakerConfig:
         
         # Calculate k based on Equation 14
         # k_min = ln(t^(-1/s) - 1) / ln((1-p)/p)
-        # For simplicity, we use a conservative approximation
-        # k ≈ ln(1/epsilon) / ln(p/(1-p))
-        # where epsilon = 1 - target_reliability
         if k_override is not None:
             self.k = k_override
         else:
@@ -70,10 +70,13 @@ class MakerConfig:
     def _calculate_k_min(self) -> int:
         """
         Calculate minimum k for desired reliability.
-        Based on Equation 14 from paper (simplified).
+        Based on Equation 14 from paper:
+        k_min = ln(t^(-m/s) - 1) / ln((1-p)/p)
+        Assuming m=1 (Maximal Decomposition)
         """
         p = 1 - self.estimated_error_rate  # Success rate
-        epsilon = 1 - self.target_reliability
+        t = self.target_reliability
+        s = self.total_steps
         
         if p <= 0.5:
             # Model is too unreliable for voting to work
@@ -81,12 +84,26 @@ class MakerConfig:
                 f"Model success rate ({p:.3f}) must be > 0.5 for voting to converge"
             )
         
-        # Simplified k calculation
-        # k ≈ -ln(epsilon) / ln(p/(1-p))
         try:
-            # Use p/(1-p) (odds of success) to ensure positive denominator for p > 0.5
-            k_min = math.ceil(-math.log(epsilon) / math.log(p / (1 - p)))
-        except (ValueError, ZeroDivisionError):
+            # Calculate term: t^(-1/s) - 1
+            # Note: t < 1, so t^(-1/s) > 1, so term > 0
+            term1 = math.pow(t, -1.0/s) - 1
+            
+            if term1 <= 0:
+                # Should not happen for t < 1, but safety check
+                return 3
+                
+            # Calculate term: (1-p)/p
+            # Note: p > 0.5, so (1-p)/p < 1, so ln(term2) < 0
+            term2 = (1 - p) / p
+            
+            numerator = math.log(term1)
+            denominator = math.log(term2)
+            
+            # Both numerator and denominator are negative, result is positive
+            k_min = math.ceil(numerator / denominator)
+            
+        except (ValueError, ZeroDivisionError, OverflowError):
             # Fallback to conservative estimate
             k_min = 3
         
@@ -144,18 +161,20 @@ class RedFlagGuard:
     
     def __init__(
         self,
-        max_output_tokens: int = 1000,
-        required_keys: Optional[list] = None
+        max_output_tokens: int = 1000
     ):
         """
         Args:
             max_output_tokens: Maximum allowed output length
-            required_keys: Required keys in JSON output
         """
         self.max_output_tokens = max_output_tokens
-        self.required_keys = required_keys or []
     
-    def check_red_flags(self, response: str, parsed_data: Optional[Dict] = None) -> Tuple[bool, str]:
+    def check_red_flags(
+        self,
+        response: str,
+        parsed_data: Optional[Dict] = None,
+        required_keys: Optional[list] = None
+    ) -> Tuple[bool, str]:
         """
         Check if response has red flags.
         
@@ -173,8 +192,8 @@ class RedFlagGuard:
             return False, "invalid_json_format"
         
         # Red Flag 3: Missing required keys
-        if self.required_keys:
-            missing_keys = [k for k in self.required_keys if k not in parsed_data]
+        if required_keys:
+            missing_keys = [k for k in required_keys if k not in parsed_data]
             if missing_keys:
                 return False, f"missing_keys: {missing_keys}"
         
@@ -196,10 +215,11 @@ class SequentialVoting:
         self,
         llm: ChatOllama,
         config: MakerConfig,
-        red_flag_guard: RedFlagGuard
+        red_flag_guard: RedFlagGuard,
+        lightning_client: Optional[AgentLightningClient] = None
     ):
         # Initialize Lightning Client
-        self.lightning = AgentLightningClient()
+        self.lightning = lightning_client if lightning_client else AgentLightningClient()
         
         # Wrap the LLM
         self.llm = LightningLLMWrapper(llm, self.lightning)
@@ -213,6 +233,7 @@ class SequentialVoting:
         prompt: str,
         system_prompt: str,
         existing_variables: list,
+        required_keys: Optional[list] = None,
         callback: Optional[callable] = None
     ) -> Tuple[Optional[Dict[str, str]], int, int]:
         """
@@ -222,6 +243,7 @@ class SequentialVoting:
             prompt: User prompt
             system_prompt: System prompt
             existing_variables: List of valid variable names (for hallucination check)
+            required_keys: Optional list of keys that must be present in output
             callback: Optional callback for real-time updates
         
         Returns:
@@ -239,7 +261,11 @@ class SequentialVoting:
 
             # Algorithm 3: get_vote with red-flagging
             vote, is_valid, reason = self._get_vote(
-                prompt, system_prompt, existing_variables, temperature_override=current_temp
+                prompt,
+                system_prompt,
+                existing_variables,
+                required_keys=required_keys,
+                temperature_override=current_temp
             )
             
             sample_count += 1
@@ -292,6 +318,7 @@ class SequentialVoting:
         prompt: str,
         system_prompt: str,
         existing_variables: list,
+        required_keys: Optional[list] = None,
         temperature_override: Optional[float] = None
     ) -> Tuple[Dict[str, str], bool, str]:
         """
@@ -341,7 +368,7 @@ class SequentialVoting:
             
             # 2. Red Flag Check (if valid so far)
             if is_valid:
-                is_valid, reason = self.guard.check_red_flags(response_text, parsed_data)
+                is_valid, reason = self.guard.check_red_flags(response_text, parsed_data, required_keys)
             
             # 3. Hallucination Check (if valid so far)
             if is_valid and isinstance(parsed_data, dict):
@@ -399,7 +426,9 @@ def create_maker_agent(
     estimated_error_rate: float = 0.01,
     max_output_tokens: int = 1000,
     model: str = "qwen2.5-coder:3b",
-    temperature: float = 0.3
+    temperature: float = 0.3,
+    total_steps: int = 1,
+    client: Optional[AgentLightningClient] = None
 ) -> Tuple[SequentialVoting, MakerConfig]:
     """
     Factory function to create a True MAKER agent.
@@ -413,7 +442,8 @@ def create_maker_agent(
         temperature=temperature,
         target_reliability=target_reliability,
         estimated_error_rate=estimated_error_rate,
-        max_output_tokens=max_output_tokens
+        max_output_tokens=max_output_tokens,
+        total_steps=total_steps
     )
     
     # Create LLM
@@ -425,17 +455,18 @@ def create_maker_agent(
     )
 
     # Wrap LLM with Lightning
-    client = AgentLightningClient(agent_name="TrueMaker_Renamer")
+    if client is None:
+        client = AgentLightningClient(agent_name="TrueMaker_Renamer")
+        
     wrapped_llm = LightningLLMWrapper(base_llm, client)
     
     # Create red flag guard
     guard = RedFlagGuard(
-        max_output_tokens=config.max_output_tokens,
-        required_keys=[]  # Will be set per task
+        max_output_tokens=config.max_output_tokens
     )
     
     # Create voting agent
-    voting_agent = SequentialVoting(wrapped_llm, config, guard)
+    voting_agent = SequentialVoting(wrapped_llm, config, guard, lightning_client=client)
     voting_agent.lightning_client = client  # Attach client for reward logging
     
     print(f"[MAKER] Initialized with k={config.k} (reliability={target_reliability}, error_rate={estimated_error_rate})")
