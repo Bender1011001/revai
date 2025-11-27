@@ -60,7 +60,11 @@ def run_ghidra_export(ghidra_path: str, apk_path: str, project_dir: str, script_
     while True:
         if stop_event and stop_event.is_set():
             print("[-] Ghidra analysis stopped by user.")
-            process.terminate()
+            if os.name == 'nt':
+                # Windows: Kill process tree
+                subprocess.run(["taskkill", "/F", "/T", "/PID", str(process.pid)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            else:
+                process.terminate()
             break
 
         line = process.stdout.readline()

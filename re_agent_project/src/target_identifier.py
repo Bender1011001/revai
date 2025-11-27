@@ -1,4 +1,5 @@
 import json
+import os
 from langchain_ollama import ChatOllama
 from langchain_core.messages import SystemMessage, HumanMessage
 
@@ -7,7 +8,7 @@ llm = ChatOllama(
     model="qwen2.5-coder:7b",
     temperature=0.3,
     format="json",
-    base_url="http://localhost:11434"
+    base_url=os.environ.get("OLLAMA_HOST", "http://localhost:11434")
 )
 
 PROMPT = """You are a reverse engineering strategist.

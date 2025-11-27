@@ -49,6 +49,26 @@ def save_config(config):
     with open(CONFIG_FILE, 'w') as f:
         json.dump(config, f, indent=4)
 
+def set_environment_config(config):
+    """Set environment variables from config for downstream agents."""
+    ENV_MAP = {
+        "ollama_url": "OLLAMA_HOST",
+        "ollama_model": "OLLAMA_MODEL",
+        "openai_api_key": "OPENAI_API_KEY",
+        "openai_model": "OPENAI_MODEL",
+        "anthropic_api_key": "ANTHROPIC_API_KEY",
+        "anthropic_model": "ANTHROPIC_MODEL",
+        "groq_api_key": "GROQ_API_KEY",
+        "groq_model": "GROQ_MODEL",
+        "lightning_url": "LIGHTNING_URL",
+        "lightning_token": "LIGHTNING_TOKEN",
+    }
+    
+    for config_key, env_key in ENV_MAP.items():
+        if config_key in config and config[config_key]:
+            os.environ[env_key] = str(config[config_key])
+            print(f"[Config] Set {env_key} from config.")
+
 def select_ghidra():
     path = filedialog.askopenfilename(
         title="Select analyzeHeadless Executable",
@@ -130,6 +150,9 @@ def run_analysis(file_path, user_goal, output_dir):
         print("Error: Ghidra path not configured.\n")
         update_control_buttons(running=False)
         return
+    
+    # Set environment variables for downstream agents
+    set_environment_config(config)
 
     print(f"--- Analysis Started ---")
     print(f"Target: {file_path}")

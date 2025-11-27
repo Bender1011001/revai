@@ -157,7 +157,10 @@ class Librarian:
         for func in functions:
             for var_type in func.get("var_types", {}).values():
                 # Filter out primitive types
-                if var_type not in ["int", "char", "void", "long", "short", "float", "double", "byte"]:
+                if var_type not in ["int", "char", "void", "long", "short", "float", "double", "byte",
+                                    "bool", "size_t", "uint8_t", "int8_t", "uint16_t", "int16_t",
+                                    "uint32_t", "int32_t", "uint64_t", "int64_t",
+                                    "unsigned int", "unsigned long", "unsigned char"]:
                     type_usage[var_type] += 1
         
         # Return types used by at least 2 functions

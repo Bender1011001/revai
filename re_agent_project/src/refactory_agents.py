@@ -150,130 +150,51 @@ def _safe_replace(code, target, replacement, context_next=None):
     """
     Safely replace target identifier with replacement, ignoring strings and comments.
     If context_next is provided, only replaces target if followed by context_next.
-    Handles C-style pointer syntax by skipping '*' and whitespace when checking context_next.
-    If replacement ends with '*' and the original has a pointer, avoids double pointers.
+    Handles C-style pointer syntax by consuming '*' and whitespace between type and var.
     """
     # Regex patterns for C/C++ syntax
     pat_comment_multi = r'/\*[\s\S]*?\*/'
     pat_comment_single = r'//.*'
     pat_string = r'"(?:\\.|[^"\\])*"'
     pat_char = r"'(?:\\.|[^'\\])*'"
-    pat_id = r'\b[a-zA-Z_][a-zA-Z0-9_]*\b'
     
-    # Combined regex
-    regex = re.compile(
-        f'(?P<COMMENT_MULTI>{pat_comment_multi})|'
-        f'(?P<COMMENT_SINGLE>{pat_comment_single})|'
-        f'(?P<STRING>{pat_string})|'
-        f'(?P<CHAR>{pat_char})|'
-        f'(?P<ID>{pat_id})',
-        re.MULTILINE
-    )
+    # Combined pattern to skip
+    pat_skip = f'{pat_comment_multi}|{pat_comment_single}|{pat_string}|{pat_char}'
     
-    tokens = []
-    last_pos = 0
-    for match in regex.finditer(code):
-        if match.start() > last_pos:
-            tokens.append({'type': 'GAP', 'text': code[last_pos:match.start()]})
+    if context_next:
+        # Regex pattern that matches:
+        # Word boundary \b
+        # The old_type (escaped)
+        # Optional whitespace \s*
+        # Zero or more asterisks \*
+        # Optional whitespace \s*
+        # The var_name (escaped)
+        # Word boundary \b
+        pattern_target = (
+            r'\b' + re.escape(target) +
+            r'\s*\**\s*' +
+            re.escape(context_next) +
+            r'\b'
+        )
+        # Replace the entire matched sequence with new_type + " " + var_name
+        replacement_text = f"{replacement} {context_next}"
+    else:
+        # Simple rename
+        pattern_target = r'\b' + re.escape(target) + r'\b'
+        replacement_text = replacement
         
-        if match.group('ID'): token_type = 'ID'
-        elif match.group('STRING'): token_type = 'STRING'
-        elif match.group('COMMENT_SINGLE') or match.group('COMMENT_MULTI'): token_type = 'COMMENT'
-        else: token_type = 'OTHER' # Should be CHAR
-        
-        tokens.append({'type': token_type, 'text': match.group(0)})
-        last_pos = match.end()
+    # Compile regex with named groups
+    # We match SKIP patterns first, then our TARGET pattern
+    regex = re.compile(f'({pat_skip})|(?P<MATCH>{pattern_target})', re.MULTILINE)
     
-    if last_pos < len(code):
-        tokens.append({'type': 'GAP', 'text': code[last_pos:]})
-        
-    output = []
-    i = 0
-    while i < len(tokens):
-        token = tokens[i]
-        if token['type'] == 'ID' and token['text'] == target:
-            should_replace = True
-            if context_next:
-                j = i + 1
-                found = False
-                while j < len(tokens):
-                    t = tokens[j]
-                    if t['type'] == 'GAP':
-                        # Check for '*' in GAP
-                        text = t['text']
-                        stripped = text.strip()
-                        if stripped:
-                            if stripped == '*':
-                                # It's a pointer star, continue searching
-                                pass
-                            elif stripped.startswith('*'):
-                                # Could be '* ' or '**'
-                                pass
-                            else:
-                                # Something else, stop
-                                break
-                    elif t['type'] == 'COMMENT':
-                        pass # Skip comments
-                    elif t['type'] == 'ID':
-                        if t['text'] == context_next:
-                            found = True
-                        break
-                    else: # String, Char, etc.
-                        break
-                    j += 1
-                should_replace = found
-            
-            if should_replace:
-                # Handle pointer replacement to avoid double pointers
-                if replacement.endswith('*'):
-                    # Look ahead for '*'
-                    k = i + 1
-                    star_token_index = -1
-                    
-                    while k < len(tokens):
-                        tk = tokens[k]
-                        if tk['type'] == 'GAP':
-                            if '*' in tk['text']:
-                                star_token_index = k
-                                break
-                            elif tk['text'].strip():
-                                break # Non-whitespace, non-star GAP
-                        elif tk['type'] == 'COMMENT':
-                            pass
-                        elif tk['type'] == 'ID':
-                            break
-                        else:
-                            break
-                        k += 1
-                    
-                    if star_token_index != -1:
-                        # Found a star in GAP at star_token_index
-                        output.append(replacement)
-                        
-                        # Output everything up to star_token_index (exclusive)
-                        curr = i + 1
-                        while curr < star_token_index:
-                            output.append(tokens[curr]['text'])
-                            curr += 1
-                        
-                        # Handle the token with the star
-                        star_token = tokens[star_token_index]
-                        # Remove ONE '*' from the text
-                        new_text = star_token['text'].replace('*', '', 1)
-                        output.append(new_text)
-                        
-                        i = star_token_index # Advance main loop
-                    else:
-                        output.append(replacement)
-                else:
-                    output.append(replacement)
-            else:
-                output.append(token['text'])
+    def replacer(match):
+        if match.group('MATCH'):
+            return replacement_text
         else:
-            output.append(token['text'])
-        i += 1
-        
-    return "".join(output)
+            # Return the skipped content (comment/string) as is
+            return match.group(0)
+            
+    return regex.sub(replacer, code)
 
 def refactoring_agent(state: RefactoryState):
     """
@@ -324,7 +245,7 @@ def refactoring_agent(state: RefactoryState):
             proposals.append({
                 "function_name": func["name"],
                 "original_code": func["code"],
-                "refactored_code": func["code"],  # Fallback to original
+                "refactored_code": "// [WARNING] REFACTORING FAILED. ORIGINAL CODE BELOW:\n" + func["code"],  # Fallback to original with warning
                 "transformations": [],
                 "is_valid": False
             })

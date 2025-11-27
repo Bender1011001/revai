@@ -56,7 +56,7 @@ def run():
 
         # New Generic Filter Logic
         IGNORE_NAMESPACES = [
-            "androidx", "kotlin",                              # Android Standard
+            # Removed "androidx", "kotlin", "android", "java", "google" to allow Android/Java API calls
             "std", "msvcrt", "kernel32", "user32", "ntdll"     # Windows/C++ Standard
         ]
         # Check if any ignored namespace is in the current namespace name (case-insensitive)

@@ -26,7 +26,7 @@ Your Task: Rename generic variables (iVar1, uVar2, param_1) to semantic names ba
 # No global state - agents are instantiated locally per function call
 
 
-def true_maker_rename(state: AgentState) -> dict:
+def true_maker_rename(state: AgentState, agent=None) -> dict:
     """
     Use True MAKER framework for variable renaming.
 
@@ -39,14 +39,17 @@ def true_maker_rename(state: AgentState) -> dict:
 
     Returns updated state with final_renames.
     """
-    # Create a new agent instance locally for thread safety
-    agent, config = create_maker_agent(
-        target_reliability=DEFAULT_TARGET_RELIABILITY,
-        estimated_error_rate=DEFAULT_ERROR_RATE,
-        max_output_tokens=DEFAULT_MAX_TOKENS,
-        model="qwen2.5-coder:7b",
-        temperature=0.3
-    )
+    # Create a new agent instance locally for thread safety if not provided
+    if agent is None:
+        agent, config = create_maker_agent(
+            target_reliability=DEFAULT_TARGET_RELIABILITY,
+            estimated_error_rate=DEFAULT_ERROR_RATE,
+            max_output_tokens=DEFAULT_MAX_TOKENS,
+            model="qwen2.5-coder:7b",
+            temperature=0.3
+        )
+    else:
+        config = agent.config
 
     code = state["original_code"]
     if len(code) > 12000:

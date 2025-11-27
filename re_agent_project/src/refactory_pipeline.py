@@ -14,7 +14,7 @@ from src.refactory_agents import (
     refactoring_agent, refactoring_validator,
     source_code_generator
 )
-from src.maker_nodes import true_maker_rename
+from src.maker_nodes import true_maker_rename, DEFAULT_TARGET_RELIABILITY, DEFAULT_ERROR_RATE, DEFAULT_MAX_TOKENS
 from src.inspector import inspect_module
 from src.agent_lightning_bridge import AgentLightningClient
 from src.compiler_judge import CompilerJudge
@@ -189,6 +189,13 @@ class RefactoryPipeline:
         print(f"\n[Stage 4] The Writer: Generating source files...")
         state.update(source_code_generator(state))
         
+        # Post-processing: Send visualization data if callback is provided
+        if consensus_callback:
+            # Generate visualization data for the processed module
+            # Note: We use the original functions list from the module state for structural visualization.
+            vis_data = self.librarian.get_visualization_data(state["module"]["functions"])
+            consensus_callback(vis_data)
+            
         return {
             "source": state["final_source_files"],
             "headers": state["final_header_files"]
@@ -222,6 +229,16 @@ class RefactoryPipeline:
         module = state["module"]
         all_renames = {}
         
+        # Create a shared agent instance for the entire module to prevent log explosion
+        from src.true_maker import create_maker_agent
+        agent, _ = create_maker_agent(
+            target_reliability=DEFAULT_TARGET_RELIABILITY,
+            estimated_error_rate=DEFAULT_ERROR_RATE,
+            max_output_tokens=DEFAULT_MAX_TOKENS,
+            model="qwen2.5-coder:7b",
+            temperature=0.3
+        )
+
         for func in module["functions"]:
             # Create a mini-state for this function
             func_state = {
@@ -235,8 +252,8 @@ class RefactoryPipeline:
                 "consensus_callback": consensus_callback
             }
             
-            # Run True MAKER
-            result = true_maker_rename(func_state)
+            # Run True MAKER with shared agent
+            result = true_maker_rename(func_state, agent=agent)
             
             if result.get("final_renames"):
                 all_renames.update(result["final_renames"])

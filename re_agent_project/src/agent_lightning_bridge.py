@@ -2,6 +2,7 @@ import json
 import time
 import uuid
 import os
+import threading
 from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
 from langchain_core.language_models import BaseChatModel
@@ -29,21 +30,23 @@ class AgentLightningClient:
         self.current_trace_id = str(uuid.uuid4())
         self.step_counter = 0
         self.traces = []
+        self.lock = threading.Lock()
 
     def log_transition(self, state: str, action: str, reward: float, next_state: str, metadata: Dict = None):
         """Log a State-Action-Reward-State (SARS) tuple."""
-        self.step_counter += 1
-        trace = Trace(
-            trace_id=self.current_trace_id,
-            step_id=self.step_counter,
-            state=state,
-            action=action,
-            reward=reward,
-            next_state=next_state,
-            metadata=metadata or {}
-        )
-        self.traces.append(trace)
-        self._flush_to_disk()
+        with self.lock:
+            self.step_counter += 1
+            trace = Trace(
+                trace_id=self.current_trace_id,
+                step_id=self.step_counter,
+                state=state,
+                action=action,
+                reward=reward,
+                next_state=next_state,
+                metadata=metadata or {}
+            )
+            self.traces.append(trace)
+            self._flush_to_disk()
 
     def _flush_to_disk(self):
         filename = os.path.join(self.log_dir, f"trace_{self.current_trace_id}.jsonl")

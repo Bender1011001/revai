@@ -90,12 +90,16 @@ def create_dashboard():
                 with ui.card().classes('h-full bg-black border border-green-900 rounded-none p-0 flex flex-col'):
                     with ui.row().classes('w-full bg-green-900/20 p-2 border-b border-green-900'):
                         ui.icon('inventory_2', color='green').classes('mr-2')
-                        ui.label('LIVE LOOT').classes('text-sm font-bold text-green-400')
+                        ui.label('LIVE LOOT & LOGS').classes('text-sm font-bold text-green-400')
                     
-                    # Scrollable Container for Findings
-                    loot_container = ui.scroll_area().classes('w-full h-full p-2 bg-black text-xs font-mono')
-                    with loot_container:
-                        ui.label('> SYSTEM INITIALIZED').classes('text-green-700 mb-1')
+                    with ui.column().classes('w-full h-full gap-0'):
+                        # Scrollable Container for Findings
+                        loot_container = ui.scroll_area().classes('w-full h-1/2 p-2 border-b border-green-900 bg-black text-xs font-mono')
+                        with loot_container:
+                            ui.label('> SYSTEM INITIALIZED').classes('text-green-700 mb-1')
+                        
+                        # Log Container
+                        log_container = ui.log().classes('w-full h-1/2 p-2 bg-black text-xs font-mono text-gray-500')
 
             # 3. Diff Viewer (Bottom Row)
             with ui.card().classes('w-full h-1/2 bg-black border border-green-900 rounded-none p-0 flex flex-col'):
@@ -134,9 +138,7 @@ def create_dashboard():
         while not log_queue.empty():
             try:
                 log_msg = log_queue.get_nowait()
-                with loot_container:
-                    ui.label(f"> {log_msg}").classes('text-gray-500 text-xs font-mono')
-                loot_container.scroll_to(percent=1.0)
+                log_container.push(f"> {log_msg}")
             except queue.Empty:
                 break
 
