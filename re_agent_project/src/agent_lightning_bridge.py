@@ -71,7 +71,8 @@ class LightningLLMWrapper:
     to log actions for Agent Lightning.
     """
     def __init__(self, llm: BaseChatModel, client: AgentLightningClient):
-        self.llm = llm
+        self._llm = llm  # Store as _llm for test compatibility
+        self.llm = llm   # Keep for backward compatibility
         self.client = client
 
     def invoke(self, input: List[BaseMessage], **kwargs):
@@ -80,7 +81,7 @@ class LightningLLMWrapper:
         
         # Execute Action (LLM Generation)
         start_time = time.time()
-        response = self.llm.invoke(input, **kwargs)
+        response = self._llm.invoke(input, **kwargs)
         duration = time.time() - start_time
         
         # We log the "Action" here. The "Reward" usually comes later
@@ -92,4 +93,4 @@ class LightningLLMWrapper:
         
     def bind(self, **kwargs):
         # Pass through bind calls (e.g. for temperature)
-        return LightningLLMWrapper(self.llm.bind(**kwargs), self.client)
+        return LightningLLMWrapper(self._llm.bind(**kwargs), self.client)

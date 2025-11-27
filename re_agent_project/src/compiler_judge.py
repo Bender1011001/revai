@@ -42,3 +42,6 @@ class CompilerJudge:
         except FileNotFoundError:
             print("[The Judge] Error: 'dotnet' command not found. Is .NET SDK installed?")
             return 0.0
+        except Exception as e:
+            print(f"[The Judge] Unexpected error during build: {e}")
+            return 0.0

@@ -12,12 +12,17 @@ from src.refactory_state import RefactoryState, TypeProposal, RefactoringProposa
 MAX_ATTEMPTS = 3
 VOTE_THRESHOLD = 2
 
-llm = ChatOllama(
-    model="qwen2.5-coder:7b",
-    temperature=0.3,
-    format="json",
-    base_url=os.environ.get("OLLAMA_HOST", "http://localhost:11434")
-)
+# Initialize LLM with error handling for missing environment variables
+try:
+    llm = ChatOllama(
+        model="qwen2.5-coder:7b",
+        temperature=0.3,
+        format="json",
+        base_url=os.environ.get("OLLAMA_HOST", "http://localhost:11434")
+    )
+except Exception as e:
+    print(f"[Refactory Agents] Warning: Failed to initialize ChatOllama: {e}")
+    llm = None
 
 # ==================== STAGE 1: TYPE RECOVERY ====================
 
@@ -70,12 +75,21 @@ def type_recovery_agent(state: RefactoryState):
     
     msg = f"Module: {module['module_name']}\nVariables: {', '.join(all_vars)}\n\nCode:\n{combined_code}"
     
+    if not llm:
+        print("[Type Recovery] Error: LLM not initialized")
+        return {"type_proposals": [], "attempts": 1}
+
     try:
         response = llm.invoke([
             SystemMessage(content=TYPE_RECOVERY_PROMPT),
             HumanMessage(content=msg)
         ])
-        data = json.loads(response.content)
+        
+        try:
+            data = json.loads(response.content)
+        except json.JSONDecodeError:
+            print("[Type Recovery] Error: Invalid JSON response")
+            return {"type_proposals": [], "attempts": 1}
         
         # Support both formats (flat dict or nested with struct_definitions)
         if "variables" in data:
@@ -225,13 +239,28 @@ def refactoring_agent(state: RefactoryState):
         
         msg = f"Function: {func['name']}\n\nCode:\n{code}"
         
+        if not llm:
+            print(f"[Refactoring] Error on {func['name']}: LLM not initialized")
+            proposals.append({
+                "function_name": func["name"],
+                "original_code": func["code"],
+                "refactored_code": "// [WARNING] REFACTORING FAILED (LLM Error). ORIGINAL CODE BELOW:\n" + func["code"],
+                "transformations": [],
+                "is_valid": False
+            })
+            continue
+
         try:
             response = llm.invoke([
                 SystemMessage(content=REFACTORING_PROMPT),
                 HumanMessage(content=msg)
             ])
-            result = json.loads(response.content)
             
+            try:
+                result = json.loads(response.content)
+            except json.JSONDecodeError:
+                raise ValueError("Invalid JSON response from LLM")
+
             proposals.append({
                 "function_name": func["name"],
                 "original_code": func["code"],

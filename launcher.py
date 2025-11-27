@@ -51,8 +51,8 @@ def load_config():
         try:
             with open(CONFIG_FILE, 'r') as f:
                 return json.load(f)
-        except:
-            pass
+        except (FileNotFoundError, json.JSONDecodeError) as e:
+            print(f"[Config] Error loading config: {e}")
     return {"ghidra_path": ""}
 
 def save_config(config):

@@ -60,8 +60,10 @@ def true_maker_rename(state: AgentState, agent=None) -> dict:
         config = agent.config
 
     code = state["original_code"]
-    if len(code) > 12000:
-        keep_size = 6000
+    # Increased limit to avoid cutting off context for larger functions
+    # Modern LLMs can handle larger contexts (e.g. 32k, 128k)
+    if len(code) > 32000:
+        keep_size = 16000
         code = code[:keep_size] + "\n...[TRUNCATED]...\n" + code[-keep_size:]
 
     print(f"  [MAKER] Processing {state['function_name']} with {total_steps} variables (k={config.k})")
@@ -129,6 +131,7 @@ def red_flag_guard(state: AgentState):
     DEPRECATED: Red-flagging is now built into True MAKER.
     This is a no-op for backward compatibility.
     """
+    # Ensure we return a valid state update even if empty
     return {}
 
 
@@ -137,4 +140,5 @@ def voting_consensus(state: AgentState):
     DEPRECATED: Voting is now built into True MAKER.
     This is a no-op for backward compatibility.
     """
+    # Ensure we return a valid state update even if empty
     return {}

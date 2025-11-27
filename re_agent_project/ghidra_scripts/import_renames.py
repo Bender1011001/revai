@@ -53,7 +53,7 @@ def run():
                         found = True
                         break
                     except Exception as e:
-                        print("  [!] Error: " + str(e))
+                        print("  [!] Error updating variable " + old_name + ": " + str(e))
 
 if __name__ == "__main__":
     run()

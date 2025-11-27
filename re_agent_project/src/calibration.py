@@ -2,9 +2,10 @@ import random
 import statistics
 import threading
 import os
+import json
 from typing import List, Optional
-from .refactory_state import ModuleGroup
-from .true_maker import RedFlagGuard
+from src.refactory_state import ModuleGroup
+from src.true_maker import RedFlagGuard
 from langchain_ollama import ChatOllama
 from langchain_core.messages import SystemMessage, HumanMessage
 
@@ -49,17 +50,23 @@ def measure_model_difficulty(
                 HumanMessage(content=prompt)
             ])
             
+            # Parse JSON first
+            try:
+                parsed_data = json.loads(response.content)
+            except json.JSONDecodeError:
+                parsed_data = None
+
             # 1. Check Red Flags (Did it output valid JSON? Is it too long?)
             # If the model is confused/hallucinating, this will fail.
             # This corresponds to 'v' in the paper (Equation 19).
-            is_valid, reason = guard.check_red_flags(response.content, None) # You'd parse JSON first normally
+            is_valid, reason = guard.check_red_flags(response.content, parsed_data)
             
             if is_valid:
                 # 2. Validator Check (Did it produce usable results?)
                 # In reverse engineering, "Correctness" is hard, but "Validity" is checkable.
                 # Example: Did it actually rename variables? Did it assume variables that exist?
                 # You can reuse your 'refactory_agents.py' validators here.
-                if verify_logic_sanity(response.content, sample['variables']):
+                if verify_logic_sanity(response.content, sample.get('variables', [])):
                     success_count += 1
                 else:
                     print(f"    [x] Sample {i} failed logic check")
@@ -84,12 +91,11 @@ def verify_logic_sanity(response_json, existing_vars):
     Checks if the model is hallucinating variables.
     """
     try:
-        import json
         data = json.loads(response_json)
         # Check if keys are actually in the existing variables
         for old_name in data.keys():
             if old_name not in existing_vars:
                 return False # Hallucination = Failure
         return True
-    except:
+    except (json.JSONDecodeError, TypeError):
         return False

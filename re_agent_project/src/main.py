@@ -67,11 +67,15 @@ def run_ghidra_export(ghidra_path: str, apk_path: str, project_dir: str, script_
                 process.terminate()
             break
 
+        # Use a non-blocking read approach or just standard readline which blocks until newline
+        # Since bufsize=1 (line buffered), this should be fine for streaming unless Ghidra hangs without newline
         line = process.stdout.readline()
-        if not line and process.poll() is not None:
-            break
-        if line:
-            print(f"Ghidra: {line.strip()}")
+        if not line:
+            if process.poll() is not None:
+                break
+            continue
+            
+        print(f"Ghidra: {line.strip()}")
 
     if stop_event and stop_event.is_set():
         return
@@ -103,9 +107,10 @@ def main_pipeline_wrapper(target_file: str, ghidra_path: str, user_goal: str, ou
     
     # Clean/Create directories
     # Note: We might NOT want to delete the project if we want to resume, but for now let's keep it clean or handle it in run_ghidra_export
-    if os.path.exists(ghidra_export_dir):
-        shutil.rmtree(ghidra_export_dir)
-    os.makedirs(ghidra_export_dir)
+    if not os.path.exists(ghidra_export_dir):
+        os.makedirs(ghidra_export_dir)
+    # If it exists, we don't delete it to avoid losing data if export fails.
+    # run_ghidra_export will overwrite the specific json file.
     
     # We don't delete ghidra_project_dir here because run_ghidra_export handles the project creation/overwriting via flags
     

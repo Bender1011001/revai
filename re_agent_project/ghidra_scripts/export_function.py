@@ -113,19 +113,19 @@ def run():
                             "name": called_func.getName()
                         })
 
-            if len(code) > 50: 
-                export_data.append({
-                    "address": entry_point,
-                    "name": name,
-                    "code": code,
-                    "variables": vars_list,
-                    "var_types": var_types,
-                    "calls": called_functions,
-                    "param_count": func.getParameterCount(),
-                    "return_type": func.getReturnType().getName() if func.getReturnType() else "void"
-                })
-                count += 1
-                print("Exported: " + name + " (calls " + str(len(called_functions)) + " functions)")
+            # Removed hardcoded length check to include small utility functions
+            export_data.append({
+                "address": entry_point,
+                "name": name,
+                "code": code,
+                "variables": vars_list,
+                "var_types": var_types,
+                "calls": called_functions,
+                "param_count": func.getParameterCount(),
+                "return_type": func.getReturnType().getName() if func.getReturnType() else "void"
+            })
+            count += 1
+            print("Exported: " + name + " (calls " + str(len(called_functions)) + " functions)")
 
     # Save main dataset
     output_file = os.path.join(output_dir, "dataset_dirty.json")

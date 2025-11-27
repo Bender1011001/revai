@@ -121,7 +121,7 @@ class MakerConfig:
         Returns:
             (p, is_feasible) tuple
         """
-        from .calibration import measure_model_difficulty
+        from src.calibration import measure_model_difficulty
         
         # Default system prompt for calibration if not provided
         system_prompt = """You are an expert Reverse Engineer.
@@ -213,7 +213,7 @@ class SequentialVoting:
     
     def __init__(
         self,
-        llm: ChatOllama,
+        llm,  # Can be ChatOllama or LightningLLMWrapper
         config: MakerConfig,
         red_flag_guard: RedFlagGuard,
         lightning_client: Optional[AgentLightningClient] = None
@@ -221,8 +221,11 @@ class SequentialVoting:
         # Initialize Lightning Client
         self.lightning = lightning_client if lightning_client else AgentLightningClient()
         
-        # Wrap the LLM
-        self.llm = LightningLLMWrapper(llm, self.lightning)
+        # Check if LLM is already wrapped, if not wrap it
+        if isinstance(llm, LightningLLMWrapper):
+            self.llm = llm
+        else:
+            self.llm = LightningLLMWrapper(llm, self.lightning)
         
         self.config = config
         self.guard = red_flag_guard
@@ -280,12 +283,21 @@ class SequentialVoting:
             vote_key = json.dumps(vote, sort_keys=True)
             vote_counts[vote_key] += 1
             
-            # Notify dashboard
+            # Notify dashboard if callback provided
             if callback:
-                callback("CONSENSUS_UPDATE", {
-                    "categories": list(vote_counts.keys()),
-                    "values": list(vote_counts.values())
-                })
+                # callback signature varies, handle both formats
+                try:
+                    # Try new format (event, data)
+                    callback("CONSENSUS_UPDATE", {
+                        "categories": list(vote_counts.keys()),
+                        "values": list(vote_counts.values())
+                    })
+                except TypeError:
+                    # Fall back to old format (just data)
+                    callback({
+                        "categories": list(vote_counts.keys()),
+                        "values": list(vote_counts.values())
+                    })
             
             # Check if we have a winner (Algorithm 2 line 6)
             # if V[y] = k + max_{v≠y} V[v]
@@ -418,6 +430,8 @@ class SequentialVoting:
             return clean_renames, True, "valid"
             
         except Exception as e:
+            # Log the exception for debugging purposes
+            print(f"[True MAKER] Error in _get_vote: {e}")
             return {}, False, f"exception: {str(e)}"
 
 

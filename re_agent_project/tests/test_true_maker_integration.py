@@ -71,8 +71,8 @@ class TestTrueMakerIntegration(unittest.TestCase):
         
         # Verify
         self.assertTrue(is_valid)
-        mock_client_instance.log_trace.assert_called_once()
-        call_args = mock_client_instance.log_trace.call_args[1]
+        mock_client_instance.log_transition.assert_called_once()
+        call_args = mock_client_instance.log_transition.call_args[1]
         self.assertEqual(call_args['reward'], 0.1)
         self.assertEqual(call_args['action'], '{"var1": "new_var1"}')
         # State should be captured by wrapper. Since we mocked invoke, we need to check if wrapper captured it.
@@ -105,10 +105,10 @@ class TestTrueMakerIntegration(unittest.TestCase):
         
         # Verify
         self.assertFalse(is_valid)
-        mock_client_instance.log_trace.assert_called_once()
-        call_args = mock_client_instance.log_trace.call_args[1]
+        mock_client_instance.log_transition.assert_called_once()
+        call_args = mock_client_instance.log_transition.call_args[1]
         self.assertEqual(call_args['reward'], -0.5)
-        self.assertEqual(call_args['metadata']['failure'], 'json_parse_error')
+        self.assertEqual(call_args['metadata']['reason'], 'json_parse_error')
 
     @patch('true_maker.ChatOllama')
     @patch('true_maker.AgentLightningClient')
@@ -134,10 +134,10 @@ class TestTrueMakerIntegration(unittest.TestCase):
         
         # Verify
         self.assertFalse(is_valid)
-        mock_client_instance.log_trace.assert_called_once()
-        call_args = mock_client_instance.log_trace.call_args[1]
+        mock_client_instance.log_transition.assert_called_once()
+        call_args = mock_client_instance.log_transition.call_args[1]
         self.assertEqual(call_args['reward'], -0.5)
-        self.assertIn('hallucinated_variable', call_args['metadata']['failure'])
+        self.assertIn('hallucinated_variable', call_args['metadata']['reason'])
 
 if __name__ == '__main__':
     unittest.main()
