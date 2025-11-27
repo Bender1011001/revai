@@ -40,8 +40,14 @@ class RefactoryPipeline:
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
     
-    def run(self, ghidra_export_path: str, max_workers: int = 8, stop_event: Optional[threading.Event] = None, pause_event: Optional[threading.Event] = None):
+    def run(self, ghidra_export_path: str, max_workers: int = None, stop_event: Optional[threading.Event] = None, pause_event: Optional[threading.Event] = None):
         """Run the full pipeline."""
+        # Dynamic worker calculation if not provided
+        if max_workers is None:
+            # Use CPU count * 2 for IO bound tasks, but cap at 16 to avoid resource exhaustion
+            cpu_count = os.cpu_count() or 4
+            max_workers = min(cpu_count * 2, 16)
+
         print("=" * 60)
         print("REFACTORY PIPELINE v2.0: Full Auto Reverse Engineering")
         print(f"Parallel Processing Enabled: {max_workers} workers")

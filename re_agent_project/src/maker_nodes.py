@@ -6,6 +6,8 @@ This module provides backward compatibility while using the proper
 First-to-ahead-by-k voting and red-flagging from the paper.
 """
 import json
+import concurrent.futures
+import os
 from src.refactory_state import RefactoryState as AgentState
 from src.true_maker import create_maker_agent
 
@@ -71,8 +73,12 @@ def true_maker_rename(state: AgentState, agent=None) -> dict:
     final_renames = {}
     total_samples_all = 0
     
-    # Maximal Decomposition: Iterate through each variable
-    for i, var_name in enumerate(vars_to_rename):
+    # Maximal Decomposition: Parallelize variable renaming
+    # Use a thread pool to process variables in parallel
+    # Determine max workers based on CPU count, but cap it to avoid overwhelming Ollama
+    max_workers = min(os.cpu_count() or 4, 8)
+    
+    def process_variable(var_name, index):
         # Focused prompt for single variable
         prompt = (
             f"Function: {state['function_name']}\n"
@@ -92,17 +98,34 @@ def true_maker_rename(state: AgentState, agent=None) -> dict:
             callback=state.get("consensus_callback")
         )
         
-        total_samples_all += total_samples
+        return var_name, renames, total_samples, index
+
+    print(f"  [MAKER] Parallel processing {total_steps} variables with {max_workers} workers...")
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Submit all tasks
+        future_to_var = {
+            executor.submit(process_variable, var_name, i): var_name
+            for i, var_name in enumerate(vars_to_rename)
+        }
         
-        if renames and var_name in renames:
-            new_name = renames[var_name]
-            if new_name != var_name:
-                final_renames[var_name] = new_name
-                print(f"    [{i+1}/{total_steps}] {var_name} -> {new_name} (k={config.k})")
-            else:
-                print(f"    [{i+1}/{total_steps}] {var_name} -> (unchanged)")
-        else:
-            print(f"    [{i+1}/{total_steps}] {var_name} -> (failed to converge)")
+        for future in concurrent.futures.as_completed(future_to_var):
+            var_name = future_to_var[future]
+            try:
+                var_name, renames, total_samples, index = future.result()
+                total_samples_all += total_samples
+                
+                if renames and var_name in renames:
+                    new_name = renames[var_name]
+                    if new_name != var_name:
+                        final_renames[var_name] = new_name
+                        print(f"    [{index+1}/{total_steps}] {var_name} -> {new_name} (k={config.k})")
+                    else:
+                        print(f"    [{index+1}/{total_steps}] {var_name} -> (unchanged)")
+                else:
+                    print(f"    [{index+1}/{total_steps}] {var_name} -> (failed to converge)")
+            except Exception as exc:
+                print(f"    [!] Error processing {var_name}: {exc}")
 
     print(f"  [MAKER] Completed {state['function_name']}: {total_samples_all} total samples")
 
