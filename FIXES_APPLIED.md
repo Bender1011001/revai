@@ -67,6 +67,23 @@ Conducted a comprehensive file-by-file review of the RevAI reverse engineering p
 - Added `httpx` and `tkinterdnd2` to root `requirements.txt`
 - Added `langchain-core` and `requests` to `re_agent_project/requirements.txt`
 
+### 7. **Ghidra Project Directory Creation**
+**File:** `re_agent_project/src/main.py`
+
+**Issue:** Ghidra headless analyzer failed because the project directory did not exist.
+
+**Fix:**
+- Added explicit directory creation for `ghidra_project_dir` before invoking Ghidra.
+
+### 8. **AgentLightningClient Initialization Error**
+**File:** `re_agent_project/src/agent_lightning_bridge.py`
+
+**Issue:** `AgentLightningClient.__init__()` did not accept `agent_name` argument, causing a crash in `refactory_pipeline.py`.
+
+**Fix:**
+- Updated `AgentLightningClient.__init__` to accept `agent_name` parameter.
+- Added `agent_name` to the logged record.
+
 ## Code Quality Improvements
 
 ### Architecture
@@ -153,6 +170,8 @@ All fixes maintain backward compatibility and don't break existing functionality
 - ✅ Test method calls updated
 - ✅ LLM wrapping logic fixed
 - ✅ Dependencies added to requirements
+- ✅ Ghidra project directory creation verified
+- ✅ AgentLightningClient initialization verified
 
 ## Conclusion
 

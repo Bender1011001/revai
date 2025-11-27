@@ -23,8 +23,9 @@ class AgentLightningClient:
     Client for the Agent Lightning RL framework.
     Logs execution traces to a local file (simulating the Lightning Server).
     """
-    def __init__(self, log_dir: str = "lightning_logs"):
+    def __init__(self, log_dir: str = "lightning_logs", agent_name: str = "default_agent"):
         self.log_dir = log_dir
+        self.agent_name = agent_name
         if not os.path.exists(log_dir):
             os.makedirs(log_dir)
         self.current_trace_id = str(uuid.uuid4())
@@ -54,6 +55,7 @@ class AgentLightningClient:
             # Convert dataclass to dict manually or use asdict
             latest = self.traces[-1]
             record = {
+                "agent_name": self.agent_name,
                 "trace_id": latest.trace_id,
                 "step": latest.step_id,
                 "state": latest.state,

@@ -1,0 +1,2360 @@
+[
+  {
+    "return_type": "IconCompat *", 
+    "variables": [
+      "pIVar1", 
+      "p0"
+    ], 
+    "address": "501b9b88", 
+    "code": "\r\n/* Class: Landroid/support/v4/graphics/drawable/IconCompatParcelizer;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n    ACC_FINAL\r\n   \r\n   Superclass: Landroidx/core/graphics/drawable/IconCompatParcelizer;\r\n   Source File: IconCompatParcelizer.java\r\n   \r\n   Method Signature: Landroidx/core/graphics/drawable/IconCompat;(\r\n   Landroidx/versionedparcelable/VersionedParcel;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n    ACC_STATIC\r\n   \r\n   Method Register Size: 1\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f1827\r\n   Method ID Offset: 0xefb10\r\n    */\r\n\r\nIconCompat *\r\nandroid::support::v4::graphics::drawable::IconCompatParcelizer::read(VersionedParcel *p0)\r\n\r\n{\r\n  IconCompat *pIVar1;\r\n  \r\n  pIVar1 = (*IconCompatParcelizer_read)(p0);\r\n  return pIVar1;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "read", 
+    "var_types": {
+      "p0": "VersionedParcel *", 
+      "pIVar1": "IconCompat *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "this"
+    ], 
+    "address": "501b9ba4", 
+    "code": "\r\n/* Class: Landroid/support/v4/graphics/drawable/IconCompatParcelizer;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n    ACC_FINAL\r\n   \r\n   Superclass: Landroidx/core/graphics/drawable/IconCompatParcelizer;\r\n   Source File: IconCompatParcelizer.java\r\n   \r\n   Method Signature: V(  )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n    ACC_CONSTRUCTOR\r\n   \r\n   Method Register Size: 1\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f182c\r\n   Method ID Offset: 0xefb08\r\n    */\r\n\r\nvoid android::support::v4::graphics::drawable::IconCompatParcelizer::IconCompatParcelizer\r\n               (IconCompatParcelizer *this)\r\n\r\n{\r\n  (*this->IconCompatParcelizer)(this);\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "IconCompatParcelizer", 
+    "var_types": {
+      "this": "IconCompatParcelizer *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "p0", 
+      "p1"
+    ], 
+    "address": "501b9bbc", 
+    "code": "\r\n/* Class: Landroid/support/v4/graphics/drawable/IconCompatParcelizer;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n    ACC_FINAL\r\n   \r\n   Superclass: Landroidx/core/graphics/drawable/IconCompatParcelizer;\r\n   Source File: IconCompatParcelizer.java\r\n   \r\n   Method Signature: V( Landroidx/core/graphics/drawable/IconCompat;\r\n    Landroidx/versionedparcelable/VersionedParcel;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n    ACC_STATIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f18c6\r\n   Method ID Offset: 0xefb18\r\n    */\r\n\r\nvoid android::support::v4::graphics::drawable::IconCompatParcelizer::write\r\n               (IconCompat *p0,VersionedParcel *p1)\r\n\r\n{\r\n  (*IconCompatParcelizer_write)(p0,p1);\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "write", 
+    "var_types": {
+      "p0": "IconCompat *", 
+      "p1": "VersionedParcel *"
+    }
+  }, 
+  {
+    "return_type": "ParcelableVolumeInfo *", 
+    "variables": [
+      "local_0", 
+      "Landroid/support/v4/media/session/ParcelableVolumeInfo;", 
+      "this", 
+      "p1"
+    ], 
+    "address": "501bbe94", 
+    "code": "\r\n/* Class: Landroid/support/v4/media/session/ParcelableVolumeInfo$a;\r\n   Class Access Flags:\r\n    ACC_FINAL\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Landroid/os/Parcelable$Creator;\r\n   Source File: ParcelableVolumeInfo.java\r\n   \r\n   Method Signature: Landroid/support/v4/media/session/ParcelableVolumeInfo;( Landroid/os/Parcel;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f1827\r\n   Method ID Offset: 0xeff08\r\n    */\r\n\r\nParcelableVolumeInfo *\r\nandroid::support::v4::media::session::ParcelableVolumeInfo$a::a\r\n          (ParcelableVolumeInfo_a *this,Parcel *p1)\r\n\r\n{\r\n  ParcelableVolumeInfo *local_0;\r\n  \r\n  local_0 = new ParcelableVolumeInfo(p1);\r\n  return local_0;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [
+      {
+        "address": "501bbe94", 
+        "name": "a"
+      }
+    ], 
+    "name": "a", 
+    "var_types": {
+      "p1": "Parcel *", 
+      "this": "ParcelableVolumeInfo$a *", 
+      "local_0": "ParcelableVolumeInfo *", 
+      "Landroid/support/v4/media/session/ParcelableVolumeInfo;": "undefined"
+    }
+  }, 
+  {
+    "return_type": "ParcelableVolumeInfo * *", 
+    "variables": [
+      "this", 
+      "p1", 
+      "ppPVar1", 
+      "[Landroid/support/v4/media/session/ParcelableVolumeInfo;"
+    ], 
+    "address": "501bbeb0", 
+    "code": "\r\n/* Class: Landroid/support/v4/media/session/ParcelableVolumeInfo$a;\r\n   Class Access Flags:\r\n    ACC_FINAL\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Landroid/os/Parcelable$Creator;\r\n   Source File: ParcelableVolumeInfo.java\r\n   \r\n   Method Signature: [Landroid/support/v4/media/session/ParcelableVolumeInfo;( I\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 0\r\n   Method Debug Info Offset: 0x4f1827\r\n   Method ID Offset: 0xeff10\r\n    */\r\n\r\nParcelableVolumeInfo **\r\nandroid::support::v4::media::session::ParcelableVolumeInfo$a::b(ParcelableVolumeInfo_a *this,int p1)\r\n\r\n{\r\n  ParcelableVolumeInfo **ppPVar1;\r\n  \r\n  ppPVar1 = (ParcelableVolumeInfo **)(new undefined4[p1]);\r\n  return ppPVar1;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [
+      {
+        "address": "501bbeb0", 
+        "name": "b"
+      }
+    ], 
+    "name": "b", 
+    "var_types": {
+      "p1": "int", 
+      "[Landroid/support/v4/media/session/ParcelableVolumeInfo;": "undefined", 
+      "this": "ParcelableVolumeInfo$a *", 
+      "ppPVar1": "ParcelableVolumeInfo * *"
+    }
+  }, 
+  {
+    "return_type": "Object *", 
+    "variables": [
+      "this", 
+      "p1", 
+      "pPVar1"
+    ], 
+    "address": "501bbec8", 
+    "code": "\r\n/* Class: Landroid/support/v4/media/session/ParcelableVolumeInfo$a;\r\n   Class Access Flags:\r\n    ACC_FINAL\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Landroid/os/Parcelable$Creator;\r\n   Source File: ParcelableVolumeInfo.java\r\n   \r\n   Method Signature: Ljava/lang/Object;( Landroid/os/Parcel;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n    ACC_VOLATILE\r\n    ACC_BRIDGE\r\n    ACC_SYNTHETIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f1827\r\n   Method ID Offset: 0xeff18\r\n    */\r\n\r\nObject * android::support::v4::media::session::ParcelableVolumeInfo$a::createFromParcel\r\n                   (ParcelableVolumeInfo_a *this,Parcel *p1)\r\n\r\n{\r\n  ParcelableVolumeInfo *pPVar1;\r\n  \r\n  pPVar1 = (*this->a)(this,p1);\r\n  return pPVar1;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "createFromParcel", 
+    "var_types": {
+      "p1": "Parcel *", 
+      "pPVar1": "ParcelableVolumeInfo *", 
+      "this": "ParcelableVolumeInfo$a *"
+    }
+  }, 
+  {
+    "return_type": "Object * *", 
+    "variables": [
+      "this", 
+      "p1", 
+      "ppPVar1"
+    ], 
+    "address": "501bbee4", 
+    "code": "\r\n/* Class: Landroid/support/v4/media/session/ParcelableVolumeInfo$a;\r\n   Class Access Flags:\r\n    ACC_FINAL\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Landroid/os/Parcelable$Creator;\r\n   Source File: ParcelableVolumeInfo.java\r\n   \r\n   Method Signature: [Ljava/lang/Object;( I\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n    ACC_VOLATILE\r\n    ACC_BRIDGE\r\n    ACC_SYNTHETIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f1827\r\n   Method ID Offset: 0xeff20\r\n    */\r\n\r\nObject ** android::support::v4::media::session::ParcelableVolumeInfo$a::newArray\r\n                    (ParcelableVolumeInfo_a *this,int p1)\r\n\r\n{\r\n  ParcelableVolumeInfo **ppPVar1;\r\n  \r\n  ppPVar1 = (*this->b)(this,p1);\r\n  return ppPVar1;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "newArray", 
+    "var_types": {
+      "p1": "int", 
+      "this": "ParcelableVolumeInfo$a *", 
+      "ppPVar1": "ParcelableVolumeInfo * *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "this"
+    ], 
+    "address": "501bbf00", 
+    "code": "\r\n/* Class: Landroid/support/v4/media/session/ParcelableVolumeInfo$a;\r\n   Class Access Flags:\r\n    ACC_FINAL\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Landroid/os/Parcelable$Creator;\r\n   Source File: ParcelableVolumeInfo.java\r\n   \r\n   Method Signature: V(  )\r\n   Method Access Flags:\r\n    ACC_CONSTRUCTOR\r\n   \r\n   Method Register Size: 1\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f182c\r\n   Method ID Offset: 0xeff00\r\n    */\r\n\r\nvoid android::support::v4::media::session::ParcelableVolumeInfo$a::ParcelableVolumeInfo_a\r\n               (ParcelableVolumeInfo_a *this)\r\n\r\n{\r\n  (*this-><init>)(this);\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [
+      {
+        "address": "501bbf00", 
+        "name": "ParcelableVolumeInfo$a"
+      }
+    ], 
+    "name": "ParcelableVolumeInfo$a", 
+    "var_types": {
+      "this": "ParcelableVolumeInfo$a *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "CREATOR_234", 
+      "Landroid/support/v4/media/session/ParcelableVolumeInfo$a;", 
+      "local_0"
+    ], 
+    "address": "501bbf2c", 
+    "code": "\r\n/* Class: Landroid/support/v4/media/session/ParcelableVolumeInfo;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Landroid/os/Parcelable;\r\n   Source File: ParcelableVolumeInfo.java\r\n   \r\n   Method Signature: V(  )\r\n   Method Access Flags:\r\n    ACC_STATIC\r\n    ACC_CONSTRUCTOR\r\n   \r\n   Method Register Size: 1\r\n   Method Incoming Size: 0\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f182c\r\n   Method ID Offset: 0xeff28\r\n    */\r\n\r\nvoid android::support::v4::media::session::ParcelableVolumeInfo::ParcelableVolumeInfo(void)\r\n\r\n{\r\n  ParcelableVolumeInfo_a *local_0;\r\n  \r\n  local_0 = new ParcelableVolumeInfo$a();\r\n  *ParcelableVolumeInfo_CREATOR = local_0;\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 0, 
+    "calls": [], 
+    "name": "ParcelableVolumeInfo", 
+    "var_types": {
+      "CREATOR_234": "undefined", 
+      "local_0": "ParcelableVolumeInfo$a *", 
+      "Landroid/support/v4/media/session/ParcelableVolumeInfo$a;": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "this", 
+      "p1", 
+      "iVar1", 
+      "g_236", 
+      "h_237", 
+      "f_235", 
+      "j_239", 
+      "i_238"
+    ], 
+    "address": "501bbf4c", 
+    "code": "\r\n/* Class: Landroid/support/v4/media/session/ParcelableVolumeInfo;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Landroid/os/Parcelable;\r\n   Source File: ParcelableVolumeInfo.java\r\n   \r\n   Method Signature: V( Landroid/os/Parcel;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n    ACC_CONSTRUCTOR\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f1af0\r\n   Method ID Offset: 0xeff30\r\n    */\r\n\r\nvoid android::support::v4::media::session::ParcelableVolumeInfo::ParcelableVolumeInfo\r\n               (ParcelableVolumeInfo *this,Parcel *p1)\r\n\r\n{\r\n  int iVar1;\r\n  \r\n  (*this-><init>)(this);\r\n  iVar1 = (*p1->readInt)(p1);\r\n  *this->f = iVar1;\r\n  iVar1 = (*p1->readInt)(p1);\r\n  *this->h = iVar1;\r\n  iVar1 = (*p1->readInt)(p1);\r\n  *this->i = iVar1;\r\n  iVar1 = (*p1->readInt)(p1);\r\n  *this->j = iVar1;\r\n  iVar1 = (*p1->readInt)(p1);\r\n  *this->g = iVar1;\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [
+      {
+        "address": "501bbf4c", 
+        "name": "ParcelableVolumeInfo"
+      }
+    ], 
+    "name": "ParcelableVolumeInfo", 
+    "var_types": {
+      "p1": "Parcel *", 
+      "j_239": "undefined", 
+      "iVar1": "int", 
+      "this": "ParcelableVolumeInfo *", 
+      "g_236": "undefined", 
+      "f_235": "undefined", 
+      "i_238": "undefined", 
+      "h_237": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "p2", 
+      "g_236", 
+      "this", 
+      "p1", 
+      "h_237", 
+      "f_235", 
+      "j_239", 
+      "i_238"
+    ], 
+    "address": "501bbfa0", 
+    "code": "\r\n/* Class: Landroid/support/v4/media/session/ParcelableVolumeInfo;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Landroid/os/Parcelable;\r\n   Source File: ParcelableVolumeInfo.java\r\n   \r\n   Method Signature: V( Landroid/os/Parcel;\r\n    I\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 3\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f1afa\r\n   Method ID Offset: 0xeff40\r\n    */\r\n\r\nvoid android::support::v4::media::session::ParcelableVolumeInfo::writeToParcel\r\n               (ParcelableVolumeInfo *this,Parcel *p1,int p2)\r\n\r\n{\r\n  (*p1->writeInt)(p1,*this->f);\r\n  (*p1->writeInt)(p1,*this->h);\r\n  (*p1->writeInt)(p1,*this->i);\r\n  (*p1->writeInt)(p1,*this->j);\r\n  (*p1->writeInt)(p1,*this->g);\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 3, 
+    "calls": [], 
+    "name": "writeToParcel", 
+    "var_types": {
+      "p1": "Parcel *", 
+      "p2": "int", 
+      "j_239": "undefined", 
+      "this": "ParcelableVolumeInfo *", 
+      "g_236": "undefined", 
+      "f_235": "undefined", 
+      "i_238": "undefined", 
+      "h_237": "undefined"
+    }
+  }, 
+  {
+    "return_type": "Context *", 
+    "variables": [
+      "this", 
+      "local_0", 
+      "mContextAwareHelper", 
+      "pCVar1"
+    ], 
+    "address": "501bcf24", 
+    "code": "\r\n/* Class: Landroidx/activity/ComponentActivity;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroidx/core/app/f;\r\n   Interfaces: \r\n    Landroidx/lifecycle/k;\r\n    Landroidx/lifecycle/a0;\r\n    Landroidx/savedstate/c;\r\n    Landroidx/activity/c;\r\n    Landroidx/activity/result/c;\r\n   Source File: ComponentActivity.java\r\n   \r\n   Method Signature: Landroid/content/Context;(  )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f182c\r\n   Method ID Offset: 0xf4838\r\n    */\r\n\r\nContext * androidx::activity::ComponentActivity::peekAvailableContext(ComponentActivity *this)\r\n\r\n{\r\n  Context *pCVar1;\r\n  a *local_0;\r\n  \r\n  local_0 = *this->mContextAwareHelper;\r\n  pCVar1 = (*local_0->d)(local_0);\r\n  return pCVar1;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "peekAvailableContext", 
+    "var_types": {
+      "this": "ComponentActivity *", 
+      "mContextAwareHelper": "undefined", 
+      "pCVar1": "Context *", 
+      "local_0": "a *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "p1", 
+      "local_0", 
+      "this", 
+      "mContextAwareHelper"
+    ], 
+    "address": "501bd2ac", 
+    "code": "\r\n/* Class: Landroidx/activity/ComponentActivity;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroidx/core/app/f;\r\n   Interfaces: \r\n    Landroidx/lifecycle/k;\r\n    Landroidx/lifecycle/a0;\r\n    Landroidx/savedstate/c;\r\n    Landroidx/activity/c;\r\n    Landroidx/activity/result/c;\r\n   Source File: ComponentActivity.java\r\n   \r\n   Method Signature: V( Landroidx/activity/d/b;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n    ACC_FINAL\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f1827\r\n   Method ID Offset: 0xf47b0\r\n    */\r\n\r\nvoid androidx::activity::ComponentActivity::addOnContextAvailableListener\r\n               (ComponentActivity *this,b *p1)\r\n\r\n{\r\n  a *local_0;\r\n  \r\n  local_0 = *this->mContextAwareHelper;\r\n  (*local_0->a)(local_0,p1);\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [
+      {
+        "address": "501bd2ac", 
+        "name": "addOnContextAvailableListener"
+      }
+    ], 
+    "name": "addOnContextAvailableListener", 
+    "var_types": {
+      "p1": "b *", 
+      "this": "ComponentActivity *", 
+      "mContextAwareHelper": "undefined", 
+      "local_0": "a *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "this", 
+      "p1", 
+      "local_0", 
+      "mContextAwareHelper"
+    ], 
+    "address": "501bd498", 
+    "code": "\r\n/* Class: Landroidx/activity/ComponentActivity;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroidx/core/app/f;\r\n   Interfaces: \r\n    Landroidx/lifecycle/k;\r\n    Landroidx/lifecycle/a0;\r\n    Landroidx/savedstate/c;\r\n    Landroidx/activity/c;\r\n    Landroidx/activity/result/c;\r\n   Source File: ComponentActivity.java\r\n   \r\n   Method Signature: V( Landroidx/activity/d/b;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n    ACC_FINAL\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f1827\r\n   Method ID Offset: 0xf4850\r\n    */\r\n\r\nvoid androidx::activity::ComponentActivity::removeOnContextAvailableListener\r\n               (ComponentActivity *this,b *p1)\r\n\r\n{\r\n  a *local_0;\r\n  \r\n  local_0 = *this->mContextAwareHelper;\r\n  (*local_0->e)(local_0,p1);\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "removeOnContextAvailableListener", 
+    "var_types": {
+      "p1": "b *", 
+      "this": "ComponentActivity *", 
+      "mContextAwareHelper": "undefined", 
+      "local_0": "a *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "b_417", 
+      "p2", 
+      "b_417", 
+      "p3", 
+      "d_419", 
+      "this", 
+      "a_416", 
+      "p1"
+    ], 
+    "address": "501bd880", 
+    "code": "\r\n/* Class: Landroidx/activity/OnBackPressedDispatcher$LifecycleOnBackPressedCancellable;\r\n   Class Access Flags:\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Landroidx/lifecycle/i;\r\n    Landroidx/activity/a;\r\n   Source File: OnBackPressedDispatcher.java\r\n   \r\n   Method Signature: V( Landroidx/activity/OnBackPressedDispatcher;\r\n    Landroidx/lifecycle/g;\r\n    Landroidx/activity/b;\r\n     )\r\n   Method Access Flags:\r\n    ACC_CONSTRUCTOR\r\n   \r\n   Method Register Size: 4\r\n   Method Incoming Size: 4\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f1cea\r\n   Method ID Offset: 0xf48b8\r\n    */\r\n\r\nvoid androidx::activity::OnBackPressedDispatcher$LifecycleOnBackPressedCancellable::\r\n     OnBackPressedDispatcher_LifecycleOnBackPressedCancellable\r\n               (OnBackPressedDispatcher_LifecycleOnBackPressedCancellable *this,\r\n               OnBackPressedDispatcher *p1,g *p2,b *p3)\r\n\r\n{\r\n  *this->d = p1;\r\n  (*this-><init>)(this);\r\n  *this->a = p2;\r\n  *this->b = p3;\r\n  (*p2->a)(p2,this);\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 4, 
+    "calls": [
+      {
+        "address": "501bd880", 
+        "name": "OnBackPressedDispatcher$LifecycleOnBackPressedCancellable"
+      }
+    ], 
+    "name": "OnBackPressedDispatcher$LifecycleOnBackPressedCancellable", 
+    "var_types": {
+      "p1": "OnBackPressedDispatcher *", 
+      "p2": "g *", 
+      "p3": "b *", 
+      "this": "OnBackPressedDispatcher$LifecycleOnBackPressedCancellable *", 
+      "d_419": "undefined", 
+      "b_417": "undefined", 
+      "a_416": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "this", 
+      "local_0", 
+      "ref_00", 
+      "ref", 
+      "c_418", 
+      "c_418", 
+      "b_417", 
+      "b_417", 
+      "a_416"
+    ], 
+    "address": "501bd8ac", 
+    "code": "\r\n/* Class: Landroidx/activity/OnBackPressedDispatcher$LifecycleOnBackPressedCancellable;\r\n   Class Access Flags:\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Landroidx/lifecycle/i;\r\n    Landroidx/activity/a;\r\n   Source File: OnBackPressedDispatcher.java\r\n   \r\n   Method Signature: V(  )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f1cf4\r\n   Method ID Offset: 0xf48c8\r\n    */\r\n\r\nvoid androidx::activity::OnBackPressedDispatcher$LifecycleOnBackPressedCancellable::cancel\r\n               (OnBackPressedDispatcher_LifecycleOnBackPressedCancellable *this)\r\n\r\n{\r\n  g *local_0;\r\n  b *ref;\r\n  a *ref_00;\r\n  \r\n  local_0 = *this->a;\r\n  (*local_0->c)(local_0,this);\r\n  ref = *this->b;\r\n  (*ref->e)(ref,this);\r\n  ref_00 = *this->c;\r\n  if (ref_00 != (a *)0x0) {\r\n    (*ref_00->cancel)(ref_00);\r\n    *this->c = (a *)0x0;\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [
+      {
+        "address": "501bd8ac", 
+        "name": "cancel"
+      }
+    ], 
+    "name": "cancel", 
+    "var_types": {
+      "c_418": "undefined", 
+      "this": "OnBackPressedDispatcher$LifecycleOnBackPressedCancellable *", 
+      "ref_00": "a *", 
+      "b_417": "undefined", 
+      "ref": "b *", 
+      "local_0": "g *", 
+      "a_416": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "p2", 
+      "paVar1", 
+      "ref", 
+      "c_418", 
+      "ON_DESTROY", 
+      "c_418", 
+      "ON_STOP", 
+      "b_417", 
+      "b_417", 
+      "ON_START", 
+      "d_419", 
+      "this", 
+      "p1"
+    ], 
+    "address": "501bd8e8", 
+    "code": "\r\n/* Class: Landroidx/activity/OnBackPressedDispatcher$LifecycleOnBackPressedCancellable;\r\n   Class Access Flags:\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Landroidx/lifecycle/i;\r\n    Landroidx/activity/a;\r\n   Source File: OnBackPressedDispatcher.java\r\n   \r\n   Method Signature: V( Landroidx/lifecycle/k;\r\n    Landroidx/lifecycle/g$b;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 3\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f1cfc\r\n   Method ID Offset: 0xf48c0\r\n    */\r\n\r\nvoid androidx::activity::OnBackPressedDispatcher$LifecycleOnBackPressedCancellable::a\r\n               (OnBackPressedDispatcher_LifecycleOnBackPressedCancellable *this,k *p1,g_b *p2)\r\n\r\n{\r\n  a *paVar1;\r\n  OnBackPressedDispatcher *ref;\r\n  \r\n  if (p2 == *g_b_ON_START) {\r\n    ref = *this->d;\r\n    paVar1 = (*ref->b)(ref,*this->b);\r\n    *this->c = paVar1;\r\n  }\r\n  else if (p2 == *g_b_ON_STOP) {\r\n    paVar1 = *this->c;\r\n    if (paVar1 != (a *)0x0) {\r\n      (*paVar1->cancel)(paVar1);\r\n    }\r\n  }\r\n  else if (p2 == *g_b_ON_DESTROY) {\r\n    (*this->cancel)(this);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 3, 
+    "calls": [], 
+    "name": "a", 
+    "var_types": {
+      "c_418": "undefined", 
+      "p1": "k *", 
+      "p2": "g$b *", 
+      "paVar1": "a *", 
+      "ON_DESTROY": "undefined", 
+      "this": "OnBackPressedDispatcher$LifecycleOnBackPressedCancellable *", 
+      "ON_STOP": "undefined", 
+      "d_419": "undefined", 
+      "b_417": "undefined", 
+      "ref": "OnBackPressedDispatcher *", 
+      "ON_START": "undefined"
+    }
+  }, 
+  {
+    "return_type": "Drawable *", 
+    "variables": [
+      "this", 
+      "local_0", 
+      "Lc/a/l/a/a;"
+    ], 
+    "address": "501c8fa0", 
+    "code": "\r\n/* Class: Lc/a/l/a/a$c;\r\n   Class Access Flags:\r\n   \r\n   Superclass: Lc/a/l/a/d$a;\r\n   Source File: AnimatedStateListDrawableCompat.java\r\n   \r\n   Method Signature: Landroid/graphics/drawable/Drawable;(  )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 3\r\n   Method Debug Info Offset: 0x4f182c\r\n   Method ID Offset: 0x10bf70\r\n    */\r\n\r\nDrawable * c::a::l::a::a$c::newDrawable(a_c *this)\r\n\r\n{\r\n  a *local_0;\r\n  \r\n  local_0 = new a(this,(Resources *)0x0);\r\n  return local_0;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "newDrawable", 
+    "var_types": {
+      "this": "a$c *", 
+      "Lc/a/l/a/a;": "undefined", 
+      "local_0": "a *"
+    }
+  }, 
+  {
+    "return_type": "Drawable *", 
+    "variables": [
+      "this", 
+      "p1", 
+      "local_0", 
+      "Lc/a/l/a/a;"
+    ], 
+    "address": "501c8fc0", 
+    "code": "\r\n/* Class: Lc/a/l/a/a$c;\r\n   Class Access Flags:\r\n   \r\n   Superclass: Lc/a/l/a/d$a;\r\n   Source File: AnimatedStateListDrawableCompat.java\r\n   \r\n   Method Signature: Landroid/graphics/drawable/Drawable;( Landroid/content/res/Resources;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 3\r\n   Method Debug Info Offset: 0x4f20df\r\n   Method ID Offset: 0x10bf78\r\n    */\r\n\r\nDrawable * c::a::l::a::a$c::newDrawable(a_c *this,Resources *p1)\r\n\r\n{\r\n  a *local_0;\r\n  \r\n  local_0 = new a(this,p1);\r\n  return local_0;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "newDrawable", 
+    "var_types": {
+      "p1": "Resources *", 
+      "this": "a$c *", 
+      "Lc/a/l/a/a;": "undefined", 
+      "local_0": "a *"
+    }
+  }, 
+  {
+    "return_type": "bool", 
+    "variables": [
+      "ref", 
+      "v_6326", 
+      "bVar1", 
+      "p2", 
+      "this", 
+      "p1"
+    ], 
+    "address": "501c9860", 
+    "code": "\r\n/* Class: Lc/a/l/a/a;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Lc/a/l/a/d;\r\n   Interfaces: \r\n    Landroidx/core/graphics/drawable/b;\r\n   Source File: AnimatedStateListDrawableCompat.java\r\n   \r\n   Method Signature: Z( Z\r\n    Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 5\r\n   Method Incoming Size: 3\r\n   Method Outgoing Size: 3\r\n   Method Debug Info Offset: 0x4f2ae8\r\n   Method ID Offset: 0x10c178\r\n    */\r\n\r\nboolean c::a::l::a::a::setVisible(a *this,boolean p1,boolean p2)\r\n\r\n{\r\n  boolean bVar1;\r\n  a_g *ref;\r\n  \r\n  bVar1 = (*super->setVisible)(this,p1,p2);\r\n  ref = *this->v;\r\n  if ((ref != (a_g *)0x0) && ((bVar1 || (p2)))) {\r\n    if (p1) {\r\n      (*ref->c)(ref);\r\n    }\r\n    else {\r\n      (*this->jumpToCurrentState)(this);\r\n    }\r\n  }\r\n  return bVar1;\r\n}\r\n\r\n", 
+    "param_count": 3, 
+    "calls": [
+      {
+        "address": "501c9860", 
+        "name": "setVisible"
+      }
+    ], 
+    "name": "setVisible", 
+    "var_types": {
+      "bVar1": "bool", 
+      "p1": "bool", 
+      "p2": "bool", 
+      "v_6326": "undefined", 
+      "this": "a *", 
+      "ref": "a$g *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "p1", 
+      "this"
+    ], 
+    "address": "501c9e04", 
+    "code": "\r\n/* Class: Lc/a/l/a/a;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Lc/a/l/a/d;\r\n   Interfaces: \r\n    Landroidx/core/graphics/drawable/b;\r\n   Source File: AnimatedStateListDrawableCompat.java\r\n   \r\n   Method Signature: V( Landroid/graphics/drawable/Drawable;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n    ACC_VOLATILE\r\n    ACC_BRIDGE\r\n    ACC_SYNTHETIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f1827\r\n   Method ID Offset: 0x10c0b0\r\n    */\r\n\r\nvoid c::a::l::a::a::invalidateDrawable(a *this,Drawable *p1)\r\n\r\n{\r\n  (*super->invalidateDrawable)(this,p1);\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "invalidateDrawable", 
+    "var_types": {
+      "p1": "Drawable *", 
+      "this": "a *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "p2", 
+      "p3", 
+      "this", 
+      "p1"
+    ], 
+    "address": "501c9e5c", 
+    "code": "\r\n/* Class: Lc/a/l/a/a;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Lc/a/l/a/d;\r\n   Interfaces: \r\n    Landroidx/core/graphics/drawable/b;\r\n   Source File: AnimatedStateListDrawableCompat.java\r\n   \r\n   Method Signature: V( Landroid/graphics/drawable/Drawable;\r\n    Ljava/lang/Runnable;\r\n    J\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n    ACC_VOLATILE\r\n    ACC_BRIDGE\r\n    ACC_SYNTHETIC\r\n   \r\n   Method Register Size: 5\r\n   Method Incoming Size: 5\r\n   Method Outgoing Size: 5\r\n   Method Debug Info Offset: 0x4f190f\r\n   Method ID Offset: 0x10c130\r\n    */\r\n\r\nvoid c::a::l::a::a::scheduleDrawable(a *this,Drawable *p1,Runnable *p2,long p3)\r\n\r\n{\r\n  (*super->scheduleDrawable)(this,p1,p2,p3);\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 4, 
+    "calls": [], 
+    "name": "scheduleDrawable", 
+    "var_types": {
+      "p1": "Drawable *", 
+      "p2": "Runnable *", 
+      "p3": "long", 
+      "this": "a *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "p1", 
+      "p2", 
+      "this"
+    ], 
+    "address": "501c9f5c", 
+    "code": "\r\n/* Class: Lc/a/l/a/a;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Lc/a/l/a/d;\r\n   Interfaces: \r\n    Landroidx/core/graphics/drawable/b;\r\n   Source File: AnimatedStateListDrawableCompat.java\r\n   \r\n   Method Signature: V( Landroid/graphics/drawable/Drawable;\r\n    Ljava/lang/Runnable;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n    ACC_VOLATILE\r\n    ACC_BRIDGE\r\n    ACC_SYNTHETIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 3\r\n   Method Outgoing Size: 3\r\n   Method Debug Info Offset: 0x4f18c6\r\n   Method ID Offset: 0x10c188\r\n    */\r\n\r\nvoid c::a::l::a::a::unscheduleDrawable(a *this,Drawable *p1,Runnable *p2)\r\n\r\n{\r\n  (*super->unscheduleDrawable)(this,p1,p2);\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 3, 
+    "calls": [], 
+    "name": "unscheduleDrawable", 
+    "var_types": {
+      "p1": "Drawable *", 
+      "p2": "Runnable *", 
+      "this": "a *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "this", 
+      "p1", 
+      "f_6331", 
+      "local_0", 
+      "p2", 
+      "p3"
+    ], 
+    "address": "501ca0bc", 
+    "code": "\r\n/* Class: Lc/a/l/a/b$b;\r\n   Class Access Flags:\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Landroid/graphics/drawable/Drawable$Callback;\r\n   Source File: DrawableContainer.java\r\n   \r\n   Method Signature: V( Landroid/graphics/drawable/Drawable;\r\n    Ljava/lang/Runnable;\r\n    J\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 6\r\n   Method Incoming Size: 5\r\n   Method Outgoing Size: 5\r\n   Method Debug Info Offset: 0x4f2a5c\r\n   Method ID Offset: 0x10c1c0\r\n    */\r\n\r\nvoid c::a::l::a::b$b::scheduleDrawable(b_b *this,Drawable *p1,Runnable *p2,long p3)\r\n\r\n{\r\n  Drawable_Callback *local_0;\r\n  \r\n  local_0 = *this->f;\r\n  if (local_0 != (Drawable_Callback *)0x0) {\r\n    (*local_0->scheduleDrawable)(local_0,p1,p2,p3);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 4, 
+    "calls": [], 
+    "name": "scheduleDrawable", 
+    "var_types": {
+      "p1": "Drawable *", 
+      "p2": "Runnable *", 
+      "p3": "long", 
+      "this": "b$b *", 
+      "f_6331": "undefined", 
+      "local_0": "Drawable$Callback *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "p1", 
+      "p2", 
+      "local_0", 
+      "this", 
+      "f_6331"
+    ], 
+    "address": "501ca0dc", 
+    "code": "\r\n/* Class: Lc/a/l/a/b$b;\r\n   Class Access Flags:\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Landroid/graphics/drawable/Drawable$Callback;\r\n   Source File: DrawableContainer.java\r\n   \r\n   Method Signature: V( Landroid/graphics/drawable/Drawable;\r\n    Ljava/lang/Runnable;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 4\r\n   Method Incoming Size: 3\r\n   Method Outgoing Size: 3\r\n   Method Debug Info Offset: 0x4f2064\r\n   Method ID Offset: 0x10c1c8\r\n    */\r\n\r\nvoid c::a::l::a::b$b::unscheduleDrawable(b_b *this,Drawable *p1,Runnable *p2)\r\n\r\n{\r\n  Drawable_Callback *local_0;\r\n  \r\n  local_0 = *this->f;\r\n  if (local_0 != (Drawable_Callback *)0x0) {\r\n    (*local_0->unscheduleDrawable)(local_0,p1,p2);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 3, 
+    "calls": [], 
+    "name": "unscheduleDrawable", 
+    "var_types": {
+      "p1": "Drawable *", 
+      "p2": "Runnable *", 
+      "this": "b$b *", 
+      "f_6331": "undefined", 
+      "local_0": "Drawable$Callback *"
+    }
+  }, 
+  {
+    "return_type": "bool", 
+    "variables": [
+      "this", 
+      "p1", 
+      "p2", 
+      "h_6369", 
+      "i_6370", 
+      "pDVar2", 
+      "bVar1"
+    ], 
+    "address": "501cad40", 
+    "code": "\r\n/* Class: Lc/a/l/a/b;\r\n   Class Access Flags:\r\n   \r\n   Superclass: Landroid/graphics/drawable/Drawable;\r\n   Interfaces: \r\n    Landroid/graphics/drawable/Drawable$Callback;\r\n   Source File: DrawableContainer.java\r\n   \r\n   Method Signature: Z( Z\r\n    Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 5\r\n   Method Incoming Size: 3\r\n   Method Outgoing Size: 3\r\n   Method Debug Info Offset: 0x4f2ca7\r\n   Method ID Offset: 0x10c400\r\n    */\r\n\r\nboolean c::a::l::a::b::setVisible(b *this,boolean p1,boolean p2)\r\n\r\n{\r\n  boolean bVar1;\r\n  Drawable *pDVar2;\r\n  \r\n  bVar1 = (*super->setVisible)(this,p1,p2);\r\n  pDVar2 = *this->i;\r\n  if (pDVar2 != (Drawable *)0x0) {\r\n    (*pDVar2->setVisible)(pDVar2,p1,p2);\r\n  }\r\n  pDVar2 = *this->h;\r\n  if (pDVar2 != (Drawable *)0x0) {\r\n    (*pDVar2->setVisible)(pDVar2,p1,p2);\r\n  }\r\n  return bVar1;\r\n}\r\n\r\n", 
+    "param_count": 3, 
+    "calls": [
+      {
+        "address": "501cad40", 
+        "name": "setVisible"
+      }
+    ], 
+    "name": "setVisible", 
+    "var_types": {
+      "p1": "bool", 
+      "bVar1": "bool", 
+      "p2": "bool", 
+      "this": "b *", 
+      "i_6370": "undefined", 
+      "pDVar2": "Drawable *", 
+      "h_6369": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "local_0", 
+      "f_6367", 
+      "h_6369", 
+      "pDVar1", 
+      "this", 
+      "p1"
+    ], 
+    "address": "501cb270", 
+    "code": "\r\n/* Class: Lc/a/l/a/b;\r\n   Class Access Flags:\r\n   \r\n   Superclass: Landroid/graphics/drawable/Drawable;\r\n   Interfaces: \r\n    Landroid/graphics/drawable/Drawable$Callback;\r\n   Source File: DrawableContainer.java\r\n   \r\n   Method Signature: V( Landroid/graphics/drawable/Drawable;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f2cf2\r\n   Method ID Offset: 0x10c378\r\n    */\r\n\r\nvoid c::a::l::a::b::invalidateDrawable(b *this,Drawable *p1)\r\n\r\n{\r\n  Drawable_Callback *pDVar1;\r\n  b_c *local_0;\r\n  \r\n  local_0 = *this->f;\r\n  if (local_0 != (b_c *)0x0) {\r\n    (*local_0->p)(local_0);\r\n  }\r\n  if ((p1 == *this->h) && (pDVar1 = (*this->getCallback)(this), pDVar1 != (Drawable_Callback *)0x0))\r\n  {\r\n    pDVar1 = (*this->getCallback)(this);\r\n    (*pDVar1->invalidateDrawable)(pDVar1,this);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [
+      {
+        "address": "501cb270", 
+        "name": "invalidateDrawable"
+      }
+    ], 
+    "name": "invalidateDrawable", 
+    "var_types": {
+      "p1": "Drawable *", 
+      "this": "b *", 
+      "f_6367": "undefined", 
+      "local_0": "b$c *", 
+      "h_6369": "undefined", 
+      "pDVar1": "Drawable$Callback *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "p2", 
+      "p3", 
+      "this", 
+      "p1", 
+      "h_6369", 
+      "pDVar1"
+    ], 
+    "address": "501cb36c", 
+    "code": "\r\n/* Class: Lc/a/l/a/b;\r\n   Class Access Flags:\r\n   \r\n   Superclass: Landroid/graphics/drawable/Drawable;\r\n   Interfaces: \r\n    Landroid/graphics/drawable/Drawable$Callback;\r\n   Source File: DrawableContainer.java\r\n   \r\n   Method Signature: V( Landroid/graphics/drawable/Drawable;\r\n    Ljava/lang/Runnable;\r\n    J\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 6\r\n   Method Incoming Size: 5\r\n   Method Outgoing Size: 5\r\n   Method Debug Info Offset: 0x4f2d09\r\n   Method ID Offset: 0x10c3b8\r\n    */\r\n\r\nvoid c::a::l::a::b::scheduleDrawable(b *this,Drawable *p1,Runnable *p2,long p3)\r\n\r\n{\r\n  Drawable_Callback *pDVar1;\r\n  \r\n  if ((p1 == *this->h) && (pDVar1 = (*this->getCallback)(this), pDVar1 != (Drawable_Callback *)0x0))\r\n  {\r\n    pDVar1 = (*this->getCallback)(this);\r\n    (*pDVar1->scheduleDrawable)(pDVar1,this,p2,p3);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 4, 
+    "calls": [
+      {
+        "address": "501cb36c", 
+        "name": "scheduleDrawable"
+      }
+    ], 
+    "name": "scheduleDrawable", 
+    "var_types": {
+      "p1": "Drawable *", 
+      "p2": "Runnable *", 
+      "p3": "long", 
+      "this": "b *", 
+      "h_6369": "undefined", 
+      "pDVar1": "Drawable$Callback *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "p2", 
+      "pDVar1", 
+      "h_6369", 
+      "this", 
+      "p1"
+    ], 
+    "address": "501cb590", 
+    "code": "\r\n/* Class: Lc/a/l/a/b;\r\n   Class Access Flags:\r\n   \r\n   Superclass: Landroid/graphics/drawable/Drawable;\r\n   Interfaces: \r\n    Landroid/graphics/drawable/Drawable$Callback;\r\n   Source File: DrawableContainer.java\r\n   \r\n   Method Signature: V( Landroid/graphics/drawable/Drawable;\r\n    Ljava/lang/Runnable;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 4\r\n   Method Incoming Size: 3\r\n   Method Outgoing Size: 3\r\n   Method Debug Info Offset: 0x4f207c\r\n   Method ID Offset: 0x10c408\r\n    */\r\n\r\nvoid c::a::l::a::b::unscheduleDrawable(b *this,Drawable *p1,Runnable *p2)\r\n\r\n{\r\n  Drawable_Callback *pDVar1;\r\n  \r\n  if ((p1 == *this->h) && (pDVar1 = (*this->getCallback)(this), pDVar1 != (Drawable_Callback *)0x0))\r\n  {\r\n    pDVar1 = (*this->getCallback)(this);\r\n    (*pDVar1->unscheduleDrawable)(pDVar1,this,p2);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 3, 
+    "calls": [
+      {
+        "address": "501cb590", 
+        "name": "unscheduleDrawable"
+      }
+    ], 
+    "name": "unscheduleDrawable", 
+    "var_types": {
+      "p1": "Drawable *", 
+      "p2": "Runnable *", 
+      "this": "b *", 
+      "pDVar1": "Drawable$Callback *", 
+      "h_6369": "undefined"
+    }
+  }, 
+  {
+    "return_type": "bool", 
+    "variables": [
+      "p2", 
+      "bVar1", 
+      "this", 
+      "f_6379", 
+      "p1", 
+      "ref"
+    ], 
+    "address": "501cb6d8", 
+    "code": "\r\n/* Class: Lc/a/l/a/c;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/graphics/drawable/Drawable;\r\n   Interfaces: \r\n    Landroid/graphics/drawable/Drawable$Callback;\r\n   Source File: DrawableWrapper.java\r\n   \r\n   Method Signature: Z( Z\r\n    Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 4\r\n   Method Incoming Size: 3\r\n   Method Outgoing Size: 3\r\n   Method Debug Info Offset: 0x4f18c6\r\n   Method ID Offset: 0x10c518\r\n    */\r\n\r\nboolean c::a::l::a::c::setVisible(c *this,boolean p1,boolean p2)\r\n\r\n{\r\n  boolean bVar1;\r\n  Drawable *ref;\r\n  \r\n  bVar1 = (*super->setVisible)(this,p1,p2);\r\n  if ((bVar1) || (ref = *this->f, bVar1 = (*ref->setVisible)(ref,p1,p2), bVar1)) {\r\n    bVar1 = true;\r\n  }\r\n  else {\r\n    bVar1 = false;\r\n  }\r\n  return bVar1;\r\n}\r\n\r\n", 
+    "param_count": 3, 
+    "calls": [
+      {
+        "address": "501cb6d8", 
+        "name": "setVisible"
+      }
+    ], 
+    "name": "setVisible", 
+    "var_types": {
+      "bVar1": "bool", 
+      "p1": "bool", 
+      "p2": "bool", 
+      "this": "c *", 
+      "ref": "Drawable *", 
+      "f_6379": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "p1", 
+      "this"
+    ], 
+    "address": "501cb82c", 
+    "code": "\r\n/* Class: Lc/a/l/a/c;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/graphics/drawable/Drawable;\r\n   Interfaces: \r\n    Landroid/graphics/drawable/Drawable$Callback;\r\n   Source File: DrawableWrapper.java\r\n   \r\n   Method Signature: V( Landroid/graphics/drawable/Drawable;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f1827\r\n   Method ID Offset: 0x10c480\r\n    */\r\n\r\nvoid c::a::l::a::c::invalidateDrawable(c *this,Drawable *p1)\r\n\r\n{\r\n  (*this->invalidateSelf)(this);\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "invalidateDrawable", 
+    "var_types": {
+      "p1": "Drawable *", 
+      "this": "c *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "this", 
+      "p3", 
+      "p1", 
+      "p2"
+    ], 
+    "address": "501cb87c", 
+    "code": "\r\n/* Class: Lc/a/l/a/c;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/graphics/drawable/Drawable;\r\n   Interfaces: \r\n    Landroid/graphics/drawable/Drawable$Callback;\r\n   Source File: DrawableWrapper.java\r\n   \r\n   Method Signature: V( Landroid/graphics/drawable/Drawable;\r\n    Ljava/lang/Runnable;\r\n    J\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 5\r\n   Method Incoming Size: 5\r\n   Method Outgoing Size: 4\r\n   Method Debug Info Offset: 0x4f190f\r\n   Method ID Offset: 0x10c4b0\r\n    */\r\n\r\nvoid c::a::l::a::c::scheduleDrawable(c *this,Drawable *p1,Runnable *p2,long p3)\r\n\r\n{\r\n  (*this->scheduleSelf)(this,p2,p3);\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 4, 
+    "calls": [], 
+    "name": "scheduleDrawable", 
+    "var_types": {
+      "p1": "Drawable *", 
+      "p2": "Runnable *", 
+      "p3": "long", 
+      "this": "c *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "this", 
+      "p1", 
+      "p2"
+    ], 
+    "address": "501cb9f8", 
+    "code": "\r\n/* Class: Lc/a/l/a/c;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/graphics/drawable/Drawable;\r\n   Interfaces: \r\n    Landroid/graphics/drawable/Drawable$Callback;\r\n   Source File: DrawableWrapper.java\r\n   \r\n   Method Signature: V( Landroid/graphics/drawable/Drawable;\r\n    Ljava/lang/Runnable;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 3\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f18c6\r\n   Method ID Offset: 0x10c520\r\n    */\r\n\r\nvoid c::a::l::a::c::unscheduleDrawable(c *this,Drawable *p1,Runnable *p2)\r\n\r\n{\r\n  (*this->unscheduleSelf)(this,p2);\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 3, 
+    "calls": [], 
+    "name": "unscheduleDrawable", 
+    "var_types": {
+      "p1": "Drawable *", 
+      "p2": "Runnable *", 
+      "this": "c *"
+    }
+  }, 
+  {
+    "return_type": "Drawable *", 
+    "variables": [
+      "this", 
+      "local_0", 
+      "Lc/a/l/a/d;"
+    ], 
+    "address": "501cba10", 
+    "code": "\r\n/* Class: Lc/a/l/a/d$a;\r\n   Class Access Flags:\r\n   \r\n   Superclass: Lc/a/l/a/b$c;\r\n   Source File: StateListDrawable.java\r\n   \r\n   Method Signature: Landroid/graphics/drawable/Drawable;(  )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 3\r\n   Method Debug Info Offset: 0x4f182c\r\n   Method ID Offset: 0x10c538\r\n    */\r\n\r\nDrawable * c::a::l::a::d$a::newDrawable(d_a *this)\r\n\r\n{\r\n  d *local_0;\r\n  \r\n  local_0 = new d(this,(Resources *)0x0);\r\n  return local_0;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "newDrawable", 
+    "var_types": {
+      "this": "d$a *", 
+      "Lc/a/l/a/d;": "undefined", 
+      "local_0": "d *"
+    }
+  }, 
+  {
+    "return_type": "Drawable *", 
+    "variables": [
+      "local_0", 
+      "this", 
+      "Lc/a/l/a/d;", 
+      "p1"
+    ], 
+    "address": "501cba30", 
+    "code": "\r\n/* Class: Lc/a/l/a/d$a;\r\n   Class Access Flags:\r\n   \r\n   Superclass: Lc/a/l/a/b$c;\r\n   Source File: StateListDrawable.java\r\n   \r\n   Method Signature: Landroid/graphics/drawable/Drawable;( Landroid/content/res/Resources;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 3\r\n   Method Debug Info Offset: 0x4f20df\r\n   Method ID Offset: 0x10c540\r\n    */\r\n\r\nDrawable * c::a::l::a::d$a::newDrawable(d_a *this,Resources *p1)\r\n\r\n{\r\n  d *local_0;\r\n  \r\n  local_0 = new d(this,p1);\r\n  return local_0;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "newDrawable", 
+    "var_types": {
+      "p1": "Resources *", 
+      "this": "d$a *", 
+      "Lc/a/l/a/d;": "undefined", 
+      "local_0": "d *"
+    }
+  }, 
+  {
+    "return_type": "MenuItem *", 
+    "variables": [
+      "p1", 
+      "this", 
+      "t_824", 
+      "t_824"
+    ], 
+    "address": "501ce398", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/a;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Lc/i/f/a/b;\r\n   Source File: ActionMenuItem.java\r\n   \r\n   Method Signature: Landroid/view/MenuItem;( Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 0\r\n   Method Debug Info Offset: 0x4f1827\r\n   Method ID Offset: 0xf6048\r\n    */\r\n\r\nMenuItem * androidx::appcompat::view::menu::a::setCheckable(a *this,boolean p1)\r\n\r\n{\r\n  *this->t = (uint)p1 | *this->t & 0xfffffffeU;\r\n  return this;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "setCheckable", 
+    "var_types": {
+      "p1": "bool", 
+      "t_824": "undefined", 
+      "this": "a *"
+    }
+  }, 
+  {
+    "return_type": "MenuItem *", 
+    "variables": [
+      "this", 
+      "p1", 
+      "uVar1", 
+      "t_824", 
+      "t_824"
+    ], 
+    "address": "501ce400", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/a;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Lc/i/f/a/b;\r\n   Source File: ActionMenuItem.java\r\n   \r\n   Method Signature: Landroid/view/MenuItem;( Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 0\r\n   Method Debug Info Offset: 0x4f1827\r\n   Method ID Offset: 0xf6068\r\n    */\r\n\r\nMenuItem * androidx::appcompat::view::menu::a::setEnabled(a *this,boolean p1)\r\n\r\n{\r\n  uint uVar1;\r\n  \r\n  if (p1) {\r\n    uVar1 = 0x10;\r\n  }\r\n  else {\r\n    uVar1 = 0;\r\n  }\r\n  *this->t = uVar1 | *this->t & 0xffffffefU;\r\n  return this;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "setEnabled", 
+    "var_types": {
+      "p1": "bool", 
+      "t_824": "undefined", 
+      "uVar1": "uint", 
+      "this": "a *"
+    }
+  }, 
+  {
+    "return_type": "MenuItem *", 
+    "variables": [
+      "uVar1", 
+      "t_824", 
+      "t_824", 
+      "this", 
+      "p1"
+    ], 
+    "address": "501ce634", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/a;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Lc/i/f/a/b;\r\n   Source File: ActionMenuItem.java\r\n   \r\n   Method Signature: Landroid/view/MenuItem;( Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 4\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 0\r\n   Method Debug Info Offset: 0x4f1827\r\n   Method ID Offset: 0xf6100\r\n    */\r\n\r\nMenuItem * androidx::appcompat::view::menu::a::setVisible(a *this,boolean p1)\r\n\r\n{\r\n  uint uVar1;\r\n  \r\n  uVar1 = 8;\r\n  if (p1) {\r\n    uVar1 = 0;\r\n  }\r\n  *this->t = *this->t & 8U | uVar1;\r\n  return this;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "setVisible", 
+    "var_types": {
+      "t_824": "undefined", 
+      "p1": "bool", 
+      "uVar1": "uint", 
+      "this": "a *"
+    }
+  }, 
+  {
+    "return_type": "bool", 
+    "variables": [
+      "t_824", 
+      "this"
+    ], 
+    "address": "501ce788", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/a;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Lc/i/f/a/b;\r\n   Source File: ActionMenuItem.java\r\n   \r\n   Method Signature: Z(  )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 0\r\n   Method Debug Info Offset: 0x4f182c\r\n   Method ID Offset: 0xf6000\r\n    */\r\n\r\nboolean androidx::appcompat::view::menu::a::isCheckable(a *this)\r\n\r\n{\r\n  return (*this->t & 1U) != 0;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "isCheckable", 
+    "var_types": {
+      "t_824": "undefined", 
+      "this": "a *"
+    }
+  }, 
+  {
+    "return_type": "bool", 
+    "variables": [
+      "this", 
+      "t_824"
+    ], 
+    "address": "501ce7d0", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/a;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Lc/i/f/a/b;\r\n   Source File: ActionMenuItem.java\r\n   \r\n   Method Signature: Z(  )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 0\r\n   Method Debug Info Offset: 0x4f182c\r\n   Method ID Offset: 0xf6010\r\n    */\r\n\r\nboolean androidx::appcompat::view::menu::a::isEnabled(a *this)\r\n\r\n{\r\n  return (*this->t & 0x10U) != 0;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "isEnabled", 
+    "var_types": {
+      "t_824": "undefined", 
+      "this": "a *"
+    }
+  }, 
+  {
+    "return_type": "bool", 
+    "variables": [
+      "t_824", 
+      "this"
+    ], 
+    "address": "501ce7f4", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/a;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Lc/i/f/a/b;\r\n   Source File: ActionMenuItem.java\r\n   \r\n   Method Signature: Z(  )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 0\r\n   Method Debug Info Offset: 0x4f182c\r\n   Method ID Offset: 0xf6018\r\n    */\r\n\r\nboolean androidx::appcompat::view::menu::a::isVisible(a *this)\r\n\r\n{\r\n  return (*this->t & 8U) == 0;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "isVisible", 
+    "var_types": {
+      "t_824": "undefined", 
+      "this": "a *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "pCVar5", 
+      "f_788", 
+      "h_790", 
+      "h_790", 
+      "j_792", 
+      "iVar2", 
+      "bVar1", 
+      "pRVar4", 
+      "piVar3", 
+      "j_792", 
+      "h_790", 
+      "h_790", 
+      "this", 
+      "f_788", 
+      "p1", 
+      "j_792", 
+      "h_790", 
+      "j_792", 
+      "j_792"
+    ], 
+    "address": "501d02d0", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/ListMenuItemView;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/LinearLayout;\r\n   Interfaces: \r\n    Landroidx/appcompat/view/menu/n$a;\r\n    Landroid/widget/AbsListView$SelectionBoundsAdjuster;\r\n   Source File: ListMenuItemView.java\r\n   \r\n   Method Signature: V( Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 5\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f320b\r\n   Method ID Offset: 0xf5ed8\r\n    */\r\n\r\nvoid androidx::appcompat::view::menu::ListMenuItemView::setCheckable\r\n               (ListMenuItemView *this,boolean p1)\r\n\r\n{\r\n  boolean bVar1;\r\n  int iVar2;\r\n  i *piVar3;\r\n  RadioButton *pRVar4;\r\n  CheckBox *pCVar5;\r\n  \r\n  if (((!p1) && (*this->h == (RadioButton *)0x0)) && (*this->j == (CheckBox *)0x0)) {\r\n    return;\r\n  }\r\n  piVar3 = *this->f;\r\n  bVar1 = (*piVar3->m)(piVar3);\r\n  if (bVar1) {\r\n    if (*this->h == (RadioButton *)0x0) {\r\n      (*this->g)(this);\r\n    }\r\n    pRVar4 = *this->h;\r\n    pCVar5 = *this->j;\r\n  }\r\n  else {\r\n    if (*this->j == (CheckBox *)0x0) {\r\n      (*this->c)(this);\r\n    }\r\n    pRVar4 = *this->j;\r\n    pCVar5 = *this->h;\r\n  }\r\n  if (p1) {\r\n    piVar3 = *this->f;\r\n    bVar1 = (*piVar3->isChecked)(piVar3);\r\n    (*pRVar4->setChecked)(pRVar4,bVar1);\r\n    iVar2 = (*pRVar4->getVisibility)(pRVar4);\r\n    if (iVar2 != 0) {\r\n      (*pRVar4->setVisibility)(pRVar4,0);\r\n    }\r\n    if ((pCVar5 != (CheckBox *)0x0) && (iVar2 = (*pCVar5->getVisibility)(pCVar5), iVar2 != 8)) {\r\n      (*pCVar5->setVisibility)(pCVar5,8);\r\n    }\r\n  }\r\n  else {\r\n    pCVar5 = *this->j;\r\n    if (pCVar5 != (CheckBox *)0x0) {\r\n      (*pCVar5->setVisibility)(pCVar5,8);\r\n    }\r\n    pRVar4 = *this->h;\r\n    if (pRVar4 != (RadioButton *)0x0) {\r\n      (*pRVar4->setVisibility)(pRVar4,8);\r\n    }\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [
+      {
+        "address": "501d02d0", 
+        "name": "setCheckable"
+      }
+    ], 
+    "name": "setCheckable", 
+    "var_types": {
+      "bVar1": "bool", 
+      "p1": "bool", 
+      "iVar2": "int", 
+      "pRVar4": "RadioButton *", 
+      "this": "ListMenuItemView *", 
+      "piVar3": "i *", 
+      "h_790": "undefined", 
+      "pCVar5": "CheckBox *", 
+      "f_788": "undefined", 
+      "j_792": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "iVar1", 
+      "this", 
+      "m_795", 
+      "p1", 
+      "t_802", 
+      "local_0"
+    ], 
+    "address": "501d0404", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/ListMenuItemView;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/LinearLayout;\r\n   Interfaces: \r\n    Landroidx/appcompat/view/menu/n$a;\r\n    Landroid/widget/AbsListView$SelectionBoundsAdjuster;\r\n   Source File: ListMenuItemView.java\r\n   \r\n   Method Signature: V( Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 4\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f322e\r\n   Method ID Offset: 0xf5ef0\r\n    */\r\n\r\nvoid androidx::appcompat::view::menu::ListMenuItemView::setGroupDividerEnabled\r\n               (ListMenuItemView *this,boolean p1)\r\n\r\n{\r\n  ImageView *local_0;\r\n  int iVar1;\r\n  \r\n  local_0 = *this->m;\r\n  if (local_0 != (ImageView *)0x0) {\r\n    if ((*this->t == false) && (p1)) {\r\n      iVar1 = 0;\r\n    }\r\n    else {\r\n      iVar1 = 8;\r\n    }\r\n    (*local_0->setVisibility)(local_0,iVar1);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [
+      {
+        "address": "501d0404", 
+        "name": "setGroupDividerEnabled"
+      }
+    ], 
+    "name": "setGroupDividerEnabled", 
+    "var_types": {
+      "p1": "bool", 
+      "t_802": "undefined", 
+      "iVar1": "int", 
+      "this": "ListMenuItemView *", 
+      "m_795": "undefined", 
+      "local_0": "ImageView *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "local_0", 
+      "l_794", 
+      "this", 
+      "p1", 
+      "iVar1"
+    ], 
+    "address": "501d0548", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/ListMenuItemView;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/LinearLayout;\r\n   Interfaces: \r\n    Landroidx/appcompat/view/menu/n$a;\r\n    Landroid/widget/AbsListView$SelectionBoundsAdjuster;\r\n   Source File: ListMenuItemView.java\r\n   \r\n   Method Signature: V( Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PRIVATE\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f1a01\r\n   Method ID Offset: 0xf5f00\r\n    */\r\n\r\nvoid androidx::appcompat::view::menu::ListMenuItemView::setSubMenuArrowVisible\r\n               (ListMenuItemView *this,boolean p1)\r\n\r\n{\r\n  ImageView *local_0;\r\n  int iVar1;\r\n  \r\n  local_0 = *this->l;\r\n  if (local_0 != (ImageView *)0x0) {\r\n    if (p1) {\r\n      iVar1 = 0;\r\n    }\r\n    else {\r\n      iVar1 = 8;\r\n    }\r\n    (*local_0->setVisibility)(local_0,iVar1);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [
+      {
+        "address": "501d0548", 
+        "name": "setSubMenuArrowVisible"
+      }
+    ], 
+    "name": "setSubMenuArrowVisible", 
+    "var_types": {
+      "p1": "bool", 
+      "l_794": "undefined", 
+      "iVar1": "int", 
+      "this": "ListMenuItemView *", 
+      "local_0": "ImageView *"
+    }
+  }, 
+  {
+    "return_type": "bool", 
+    "variables": [
+      "ref", 
+      "iVar2", 
+      "ref_00", 
+      "iVar3", 
+      "g_900", 
+      "A_893", 
+      "this", 
+      "bVar1", 
+      "Landroidx/appcompat/view/menu/i;"
+    ], 
+    "address": "501d1338", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/g;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Lc/i/f/a/a;\r\n   Source File: MenuBuilder.java\r\n   \r\n   Method Signature: Z(  )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 6\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f3364\r\n   Method ID Offset: 0xf6628\r\n    */\r\n\r\nboolean androidx::appcompat::view::menu::g::hasVisibleItems(g *this)\r\n\r\n{\r\n  boolean bVar1;\r\n  int iVar2;\r\n  Object *ref;\r\n  int iVar3;\r\n  ArrayList *ref_00;\r\n  \r\n  if (*this->A != false) {\r\n    return true;\r\n  }\r\n  iVar2 = (*this->size)(this);\r\n  iVar3 = 0;\r\n  while( true ) {\r\n    if (iVar2 <= iVar3) {\r\n      return false;\r\n    }\r\n    ref_00 = *this->g;\r\n    ref = (*ref_00->get)(ref_00,iVar3);\r\n    checkCast(ref,i);\r\n    bVar1 = (*ref->isVisible)(ref);\r\n    if (bVar1) break;\r\n    iVar3 = iVar3 + 1;\r\n  }\r\n  return true;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [
+      {
+        "address": "501d1338", 
+        "name": "hasVisibleItems"
+      }, 
+      {
+        "address": "501d1338", 
+        "name": "hasVisibleItems"
+      }, 
+      {
+        "address": "501d1338", 
+        "name": "hasVisibleItems"
+      }, 
+      {
+        "address": "501d1338", 
+        "name": "hasVisibleItems"
+      }, 
+      {
+        "address": "501d1338", 
+        "name": "hasVisibleItems"
+      }
+    ], 
+    "name": "hasVisibleItems", 
+    "var_types": {
+      "bVar1": "bool", 
+      "iVar2": "int", 
+      "iVar3": "int", 
+      "this": "g *", 
+      "Landroidx/appcompat/view/menu/i;": "undefined", 
+      "ref_00": "ArrayList *", 
+      "ref": "Object *", 
+      "A_893": "undefined", 
+      "g_900": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "local_0", 
+      "p1", 
+      "iVar3", 
+      "p2", 
+      "p3", 
+      "ref", 
+      "iVar2", 
+      "Landroidx/appcompat/view/menu/i;", 
+      "iVar1", 
+      "g_900", 
+      "g_900", 
+      "this"
+    ], 
+    "address": "501d2230", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/g;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Lc/i/f/a/a;\r\n   Source File: MenuBuilder.java\r\n   \r\n   Method Signature: V( I\r\n    Z\r\n    Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 8\r\n   Method Incoming Size: 4\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f34a8\r\n   Method ID Offset: 0xf66b0\r\n    */\r\n\r\nvoid androidx::appcompat::view::menu::g::setGroupCheckable(g *this,int p1,boolean p2,boolean p3)\r\n\r\n{\r\n  int iVar1;\r\n  Object *ref;\r\n  int iVar2;\r\n  ArrayList *local_0;\r\n  int iVar3;\r\n  \r\n  local_0 = *this->g;\r\n  iVar1 = (*local_0->size)(local_0);\r\n  for (iVar3 = 0; iVar3 < iVar1; iVar3 = iVar3 + 1) {\r\n    local_0 = *this->g;\r\n    ref = (*local_0->get)(local_0,iVar3);\r\n    checkCast(ref,i);\r\n    iVar2 = (*ref->getGroupId)(ref);\r\n    if (iVar2 == p1) {\r\n      (*ref->t)(ref,p3);\r\n      (*ref->setCheckable)(ref,p2);\r\n    }\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 4, 
+    "calls": [], 
+    "name": "setGroupCheckable", 
+    "var_types": {
+      "p1": "int", 
+      "p2": "bool", 
+      "p3": "bool", 
+      "iVar1": "int", 
+      "iVar2": "int", 
+      "iVar3": "int", 
+      "this": "g *", 
+      "Landroidx/appcompat/view/menu/i;": "undefined", 
+      "ref": "Object *", 
+      "g_900": "undefined", 
+      "local_0": "ArrayList *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "this", 
+      "p1", 
+      "z_919"
+    ], 
+    "address": "501d2284", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/g;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Lc/i/f/a/a;\r\n   Source File: MenuBuilder.java\r\n   \r\n   Method Signature: V( Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 0\r\n   Method Debug Info Offset: 0x4f1827\r\n   Method ID Offset: 0xf66b8\r\n    */\r\n\r\nvoid androidx::appcompat::view::menu::g::setGroupDividerEnabled(g *this,boolean p1)\r\n\r\n{\r\n  *this->z = p1;\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [
+      {
+        "address": "501d2284", 
+        "name": "setGroupDividerEnabled"
+      }
+    ], 
+    "name": "setGroupDividerEnabled", 
+    "var_types": {
+      "p1": "bool", 
+      "this": "g *", 
+      "z_919": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "local_0", 
+      "iVar3", 
+      "ref", 
+      "iVar2", 
+      "Landroidx/appcompat/view/menu/i;", 
+      "iVar1", 
+      "this", 
+      "g_900", 
+      "p1", 
+      "g_900", 
+      "p2"
+    ], 
+    "address": "501d229c", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/g;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Lc/i/f/a/a;\r\n   Source File: MenuBuilder.java\r\n   \r\n   Method Signature: V( I\r\n    Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 7\r\n   Method Incoming Size: 3\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f34b3\r\n   Method ID Offset: 0xf66c0\r\n    */\r\n\r\nvoid androidx::appcompat::view::menu::g::setGroupEnabled(g *this,int p1,boolean p2)\r\n\r\n{\r\n  int iVar1;\r\n  Object *ref;\r\n  int iVar2;\r\n  ArrayList *local_0;\r\n  int iVar3;\r\n  \r\n  local_0 = *this->g;\r\n  iVar1 = (*local_0->size)(local_0);\r\n  for (iVar3 = 0; iVar3 < iVar1; iVar3 = iVar3 + 1) {\r\n    local_0 = *this->g;\r\n    ref = (*local_0->get)(local_0,iVar3);\r\n    checkCast(ref,i);\r\n    iVar2 = (*ref->getGroupId)(ref);\r\n    if (iVar2 == p1) {\r\n      (*ref->setEnabled)(ref,p2);\r\n    }\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 3, 
+    "calls": [], 
+    "name": "setGroupEnabled", 
+    "var_types": {
+      "p1": "int", 
+      "p2": "bool", 
+      "iVar1": "int", 
+      "iVar2": "int", 
+      "iVar3": "int", 
+      "this": "g *", 
+      "Landroidx/appcompat/view/menu/i;": "undefined", 
+      "ref": "Object *", 
+      "g_900": "undefined", 
+      "local_0": "ArrayList *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "this", 
+      "p1", 
+      "p2", 
+      "iVar5", 
+      "ref", 
+      "iVar4", 
+      "bVar2", 
+      "local_0", 
+      "iVar3", 
+      "Landroidx/appcompat/view/menu/i;", 
+      "bVar1", 
+      "g_900", 
+      "g_900"
+    ], 
+    "address": "501d22e8", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/g;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Lc/i/f/a/a;\r\n   Source File: MenuBuilder.java\r\n   \r\n   Method Signature: V( I\r\n    Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 9\r\n   Method Incoming Size: 3\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f34bc\r\n   Method ID Offset: 0xf66c8\r\n    */\r\n\r\nvoid androidx::appcompat::view::menu::g::setGroupVisible(g *this,int p1,boolean p2)\r\n\r\n{\r\n  boolean bVar1;\r\n  boolean bVar2;\r\n  int iVar3;\r\n  Object *ref;\r\n  int iVar4;\r\n  ArrayList *local_0;\r\n  int iVar5;\r\n  \r\n  local_0 = *this->g;\r\n  iVar3 = (*local_0->size)(local_0);\r\n  bVar1 = false;\r\n  for (iVar5 = 0; iVar5 < iVar3; iVar5 = iVar5 + 1) {\r\n    local_0 = *this->g;\r\n    ref = (*local_0->get)(local_0,iVar5);\r\n    checkCast(ref,i);\r\n    iVar4 = (*ref->getGroupId)(ref);\r\n    if ((iVar4 == p1) && (bVar2 = (*ref->y)(ref,p2), bVar2)) {\r\n      bVar1 = true;\r\n    }\r\n  }\r\n  if (bVar1) {\r\n    (*this->M)(this,true);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 3, 
+    "calls": [], 
+    "name": "setGroupVisible", 
+    "var_types": {
+      "bVar2": "bool", 
+      "p1": "int", 
+      "bVar1": "bool", 
+      "p2": "bool", 
+      "iVar3": "int", 
+      "iVar4": "int", 
+      "iVar5": "int", 
+      "this": "g *", 
+      "Landroidx/appcompat/view/menu/i;": "undefined", 
+      "ref": "Object *", 
+      "g_900": "undefined", 
+      "local_0": "ArrayList *"
+    }
+  }, 
+  {
+    "return_type": "MenuItem *", 
+    "variables": [
+      "this", 
+      "p1", 
+      "local_0", 
+      "ref", 
+      "uVar1", 
+      "n_943", 
+      "y_954", 
+      "y_954"
+    ], 
+    "address": "501d29b8", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/i;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n    ACC_FINAL\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Lc/i/f/a/b;\r\n   Source File: MenuItemImpl.java\r\n   \r\n   Method Signature: Landroid/view/MenuItem;( Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 4\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f2ece\r\n   Method ID Offset: 0xf6918\r\n    */\r\n\r\nMenuItem * androidx::appcompat::view::menu::i::setCheckable(i *this,boolean p1)\r\n\r\n{\r\n  uint local_0;\r\n  uint uVar1;\r\n  g *ref;\r\n  \r\n  local_0 = *this->y;\r\n  uVar1 = (uint)p1 | local_0 & 0xfffffffe;\r\n  *this->y = uVar1;\r\n  if (local_0 != uVar1) {\r\n    ref = *this->n;\r\n    (*ref->M)(ref,false);\r\n  }\r\n  return this;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [
+      {
+        "address": "501d29b8", 
+        "name": "setCheckable"
+      }
+    ], 
+    "name": "setCheckable", 
+    "var_types": {
+      "p1": "bool", 
+      "uVar1": "uint", 
+      "y_954": "undefined", 
+      "this": "i *", 
+      "ref": "g *", 
+      "local_0": "uint", 
+      "n_943": "undefined"
+    }
+  }, 
+  {
+    "return_type": "MenuItem *", 
+    "variables": [
+      "ref", 
+      "n_943", 
+      "this", 
+      "y_954", 
+      "p1", 
+      "y_954", 
+      "y_954", 
+      "y_954"
+    ], 
+    "address": "501d2a34", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/i;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n    ACC_FINAL\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Lc/i/f/a/b;\r\n   Source File: MenuItemImpl.java\r\n   \r\n   Method Signature: Landroid/view/MenuItem;( Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f3546\r\n   Method ID Offset: 0xf6938\r\n    */\r\n\r\nMenuItem * androidx::appcompat::view::menu::i::setEnabled(i *this,boolean p1)\r\n\r\n{\r\n  g *ref;\r\n  \r\n  if (p1) {\r\n    *this->y = *this->y | 0x10;\r\n  }\r\n  else {\r\n    *this->y = *this->y & 0xffffffef;\r\n  }\r\n  ref = *this->n;\r\n  (*ref->M)(ref,false);\r\n  return this;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [
+      {
+        "address": "501d2a34", 
+        "name": "setEnabled"
+      }
+    ], 
+    "name": "setEnabled", 
+    "var_types": {
+      "p1": "bool", 
+      "y_954": "undefined", 
+      "this": "i *", 
+      "ref": "g *", 
+      "n_943": "undefined"
+    }
+  }, 
+  {
+    "return_type": "MenuItem *", 
+    "variables": [
+      "n_943", 
+      "bVar1", 
+      "ref", 
+      "this", 
+      "p1"
+    ], 
+    "address": "501d2d0c", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/i;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n    ACC_FINAL\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Lc/i/f/a/b;\r\n   Source File: MenuItemImpl.java\r\n   \r\n   Method Signature: Landroid/view/MenuItem;( Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f1827\r\n   Method ID Offset: 0xf69d0\r\n    */\r\n\r\nMenuItem * androidx::appcompat::view::menu::i::setVisible(i *this,boolean p1)\r\n\r\n{\r\n  boolean bVar1;\r\n  g *ref;\r\n  \r\n  bVar1 = (*this->y)(this,p1);\r\n  if (bVar1) {\r\n    ref = *this->n;\r\n    (*ref->L)(ref,this);\r\n  }\r\n  return this;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "setVisible", 
+    "var_types": {
+      "bVar1": "bool", 
+      "p1": "bool", 
+      "this": "i *", 
+      "ref": "g *", 
+      "n_943": "undefined"
+    }
+  }, 
+  {
+    "return_type": "bool", 
+    "variables": [
+      "this", 
+      "y_954"
+    ], 
+    "address": "501d30b4", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/i;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n    ACC_FINAL\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Lc/i/f/a/b;\r\n   Source File: MenuItemImpl.java\r\n   \r\n   Method Signature: Z(  )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 0\r\n   Method Debug Info Offset: 0x4f182c\r\n   Method ID Offset: 0xf6880\r\n    */\r\n\r\nboolean androidx::appcompat::view::menu::i::isCheckable(i *this)\r\n\r\n{\r\n  return (*this->y & 1U) == 1;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [
+      {
+        "address": "501d30b4", 
+        "name": "isCheckable"
+      }, 
+      {
+        "address": "501d30b4", 
+        "name": "isCheckable"
+      }
+    ], 
+    "name": "isCheckable", 
+    "var_types": {
+      "y_954": "undefined", 
+      "this": "i *"
+    }
+  }, 
+  {
+    "return_type": "bool", 
+    "variables": [
+      "this", 
+      "y_954"
+    ], 
+    "address": "501d30fc", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/i;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n    ACC_FINAL\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Lc/i/f/a/b;\r\n   Source File: MenuItemImpl.java\r\n   \r\n   Method Signature: Z(  )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 0\r\n   Method Debug Info Offset: 0x4f182c\r\n   Method ID Offset: 0xf6890\r\n    */\r\n\r\nboolean androidx::appcompat::view::menu::i::isEnabled(i *this)\r\n\r\n{\r\n  return (*this->y & 0x10U) != 0;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [
+      {
+        "address": "501d30fc", 
+        "name": "isEnabled"
+      }, 
+      {
+        "address": "501d30fc", 
+        "name": "isEnabled"
+      }, 
+      {
+        "address": "501d30fc", 
+        "name": "isEnabled"
+      }, 
+      {
+        "address": "501d30fc", 
+        "name": "isEnabled"
+      }
+    ], 
+    "name": "isEnabled", 
+    "var_types": {
+      "y_954": "undefined", 
+      "this": "i *"
+    }
+  }, 
+  {
+    "return_type": "bool", 
+    "variables": [
+      "this", 
+      "bVar2", 
+      "local_0", 
+      "bVar1", 
+      "y_954", 
+      "B_926", 
+      "y_954", 
+      "B_926"
+    ], 
+    "address": "501d3144", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/i;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n    ACC_FINAL\r\n   \r\n   Superclass: Ljava/lang/Object;\r\n   Interfaces: \r\n    Lc/i/f/a/b;\r\n   Source File: MenuItemImpl.java\r\n   \r\n   Method Signature: Z(  )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 4\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f35d1\r\n   Method ID Offset: 0xf6898\r\n    */\r\n\r\nboolean androidx::appcompat::view::menu::i::isVisible(i *this)\r\n\r\n{\r\n  boolean bVar1;\r\n  b *local_0;\r\n  boolean bVar2;\r\n  \r\n  local_0 = *this->B;\r\n  bVar2 = true;\r\n  if ((local_0 != (b *)0x0) && (bVar1 = (*local_0->g)(local_0), bVar1)) {\r\n    if (((*this->y & 8U) != 0) || (local_0 = *this->B, bVar1 = (*local_0->b)(local_0), !bVar1)) {\r\n      bVar2 = false;\r\n    }\r\n    return bVar2;\r\n  }\r\n  return (*this->y & 8U) == 0;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [
+      {
+        "address": "501d3144", 
+        "name": "isVisible"
+      }, 
+      {
+        "address": "501d3144", 
+        "name": "isVisible"
+      }, 
+      {
+        "address": "501d3144", 
+        "name": "isVisible"
+      }, 
+      {
+        "address": "501d3144", 
+        "name": "isVisible"
+      }
+    ], 
+    "name": "isVisible", 
+    "var_types": {
+      "bVar2": "bool", 
+      "bVar1": "bool", 
+      "y_954": "undefined", 
+      "this": "i *", 
+      "B_926": "undefined", 
+      "local_0": "b *"
+    }
+  }, 
+  {
+    "return_type": "MenuItem *", 
+    "variables": [
+      "d_965", 
+      "local_0", 
+      "this", 
+      "p1"
+    ], 
+    "address": "501d3c40", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/j;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroidx/appcompat/view/menu/c;\r\n   Interfaces: \r\n    Landroid/view/MenuItem;\r\n   Source File: MenuItemWrapperICS.java\r\n   \r\n   Method Signature: Landroid/view/MenuItem;( Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f1827\r\n   Method ID Offset: 0xf6bc8\r\n    */\r\n\r\nMenuItem * androidx::appcompat::view::menu::j::setCheckable(j *this,boolean p1)\r\n\r\n{\r\n  b *local_0;\r\n  \r\n  local_0 = *this->d;\r\n  (*local_0->setCheckable)(local_0,p1);\r\n  return this;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "setCheckable", 
+    "var_types": {
+      "p1": "bool", 
+      "this": "j *", 
+      "d_965": "undefined", 
+      "local_0": "b *"
+    }
+  }, 
+  {
+    "return_type": "MenuItem *", 
+    "variables": [
+      "d_965", 
+      "local_0", 
+      "this", 
+      "p1"
+    ], 
+    "address": "501d3c94", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/j;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroidx/appcompat/view/menu/c;\r\n   Interfaces: \r\n    Landroid/view/MenuItem;\r\n   Source File: MenuItemWrapperICS.java\r\n   \r\n   Method Signature: Landroid/view/MenuItem;( Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f1827\r\n   Method ID Offset: 0xf6be0\r\n    */\r\n\r\nMenuItem * androidx::appcompat::view::menu::j::setEnabled(j *this,boolean p1)\r\n\r\n{\r\n  b *local_0;\r\n  \r\n  local_0 = *this->d;\r\n  (*local_0->setEnabled)(local_0,p1);\r\n  return this;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "setEnabled", 
+    "var_types": {
+      "p1": "bool", 
+      "this": "j *", 
+      "d_965": "undefined", 
+      "local_0": "b *"
+    }
+  }, 
+  {
+    "return_type": "MenuItem *", 
+    "variables": [
+      "pMVar1", 
+      "d_965", 
+      "local_0", 
+      "this", 
+      "p1"
+    ], 
+    "address": "501d3e98", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/j;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroidx/appcompat/view/menu/c;\r\n   Interfaces: \r\n    Landroid/view/MenuItem;\r\n   Source File: MenuItemWrapperICS.java\r\n   \r\n   Method Signature: Landroid/view/MenuItem;( Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f1827\r\n   Method ID Offset: 0xf6c70\r\n    */\r\n\r\nMenuItem * androidx::appcompat::view::menu::j::setVisible(j *this,boolean p1)\r\n\r\n{\r\n  MenuItem *pMVar1;\r\n  b *local_0;\r\n  \r\n  local_0 = *this->d;\r\n  pMVar1 = (*local_0->setVisible)(local_0,p1);\r\n  return pMVar1;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "setVisible", 
+    "var_types": {
+      "p1": "bool", 
+      "pMVar1": "MenuItem *", 
+      "this": "j *", 
+      "d_965": "undefined", 
+      "local_0": "b *"
+    }
+  }, 
+  {
+    "return_type": "bool", 
+    "variables": [
+      "d_965", 
+      "bVar1", 
+      "local_0", 
+      "this"
+    ], 
+    "address": "501d3f94", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/j;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroidx/appcompat/view/menu/c;\r\n   Interfaces: \r\n    Landroid/view/MenuItem;\r\n   Source File: MenuItemWrapperICS.java\r\n   \r\n   Method Signature: Z(  )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f182c\r\n   Method ID Offset: 0xf6b80\r\n    */\r\n\r\nboolean androidx::appcompat::view::menu::j::isCheckable(j *this)\r\n\r\n{\r\n  boolean bVar1;\r\n  b *local_0;\r\n  \r\n  local_0 = *this->d;\r\n  bVar1 = (*local_0->isCheckable)(local_0);\r\n  return bVar1;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "isCheckable", 
+    "var_types": {
+      "bVar1": "bool", 
+      "this": "j *", 
+      "d_965": "undefined", 
+      "local_0": "b *"
+    }
+  }, 
+  {
+    "return_type": "bool", 
+    "variables": [
+      "d_965", 
+      "bVar1", 
+      "local_0", 
+      "this"
+    ], 
+    "address": "501d3fd4", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/j;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroidx/appcompat/view/menu/c;\r\n   Interfaces: \r\n    Landroid/view/MenuItem;\r\n   Source File: MenuItemWrapperICS.java\r\n   \r\n   Method Signature: Z(  )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f182c\r\n   Method ID Offset: 0xf6b90\r\n    */\r\n\r\nboolean androidx::appcompat::view::menu::j::isEnabled(j *this)\r\n\r\n{\r\n  boolean bVar1;\r\n  b *local_0;\r\n  \r\n  local_0 = *this->d;\r\n  bVar1 = (*local_0->isEnabled)(local_0);\r\n  return bVar1;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "isEnabled", 
+    "var_types": {
+      "bVar1": "bool", 
+      "this": "j *", 
+      "d_965": "undefined", 
+      "local_0": "b *"
+    }
+  }, 
+  {
+    "return_type": "bool", 
+    "variables": [
+      "d_965", 
+      "bVar1", 
+      "local_0", 
+      "this"
+    ], 
+    "address": "501d3ff4", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/j;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroidx/appcompat/view/menu/c;\r\n   Interfaces: \r\n    Landroid/view/MenuItem;\r\n   Source File: MenuItemWrapperICS.java\r\n   \r\n   Method Signature: Z(  )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f182c\r\n   Method ID Offset: 0xf6b98\r\n    */\r\n\r\nboolean androidx::appcompat::view::menu::j::isVisible(j *this)\r\n\r\n{\r\n  boolean bVar1;\r\n  b *local_0;\r\n  \r\n  local_0 = *this->d;\r\n  bVar1 = (*local_0->isVisible)(local_0);\r\n  return bVar1;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "isVisible", 
+    "var_types": {
+      "bVar1": "bool", 
+      "this": "j *", 
+      "d_965": "undefined", 
+      "local_0": "b *"
+    }
+  }, 
+  {
+    "return_type": "bool", 
+    "variables": [
+      "d_981", 
+      "bVar1", 
+      "local_0", 
+      "this"
+    ], 
+    "address": "501d4a00", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/o;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroidx/appcompat/view/menu/c;\r\n   Interfaces: \r\n    Landroid/view/Menu;\r\n   Source File: MenuWrapperICS.java\r\n   \r\n   Method Signature: Z(  )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f182c\r\n   Method ID Offset: 0xf6ea0\r\n    */\r\n\r\nboolean androidx::appcompat::view::menu::o::hasVisibleItems(o *this)\r\n\r\n{\r\n  boolean bVar1;\r\n  a *local_0;\r\n  \r\n  local_0 = *this->d;\r\n  bVar1 = (*local_0->hasVisibleItems)(local_0);\r\n  return bVar1;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "hasVisibleItems", 
+    "var_types": {
+      "bVar1": "bool", 
+      "this": "o *", 
+      "local_0": "a *", 
+      "d_981": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "d_981", 
+      "p2", 
+      "p3", 
+      "local_0", 
+      "this", 
+      "p1"
+    ], 
+    "address": "501d4bc4", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/o;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroidx/appcompat/view/menu/c;\r\n   Interfaces: \r\n    Landroid/view/Menu;\r\n   Source File: MenuWrapperICS.java\r\n   \r\n   Method Signature: V( I\r\n    Z\r\n    Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 5\r\n   Method Incoming Size: 4\r\n   Method Outgoing Size: 4\r\n   Method Debug Info Offset: 0x4f190f\r\n   Method ID Offset: 0xf6ed0\r\n    */\r\n\r\nvoid androidx::appcompat::view::menu::o::setGroupCheckable(o *this,int p1,boolean p2,boolean p3)\r\n\r\n{\r\n  a *local_0;\r\n  \r\n  local_0 = *this->d;\r\n  (*local_0->setGroupCheckable)(local_0,p1,p2,p3);\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 4, 
+    "calls": [], 
+    "name": "setGroupCheckable", 
+    "var_types": {
+      "p1": "int", 
+      "p2": "bool", 
+      "p3": "bool", 
+      "this": "o *", 
+      "local_0": "a *", 
+      "d_981": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "local_0", 
+      "this", 
+      "d_981", 
+      "p1", 
+      "p2"
+    ], 
+    "address": "501d4be0", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/o;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroidx/appcompat/view/menu/c;\r\n   Interfaces: \r\n    Landroid/view/Menu;\r\n   Source File: MenuWrapperICS.java\r\n   \r\n   Method Signature: V( I\r\n    Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 4\r\n   Method Incoming Size: 3\r\n   Method Outgoing Size: 3\r\n   Method Debug Info Offset: 0x4f18c6\r\n   Method ID Offset: 0xf6ed8\r\n    */\r\n\r\nvoid androidx::appcompat::view::menu::o::setGroupEnabled(o *this,int p1,boolean p2)\r\n\r\n{\r\n  a *local_0;\r\n  \r\n  local_0 = *this->d;\r\n  (*local_0->setGroupEnabled)(local_0,p1,p2);\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 3, 
+    "calls": [], 
+    "name": "setGroupEnabled", 
+    "var_types": {
+      "p1": "int", 
+      "p2": "bool", 
+      "this": "o *", 
+      "local_0": "a *", 
+      "d_981": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "d_981", 
+      "p1", 
+      "p2", 
+      "local_0", 
+      "this"
+    ], 
+    "address": "501d4bfc", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/o;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroidx/appcompat/view/menu/c;\r\n   Interfaces: \r\n    Landroid/view/Menu;\r\n   Source File: MenuWrapperICS.java\r\n   \r\n   Method Signature: V( I\r\n    Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 4\r\n   Method Incoming Size: 3\r\n   Method Outgoing Size: 3\r\n   Method Debug Info Offset: 0x4f18c6\r\n   Method ID Offset: 0xf6ee0\r\n    */\r\n\r\nvoid androidx::appcompat::view::menu::o::setGroupVisible(o *this,int p1,boolean p2)\r\n\r\n{\r\n  a *local_0;\r\n  \r\n  local_0 = *this->d;\r\n  (*local_0->setGroupVisible)(local_0,p1,p2);\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 3, 
+    "calls": [], 
+    "name": "setGroupVisible", 
+    "var_types": {
+      "p1": "int", 
+      "p2": "bool", 
+      "this": "o *", 
+      "local_0": "a *", 
+      "d_981": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "B_1005", 
+      "this", 
+      "p1", 
+      "local_0"
+    ], 
+    "address": "501d55e8", 
+    "code": "\r\n/* Class: Landroidx/appcompat/view/menu/r;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroidx/appcompat/view/menu/g;\r\n   Interfaces: \r\n    Landroid/view/SubMenu;\r\n   Source File: SubMenuBuilder.java\r\n   \r\n   Method Signature: V( Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f1827\r\n   Method ID Offset: 0xf7058\r\n    */\r\n\r\nvoid androidx::appcompat::view::menu::r::setGroupDividerEnabled(r *this,boolean p1)\r\n\r\n{\r\n  g *local_0;\r\n  \r\n  local_0 = *this->B;\r\n  (*local_0->setGroupDividerEnabled)(local_0,p1);\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "setGroupDividerEnabled", 
+    "var_types": {
+      "p1": "bool", 
+      "this": "r *", 
+      "B_1005": "undefined", 
+      "local_0": "g *"
+    }
+  }, 
+  {
+    "return_type": "bool", 
+    "variables": [
+      "bVar1", 
+      "l_1014", 
+      "m_1015", 
+      "k_1013", 
+      "n_1016", 
+      "j_1012", 
+      "m_1015", 
+      "this", 
+      "p1"
+    ], 
+    "address": "501d5d40", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/ActionBarContainer;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/FrameLayout;\r\n   Source File: ActionBarContainer.java\r\n   \r\n   Method Signature: Z( Landroid/graphics/drawable/Drawable;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PROTECTED\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f3832\r\n   Method ID Offset: 0xf7198\r\n    */\r\n\r\nboolean androidx::appcompat::widget::ActionBarContainer::verifyDrawable\r\n                  (ActionBarContainer *this,Drawable *p1)\r\n\r\n{\r\n  boolean bVar1;\r\n  \r\n  if ((((p1 == *this->j) && (*this->m == false)) || ((p1 == *this->k && (*this->n != false)))) ||\r\n     (((p1 == *this->l && (*this->m != false)) || (bVar1 = (*super->verifyDrawable)(this,p1), bVar1)\r\n      ))) {\r\n    bVar1 = true;\r\n  }\r\n  else {\r\n    bVar1 = false;\r\n  }\r\n  return bVar1;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "verifyDrawable", 
+    "var_types": {
+      "bVar1": "bool", 
+      "p1": "Drawable *", 
+      "m_1015": "undefined", 
+      "j_1012": "undefined", 
+      "l_1014": "undefined", 
+      "this": "ActionBarContainer *", 
+      "n_1016": "undefined", 
+      "k_1013": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "l_1014", 
+      "l_1014", 
+      "piVar2", 
+      "bVar1", 
+      "j_1012", 
+      "j_1012", 
+      "k_1013", 
+      "k_1013", 
+      "this", 
+      "pDVar3"
+    ], 
+    "address": "501d5e88", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/ActionBarContainer;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/FrameLayout;\r\n   Source File: ActionBarContainer.java\r\n   \r\n   Method Signature: V(  )\r\n   Method Access Flags:\r\n    ACC_PROTECTED\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f384d\r\n   Method ID Offset: 0xf7110\r\n    */\r\n\r\nvoid androidx::appcompat::widget::ActionBarContainer::drawableStateChanged(ActionBarContainer *this)\r\n\r\n{\r\n  boolean bVar1;\r\n  int *piVar2;\r\n  Drawable *pDVar3;\r\n  \r\n  (*super->drawableStateChanged)(this);\r\n  pDVar3 = *this->j;\r\n  if ((pDVar3 != (Drawable *)0x0) && (bVar1 = (*pDVar3->isStateful)(pDVar3), bVar1)) {\r\n    pDVar3 = *this->j;\r\n    piVar2 = (*this->getDrawableState)(this);\r\n    (*pDVar3->setState)(pDVar3,piVar2);\r\n  }\r\n  pDVar3 = *this->k;\r\n  if ((pDVar3 != (Drawable *)0x0) && (bVar1 = (*pDVar3->isStateful)(pDVar3), bVar1)) {\r\n    pDVar3 = *this->k;\r\n    piVar2 = (*this->getDrawableState)(this);\r\n    (*pDVar3->setState)(pDVar3,piVar2);\r\n  }\r\n  pDVar3 = *this->l;\r\n  if ((pDVar3 != (Drawable *)0x0) && (bVar1 = (*pDVar3->isStateful)(pDVar3), bVar1)) {\r\n    pDVar3 = *this->l;\r\n    piVar2 = (*this->getDrawableState)(this);\r\n    (*pDVar3->setState)(pDVar3,piVar2);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "drawableStateChanged", 
+    "var_types": {
+      "bVar1": "bool", 
+      "pDVar3": "Drawable *", 
+      "j_1012": "undefined", 
+      "l_1014": "undefined", 
+      "this": "ActionBarContainer *", 
+      "piVar2": "int *", 
+      "k_1013": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "this", 
+      "k_1013", 
+      "j_1012", 
+      "pDVar1", 
+      "l_1014"
+    ], 
+    "address": "501d5f14", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/ActionBarContainer;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/FrameLayout;\r\n   Source File: ActionBarContainer.java\r\n   \r\n   Method Signature: V(  )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f3857\r\n   Method ID Offset: 0xf7120\r\n    */\r\n\r\nvoid androidx::appcompat::widget::ActionBarContainer::jumpDrawablesToCurrentState\r\n               (ActionBarContainer *this)\r\n\r\n{\r\n  Drawable *pDVar1;\r\n  \r\n  (*super->jumpDrawablesToCurrentState)(this);\r\n  pDVar1 = *this->j;\r\n  if (pDVar1 != (Drawable *)0x0) {\r\n    (*pDVar1->jumpToCurrentState)(pDVar1);\r\n  }\r\n  pDVar1 = *this->k;\r\n  if (pDVar1 != (Drawable *)0x0) {\r\n    (*pDVar1->jumpToCurrentState)(pDVar1);\r\n  }\r\n  pDVar1 = *this->l;\r\n  if (pDVar1 != (Drawable *)0x0) {\r\n    (*pDVar1->jumpToCurrentState)(pDVar1);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "jumpDrawablesToCurrentState", 
+    "var_types": {
+      "j_1012": "undefined", 
+      "this": "ActionBarContainer *", 
+      "l_1014": "undefined", 
+      "pDVar1": "Drawable *", 
+      "k_1013": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "p_1055", 
+      "p_1055", 
+      "p1", 
+      "this"
+    ], 
+    "address": "501d8094", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/ActionBarOverlayLayout;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/view/ViewGroup;\r\n   Interfaces: \r\n    Landroidx/appcompat/widget/w;\r\n    Landroidx/core/view/n;\r\n    Landroidx/core/view/l;\r\n    Landroidx/core/view/m;\r\n   Source File: ActionBarOverlayLayout.java\r\n   \r\n   Method Signature: V( Z\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f3b11\r\n   Method ID Offset: 0xf74a0\r\n    */\r\n\r\nvoid androidx::appcompat::widget::ActionBarOverlayLayout::setHideOnContentScrollEnabled\r\n               (ActionBarOverlayLayout *this,boolean p1)\r\n\r\n{\r\n  if ((p1 != *this->p) && (*this->p = p1, !p1)) {\r\n    (*this->u)(this);\r\n    (*this->setActionBarHideOffset)(this,0);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [
+      {
+        "address": "501d8094", 
+        "name": "setHideOnContentScrollEnabled"
+      }, 
+      {
+        "address": "501d8094", 
+        "name": "setHideOnContentScrollEnabled"
+      }, 
+      {
+        "address": "501d8094", 
+        "name": "setHideOnContentScrollEnabled"
+      }
+    ], 
+    "name": "setHideOnContentScrollEnabled", 
+    "var_types": {
+      "p1": "bool", 
+      "this": "ActionBarOverlayLayout *", 
+      "p_1055": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "h_1384", 
+      "g_1383", 
+      "ref_00", 
+      "ref", 
+      "this"
+    ], 
+    "address": "501da9a8", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/c;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/AutoCompleteTextView;\r\n   Interfaces: \r\n    Landroidx/core/view/t;\r\n   Source File: AppCompatAutoCompleteTextView.java\r\n   \r\n   Method Signature: V(  )\r\n   Method Access Flags:\r\n    ACC_PROTECTED\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f3ded\r\n   Method ID Offset: 0xf8ee0\r\n    */\r\n\r\nvoid androidx::appcompat::widget::c::drawableStateChanged(c *this)\r\n\r\n{\r\n  d *ref;\r\n  s *ref_00;\r\n  \r\n  (*super->drawableStateChanged)(this);\r\n  ref = *this->g;\r\n  if (ref != (d *)0x0) {\r\n    (*ref->b)(ref);\r\n  }\r\n  ref_00 = *this->h;\r\n  if (ref_00 != (s *)0x0) {\r\n    (*ref_00->b)(ref_00);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "drawableStateChanged", 
+    "var_types": {
+      "g_1383": "undefined", 
+      "this": "c *", 
+      "ref_00": "s *", 
+      "ref": "d *", 
+      "h_1384": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "this", 
+      "p1", 
+      "ref", 
+      "g_1383"
+    ], 
+    "address": "501da9dc", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/c;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/AutoCompleteTextView;\r\n   Interfaces: \r\n    Landroidx/core/view/t;\r\n   Source File: AppCompatAutoCompleteTextView.java\r\n   \r\n   Method Signature: V( Landroid/graphics/drawable/Drawable;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f2b61\r\n   Method ID Offset: 0xf8f00\r\n    */\r\n\r\nvoid androidx::appcompat::widget::c::setBackgroundDrawable(c *this,Drawable *p1)\r\n\r\n{\r\n  d *ref;\r\n  \r\n  (*super->setBackgroundDrawable)(this,p1);\r\n  ref = *this->g;\r\n  if (ref != (d *)0x0) {\r\n    (*ref->f)(ref,p1);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "setBackgroundDrawable", 
+    "var_types": {
+      "p1": "Drawable *", 
+      "g_1383": "undefined", 
+      "this": "c *", 
+      "ref": "d *"
+    }
+  }, 
+  {
+    "return_type": "ColorStateList *", 
+    "variables": [
+      "g_1118", 
+      "pCVar1", 
+      "local_0", 
+      "this"
+    ], 
+    "address": "501daedc", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/AppCompatButton;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/Button;\r\n   Interfaces: \r\n    Landroidx/core/view/t;\r\n    Landroidx/core/widget/d;\r\n    Landroidx/core/widget/m;\r\n   Source File: AppCompatButton.java\r\n   \r\n   Method Signature: Landroid/content/res/ColorStateList;(  )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f182c\r\n   Method ID Offset: 0xf7968\r\n    */\r\n\r\nColorStateList *\r\nandroidx::appcompat::widget::AppCompatButton::getSupportCompoundDrawablesTintList\r\n          (AppCompatButton *this)\r\n\r\n{\r\n  ColorStateList *pCVar1;\r\n  s *local_0;\r\n  \r\n  local_0 = *this->g;\r\n  pCVar1 = (*local_0->j)(local_0);\r\n  return pCVar1;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "getSupportCompoundDrawablesTintList", 
+    "var_types": {
+      "this": "AppCompatButton *", 
+      "pCVar1": "ColorStateList *", 
+      "g_1118": "undefined", 
+      "local_0": "s *"
+    }
+  }, 
+  {
+    "return_type": "PorterDuff$Mode *", 
+    "variables": [
+      "g_1118", 
+      "pPVar1", 
+      "local_0", 
+      "this"
+    ], 
+    "address": "501daf24", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/AppCompatButton;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/Button;\r\n   Interfaces: \r\n    Landroidx/core/view/t;\r\n    Landroidx/core/widget/d;\r\n    Landroidx/core/widget/m;\r\n   Source File: AppCompatButton.java\r\n   \r\n   Method Signature: Landroid/graphics/PorterDuff$Mode;(  )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f182c\r\n   Method ID Offset: 0xf7970\r\n    */\r\n\r\nPorterDuff_Mode *\r\nandroidx::appcompat::widget::AppCompatButton::getSupportCompoundDrawablesTintMode\r\n          (AppCompatButton *this)\r\n\r\n{\r\n  PorterDuff_Mode *pPVar1;\r\n  s *local_0;\r\n  \r\n  local_0 = *this->g;\r\n  pPVar1 = (*local_0->k)(local_0);\r\n  return pPVar1;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "getSupportCompoundDrawablesTintMode", 
+    "var_types": {
+      "pPVar1": "PorterDuff$Mode *", 
+      "this": "AppCompatButton *", 
+      "g_1118": "undefined", 
+      "local_0": "s *"
+    }
+  }, 
+  {
+    "return_type": "int *", 
+    "variables": [
+      "ref", 
+      "a_2833", 
+      "g_1118", 
+      "[I", 
+      "piVar1", 
+      "this"
+    ], 
+    "address": "501db02c", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/AppCompatButton;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/Button;\r\n   Interfaces: \r\n    Landroidx/core/view/t;\r\n    Landroidx/core/widget/d;\r\n    Landroidx/core/widget/m;\r\n   Source File: AppCompatButton.java\r\n   \r\n   Method Signature: [I(  )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f3b7b\r\n   Method ID Offset: 0xf7948\r\n    */\r\n\r\nint * androidx::appcompat::widget::AppCompatButton::getAutoSizeTextAvailableSizes\r\n                (AppCompatButton *this)\r\n\r\n{\r\n  int *piVar1;\r\n  s *ref;\r\n  \r\n  if (*d_a != false) {\r\n    piVar1 = (*super->getAutoSizeTextAvailableSizes)(this);\r\n    return piVar1;\r\n  }\r\n  ref = *this->g;\r\n  if (ref != (s *)0x0) {\r\n    piVar1 = (*ref->h)(ref);\r\n    return piVar1;\r\n  }\r\n  piVar1 = (int *)(new undefined4[0]);\r\n  return piVar1;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "getAutoSizeTextAvailableSizes", 
+    "var_types": {
+      "this": "AppCompatButton *", 
+      "g_1118": "undefined", 
+      "piVar1": "int *", 
+      "[I": "undefined", 
+      "ref": "s *", 
+      "a_2833": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "f_1117", 
+      "g_1118", 
+      "ref", 
+      "ref_00", 
+      "this"
+    ], 
+    "address": "501db0e0", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/AppCompatButton;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/Button;\r\n   Interfaces: \r\n    Landroidx/core/view/t;\r\n    Landroidx/core/widget/d;\r\n    Landroidx/core/widget/m;\r\n   Source File: AppCompatButton.java\r\n   \r\n   Method Signature: V(  )\r\n   Method Access Flags:\r\n    ACC_PROTECTED\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f3ded\r\n   Method ID Offset: 0xf7928\r\n    */\r\n\r\nvoid androidx::appcompat::widget::AppCompatButton::drawableStateChanged(AppCompatButton *this)\r\n\r\n{\r\n  d *ref;\r\n  s *ref_00;\r\n  \r\n  (*super->drawableStateChanged)(this);\r\n  ref = *this->f;\r\n  if (ref != (d *)0x0) {\r\n    (*ref->b)(ref);\r\n  }\r\n  ref_00 = *this->g;\r\n  if (ref_00 != (s *)0x0) {\r\n    (*ref_00->b)(ref_00);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "drawableStateChanged", 
+    "var_types": {
+      "this": "AppCompatButton *", 
+      "g_1118": "undefined", 
+      "ref_00": "s *", 
+      "ref": "d *", 
+      "f_1117": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "this", 
+      "p1", 
+      "ref", 
+      "f_1117"
+    ], 
+    "address": "501db26c", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/AppCompatButton;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/Button;\r\n   Interfaces: \r\n    Landroidx/core/view/t;\r\n    Landroidx/core/widget/d;\r\n    Landroidx/core/widget/m;\r\n   Source File: AppCompatButton.java\r\n   \r\n   Method Signature: V( Landroid/graphics/drawable/Drawable;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f2b61\r\n   Method ID Offset: 0xf79b0\r\n    */\r\n\r\nvoid androidx::appcompat::widget::AppCompatButton::setBackgroundDrawable\r\n               (AppCompatButton *this,Drawable *p1)\r\n\r\n{\r\n  d *ref;\r\n  \r\n  (*super->setBackgroundDrawable)(this,p1);\r\n  ref = *this->f;\r\n  if (ref != (d *)0x0) {\r\n    (*ref->f)(ref,p1);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "setBackgroundDrawable", 
+    "var_types": {
+      "p1": "Drawable *", 
+      "this": "AppCompatButton *", 
+      "ref": "d *", 
+      "f_1117": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "g_1118", 
+      "g_1118", 
+      "local_0", 
+      "this", 
+      "p1"
+    ], 
+    "address": "501db33c", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/AppCompatButton;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/Button;\r\n   Interfaces: \r\n    Landroidx/core/view/t;\r\n    Landroidx/core/widget/d;\r\n    Landroidx/core/widget/m;\r\n   Source File: AppCompatButton.java\r\n   \r\n   Method Signature: V( Landroid/content/res/ColorStateList;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f1d59\r\n   Method ID Offset: 0xf79e0\r\n    */\r\n\r\nvoid androidx::appcompat::widget::AppCompatButton::setSupportCompoundDrawablesTintList\r\n               (AppCompatButton *this,ColorStateList *p1)\r\n\r\n{\r\n  s *local_0;\r\n  \r\n  local_0 = *this->g;\r\n  (*local_0->v)(local_0,p1);\r\n  local_0 = *this->g;\r\n  (*local_0->b)(local_0);\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "setSupportCompoundDrawablesTintList", 
+    "var_types": {
+      "p1": "ColorStateList *", 
+      "this": "AppCompatButton *", 
+      "g_1118": "undefined", 
+      "local_0": "s *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "local_0", 
+      "this", 
+      "g_1118", 
+      "g_1118", 
+      "p1"
+    ], 
+    "address": "501db364", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/AppCompatButton;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/Button;\r\n   Interfaces: \r\n    Landroidx/core/view/t;\r\n    Landroidx/core/widget/d;\r\n    Landroidx/core/widget/m;\r\n   Source File: AppCompatButton.java\r\n   \r\n   Method Signature: V( Landroid/graphics/PorterDuff$Mode;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f1d59\r\n   Method ID Offset: 0xf79e8\r\n    */\r\n\r\nvoid androidx::appcompat::widget::AppCompatButton::setSupportCompoundDrawablesTintMode\r\n               (AppCompatButton *this,PorterDuff_Mode *p1)\r\n\r\n{\r\n  s *local_0;\r\n  \r\n  local_0 = *this->g;\r\n  (*local_0->w)(local_0,p1);\r\n  local_0 = *this->g;\r\n  (*local_0->b)(local_0);\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "setSupportCompoundDrawablesTintMode", 
+    "var_types": {
+      "p1": "PorterDuff$Mode *", 
+      "this": "AppCompatButton *", 
+      "g_1118": "undefined", 
+      "local_0": "s *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "ref", 
+      "ref_00", 
+      "this", 
+      "g_1434", 
+      "h_1435"
+    ], 
+    "address": "501db538", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/e;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/CheckBox;\r\n   Interfaces: \r\n    Landroidx/core/widget/l;\r\n    Landroidx/core/view/t;\r\n   Source File: AppCompatCheckBox.java\r\n   \r\n   Method Signature: V(  )\r\n   Method Access Flags:\r\n    ACC_PROTECTED\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f3ded\r\n   Method ID Offset: 0xf9190\r\n    */\r\n\r\nvoid androidx::appcompat::widget::e::drawableStateChanged(e *this)\r\n\r\n{\r\n  d *ref;\r\n  s *ref_00;\r\n  \r\n  (*super->drawableStateChanged)(this);\r\n  ref = *this->g;\r\n  if (ref != (d *)0x0) {\r\n    (*ref->b)(ref);\r\n  }\r\n  ref_00 = *this->h;\r\n  if (ref_00 != (s *)0x0) {\r\n    (*ref_00->b)(ref_00);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "drawableStateChanged", 
+    "var_types": {
+      "this": "e *", 
+      "g_1434": "undefined", 
+      "ref_00": "s *", 
+      "ref": "d *", 
+      "h_1435": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "this", 
+      "p1", 
+      "ref", 
+      "g_1434"
+    ], 
+    "address": "501db56c", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/e;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/CheckBox;\r\n   Interfaces: \r\n    Landroidx/core/widget/l;\r\n    Landroidx/core/view/t;\r\n   Source File: AppCompatCheckBox.java\r\n   \r\n   Method Signature: V( Landroid/graphics/drawable/Drawable;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f2b61\r\n   Method ID Offset: 0xf91c0\r\n    */\r\n\r\nvoid androidx::appcompat::widget::e::setBackgroundDrawable(e *this,Drawable *p1)\r\n\r\n{\r\n  d *ref;\r\n  \r\n  (*super->setBackgroundDrawable)(this,p1);\r\n  ref = *this->g;\r\n  if (ref != (d *)0x0) {\r\n    (*ref->f)(ref,p1);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "setBackgroundDrawable", 
+    "var_types": {
+      "p1": "Drawable *", 
+      "this": "e *", 
+      "g_1434": "undefined", 
+      "ref": "d *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "this", 
+      "p1", 
+      "ref", 
+      "f_1433"
+    ], 
+    "address": "501db5bc", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/e;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/CheckBox;\r\n   Interfaces: \r\n    Landroidx/core/widget/l;\r\n    Landroidx/core/view/t;\r\n   Source File: AppCompatCheckBox.java\r\n   \r\n   Method Signature: V( Landroid/graphics/drawable/Drawable;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f2b61\r\n   Method ID Offset: 0xf91d8\r\n    */\r\n\r\nvoid androidx::appcompat::widget::e::setButtonDrawable(e *this,Drawable *p1)\r\n\r\n{\r\n  g *ref;\r\n  \r\n  (*super->setButtonDrawable)(this,p1);\r\n  ref = *this->f;\r\n  if (ref != (g *)0x0) {\r\n    (*ref->f)(ref);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [
+      {
+        "address": "501db5bc", 
+        "name": "setButtonDrawable"
+      }
+    ], 
+    "name": "setButtonDrawable", 
+    "var_types": {
+      "p1": "Drawable *", 
+      "this": "e *", 
+      "ref": "g *", 
+      "f_1433": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "this", 
+      "p1", 
+      "pDVar2", 
+      "pCVar1"
+    ], 
+    "address": "501db5e4", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/e;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/CheckBox;\r\n   Interfaces: \r\n    Landroidx/core/widget/l;\r\n    Landroidx/core/view/t;\r\n   Source File: AppCompatCheckBox.java\r\n   \r\n   Method Signature: V( I\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f3eaa\r\n   Method ID Offset: 0xf91d0\r\n    */\r\n\r\nvoid androidx::appcompat::widget::e::setButtonDrawable(e *this,int p1)\r\n\r\n{\r\n  Context *pCVar1;\r\n  Drawable *pDVar2;\r\n  \r\n  pCVar1 = (*this->getContext)(this);\r\n  pDVar2 = (*a_d)(pCVar1,p1);\r\n  (*this->setButtonDrawable)(this,pDVar2);\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "setButtonDrawable", 
+    "var_types": {
+      "p1": "int", 
+      "this": "e *", 
+      "pCVar1": "Context *", 
+      "pDVar2": "Drawable *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "g_1443", 
+      "ref", 
+      "this"
+    ], 
+    "address": "501db76c", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/f;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/CheckedTextView;\r\n   Source File: AppCompatCheckedTextView.java\r\n   \r\n   Method Signature: V(  )\r\n   Method Access Flags:\r\n    ACC_PROTECTED\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f3ebd\r\n   Method ID Offset: 0xf92c0\r\n    */\r\n\r\nvoid androidx::appcompat::widget::f::drawableStateChanged(f *this)\r\n\r\n{\r\n  s *ref;\r\n  \r\n  (*super->drawableStateChanged)(this);\r\n  ref = *this->g;\r\n  if (ref != (s *)0x0) {\r\n    (*ref->b)(ref);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "drawableStateChanged", 
+    "var_types": {
+      "this": "f *", 
+      "g_1443": "undefined", 
+      "ref": "s *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "pCVar1", 
+      "this", 
+      "p1", 
+      "pDVar2"
+    ], 
+    "address": "501db794", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/f;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/CheckedTextView;\r\n   Source File: AppCompatCheckedTextView.java\r\n   \r\n   Method Signature: V( I\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f1827\r\n   Method ID Offset: 0xf92d0\r\n    */\r\n\r\nvoid androidx::appcompat::widget::f::setCheckMarkDrawable(f *this,int p1)\r\n\r\n{\r\n  Context *pCVar1;\r\n  Drawable *pDVar2;\r\n  \r\n  pCVar1 = (*this->getContext)(this);\r\n  pDVar2 = (*a_d)(pCVar1,p1);\r\n  (*this->setCheckMarkDrawable)(this,pDVar2);\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "setCheckMarkDrawable", 
+    "var_types": {
+      "p1": "int", 
+      "this": "f *", 
+      "pCVar1": "Context *", 
+      "pDVar2": "Drawable *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "this", 
+      "f_1478", 
+      "g_1479", 
+      "ref", 
+      "ref_00"
+    ], 
+    "address": "501dc57c", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/i;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/EditText;\r\n   Interfaces: \r\n    Landroidx/core/view/t;\r\n   Source File: AppCompatEditText.java\r\n   \r\n   Method Signature: V(  )\r\n   Method Access Flags:\r\n    ACC_PROTECTED\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f3ded\r\n   Method ID Offset: 0xf96f8\r\n    */\r\n\r\nvoid androidx::appcompat::widget::i::drawableStateChanged(i *this)\r\n\r\n{\r\n  d *ref;\r\n  s *ref_00;\r\n  \r\n  (*super->drawableStateChanged)(this);\r\n  ref = *this->f;\r\n  if (ref != (d *)0x0) {\r\n    (*ref->b)(ref);\r\n  }\r\n  ref_00 = *this->g;\r\n  if (ref_00 != (s *)0x0) {\r\n    (*ref_00->b)(ref_00);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "drawableStateChanged", 
+    "var_types": {
+      "this": "i *", 
+      "g_1479": "undefined", 
+      "ref_00": "s *", 
+      "ref": "d *", 
+      "f_1478": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "this", 
+      "p1", 
+      "f_1478", 
+      "ref"
+    ], 
+    "address": "501dc5b0", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/i;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/EditText;\r\n   Interfaces: \r\n    Landroidx/core/view/t;\r\n   Source File: AppCompatEditText.java\r\n   \r\n   Method Signature: V( Landroid/graphics/drawable/Drawable;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f2b61\r\n   Method ID Offset: 0xf9730\r\n    */\r\n\r\nvoid androidx::appcompat::widget::i::setBackgroundDrawable(i *this,Drawable *p1)\r\n\r\n{\r\n  d *ref;\r\n  \r\n  (*super->setBackgroundDrawable)(this,p1);\r\n  ref = *this->f;\r\n  if (ref != (d *)0x0) {\r\n    (*ref->f)(ref,p1);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "setBackgroundDrawable", 
+    "var_types": {
+      "p1": "Drawable *", 
+      "this": "i *", 
+      "ref": "d *", 
+      "f_1478": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "this", 
+      "f_1520", 
+      "g_1521", 
+      "ref", 
+      "ref_00"
+    ], 
+    "address": "501dc85c", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/k;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/ImageButton;\r\n   Interfaces: \r\n    Landroidx/core/view/t;\r\n    Landroidx/core/widget/n;\r\n   Source File: AppCompatImageButton.java\r\n   \r\n   Method Signature: V(  )\r\n   Method Access Flags:\r\n    ACC_PROTECTED\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f3ded\r\n   Method ID Offset: 0xf9980\r\n    */\r\n\r\nvoid androidx::appcompat::widget::k::drawableStateChanged(k *this)\r\n\r\n{\r\n  d *ref;\r\n  l *ref_00;\r\n  \r\n  (*super->drawableStateChanged)(this);\r\n  ref = *this->f;\r\n  if (ref != (d *)0x0) {\r\n    (*ref->b)(ref);\r\n  }\r\n  ref_00 = *this->g;\r\n  if (ref_00 != (l *)0x0) {\r\n    (*ref_00->b)(ref_00);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "drawableStateChanged", 
+    "var_types": {
+      "this": "k *", 
+      "ref_00": "l *", 
+      "g_1521": "undefined", 
+      "ref": "d *", 
+      "f_1520": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "this", 
+      "p1", 
+      "f_1520", 
+      "ref"
+    ], 
+    "address": "501dc890", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/k;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/ImageButton;\r\n   Interfaces: \r\n    Landroidx/core/view/t;\r\n    Landroidx/core/widget/n;\r\n   Source File: AppCompatImageButton.java\r\n   \r\n   Method Signature: V( Landroid/graphics/drawable/Drawable;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f2b61\r\n   Method ID Offset: 0xf99b0\r\n    */\r\n\r\nvoid androidx::appcompat::widget::k::setBackgroundDrawable(k *this,Drawable *p1)\r\n\r\n{\r\n  d *ref;\r\n  \r\n  (*super->setBackgroundDrawable)(this,p1);\r\n  ref = *this->f;\r\n  if (ref != (d *)0x0) {\r\n    (*ref->f)(ref,p1);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "setBackgroundDrawable", 
+    "var_types": {
+      "p1": "Drawable *", 
+      "this": "k *", 
+      "ref": "d *", 
+      "f_1520": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "this", 
+      "p1", 
+      "g_1521", 
+      "ref"
+    ], 
+    "address": "501dc908", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/k;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/ImageButton;\r\n   Interfaces: \r\n    Landroidx/core/view/t;\r\n    Landroidx/core/widget/n;\r\n   Source File: AppCompatImageButton.java\r\n   \r\n   Method Signature: V( Landroid/graphics/drawable/Drawable;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f2b61\r\n   Method ID Offset: 0xf99c8\r\n    */\r\n\r\nvoid androidx::appcompat::widget::k::setImageDrawable(k *this,Drawable *p1)\r\n\r\n{\r\n  l *ref;\r\n  \r\n  (*super->setImageDrawable)(this,p1);\r\n  ref = *this->g;\r\n  if (ref != (l *)0x0) {\r\n    (*ref->b)(ref);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "setImageDrawable", 
+    "var_types": {
+      "p1": "Drawable *", 
+      "this": "k *", 
+      "g_1521": "undefined", 
+      "ref": "l *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "g_1120", 
+      "f_1119", 
+      "ref_00", 
+      "ref", 
+      "this"
+    ], 
+    "address": "501dcf04", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/AppCompatImageView;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/ImageView;\r\n   Interfaces: \r\n    Landroidx/core/view/t;\r\n    Landroidx/core/widget/n;\r\n   Source File: AppCompatImageView.java\r\n   \r\n   Method Signature: V(  )\r\n   Method Access Flags:\r\n    ACC_PROTECTED\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f3ded\r\n   Method ID Offset: 0xf7a18\r\n    */\r\n\r\nvoid androidx::appcompat::widget::AppCompatImageView::drawableStateChanged(AppCompatImageView *this)\r\n\r\n{\r\n  d *ref;\r\n  l *ref_00;\r\n  \r\n  (*super->drawableStateChanged)(this);\r\n  ref = *this->f;\r\n  if (ref != (d *)0x0) {\r\n    (*ref->b)(ref);\r\n  }\r\n  ref_00 = *this->g;\r\n  if (ref_00 != (l *)0x0) {\r\n    (*ref_00->b)(ref_00);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "drawableStateChanged", 
+    "var_types": {
+      "f_1119": "undefined", 
+      "g_1120": "undefined", 
+      "this": "AppCompatImageView *", 
+      "ref_00": "l *", 
+      "ref": "d *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "ref", 
+      "f_1119", 
+      "this", 
+      "p1"
+    ], 
+    "address": "501dcf38", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/AppCompatImageView;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/ImageView;\r\n   Interfaces: \r\n    Landroidx/core/view/t;\r\n    Landroidx/core/widget/n;\r\n   Source File: AppCompatImageView.java\r\n   \r\n   Method Signature: V( Landroid/graphics/drawable/Drawable;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f2b61\r\n   Method ID Offset: 0xf7a48\r\n    */\r\n\r\nvoid androidx::appcompat::widget::AppCompatImageView::setBackgroundDrawable\r\n               (AppCompatImageView *this,Drawable *p1)\r\n\r\n{\r\n  d *ref;\r\n  \r\n  (*super->setBackgroundDrawable)(this,p1);\r\n  ref = *this->f;\r\n  if (ref != (d *)0x0) {\r\n    (*ref->f)(ref,p1);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "setBackgroundDrawable", 
+    "var_types": {
+      "f_1119": "undefined", 
+      "p1": "Drawable *", 
+      "this": "AppCompatImageView *", 
+      "ref": "d *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "ref", 
+      "g_1120", 
+      "this", 
+      "p1"
+    ], 
+    "address": "501dcfb0", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/AppCompatImageView;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/ImageView;\r\n   Interfaces: \r\n    Landroidx/core/view/t;\r\n    Landroidx/core/widget/n;\r\n   Source File: AppCompatImageView.java\r\n   \r\n   Method Signature: V( Landroid/graphics/drawable/Drawable;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f2b61\r\n   Method ID Offset: 0xf7a60\r\n    */\r\n\r\nvoid androidx::appcompat::widget::AppCompatImageView::setImageDrawable\r\n               (AppCompatImageView *this,Drawable *p1)\r\n\r\n{\r\n  l *ref;\r\n  \r\n  (*super->setImageDrawable)(this,p1);\r\n  ref = *this->g;\r\n  if (ref != (l *)0x0) {\r\n    (*ref->b)(ref);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [
+      {
+        "address": "501dcfb0", 
+        "name": "setImageDrawable"
+      }, 
+      {
+        "address": "501dcfb0", 
+        "name": "setImageDrawable"
+      }, 
+      {
+        "address": "501dcfb0", 
+        "name": "setImageDrawable"
+      }
+    ], 
+    "name": "setImageDrawable", 
+    "var_types": {
+      "p1": "Drawable *", 
+      "g_1120": "undefined", 
+      "this": "AppCompatImageView *", 
+      "ref": "l *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "this", 
+      "g_1537", 
+      "h_1538", 
+      "ref", 
+      "ref_00"
+    ], 
+    "address": "501dd1ec", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/m;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/MultiAutoCompleteTextView;\r\n   Interfaces: \r\n    Landroidx/core/view/t;\r\n   Source File: AppCompatMultiAutoCompleteTextView.java\r\n   \r\n   Method Signature: V(  )\r\n   Method Access Flags:\r\n    ACC_PROTECTED\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f3ded\r\n   Method ID Offset: 0xf9ab8\r\n    */\r\n\r\nvoid androidx::appcompat::widget::m::drawableStateChanged(m *this)\r\n\r\n{\r\n  d *ref;\r\n  s *ref_00;\r\n  \r\n  (*super->drawableStateChanged)(this);\r\n  ref = *this->g;\r\n  if (ref != (d *)0x0) {\r\n    (*ref->b)(ref);\r\n  }\r\n  ref_00 = *this->h;\r\n  if (ref_00 != (s *)0x0) {\r\n    (*ref_00->b)(ref_00);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "drawableStateChanged", 
+    "var_types": {
+      "this": "m *", 
+      "h_1538": "undefined", 
+      "ref_00": "s *", 
+      "ref": "d *", 
+      "g_1537": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "g_1537", 
+      "this", 
+      "p1", 
+      "ref"
+    ], 
+    "address": "501dd220", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/m;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/MultiAutoCompleteTextView;\r\n   Interfaces: \r\n    Landroidx/core/view/t;\r\n   Source File: AppCompatMultiAutoCompleteTextView.java\r\n   \r\n   Method Signature: V( Landroid/graphics/drawable/Drawable;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f2b61\r\n   Method ID Offset: 0xf9ad8\r\n    */\r\n\r\nvoid androidx::appcompat::widget::m::setBackgroundDrawable(m *this,Drawable *p1)\r\n\r\n{\r\n  d *ref;\r\n  \r\n  (*super->setBackgroundDrawable)(this,p1);\r\n  ref = *this->g;\r\n  if (ref != (d *)0x0) {\r\n    (*ref->f)(ref,p1);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "setBackgroundDrawable", 
+    "var_types": {
+      "p1": "Drawable *", 
+      "this": "m *", 
+      "ref": "d *", 
+      "g_1537": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "h_1123", 
+      "g_1122", 
+      "ref_00", 
+      "ref", 
+      "this"
+    ], 
+    "address": "501dd8b4", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/AppCompatRadioButton;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/RadioButton;\r\n   Interfaces: \r\n    Landroidx/core/widget/l;\r\n    Landroidx/core/view/t;\r\n   Source File: AppCompatRadioButton.java\r\n   \r\n   Method Signature: V(  )\r\n   Method Access Flags:\r\n    ACC_PROTECTED\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f3ded\r\n   Method ID Offset: 0xf7aa8\r\n    */\r\n\r\nvoid androidx::appcompat::widget::AppCompatRadioButton::drawableStateChanged\r\n               (AppCompatRadioButton *this)\r\n\r\n{\r\n  d *ref;\r\n  s *ref_00;\r\n  \r\n  (*super->drawableStateChanged)(this);\r\n  ref = *this->g;\r\n  if (ref != (d *)0x0) {\r\n    (*ref->b)(ref);\r\n  }\r\n  ref_00 = *this->h;\r\n  if (ref_00 != (s *)0x0) {\r\n    (*ref_00->b)(ref_00);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "drawableStateChanged", 
+    "var_types": {
+      "this": "AppCompatRadioButton *", 
+      "ref_00": "s *", 
+      "g_1122": "undefined", 
+      "h_1123": "undefined", 
+      "ref": "d *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "this", 
+      "p1", 
+      "ref", 
+      "g_1122"
+    ], 
+    "address": "501dd8e8", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/AppCompatRadioButton;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/RadioButton;\r\n   Interfaces: \r\n    Landroidx/core/widget/l;\r\n    Landroidx/core/view/t;\r\n   Source File: AppCompatRadioButton.java\r\n   \r\n   Method Signature: V( Landroid/graphics/drawable/Drawable;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f2b61\r\n   Method ID Offset: 0xf7ad8\r\n    */\r\n\r\nvoid androidx::appcompat::widget::AppCompatRadioButton::setBackgroundDrawable\r\n               (AppCompatRadioButton *this,Drawable *p1)\r\n\r\n{\r\n  d *ref;\r\n  \r\n  (*super->setBackgroundDrawable)(this,p1);\r\n  ref = *this->g;\r\n  if (ref != (d *)0x0) {\r\n    (*ref->f)(ref,p1);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "setBackgroundDrawable", 
+    "var_types": {
+      "p1": "Drawable *", 
+      "this": "AppCompatRadioButton *", 
+      "g_1122": "undefined", 
+      "ref": "d *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "p1", 
+      "ref", 
+      "f_1121", 
+      "this"
+    ], 
+    "address": "501dd938", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/AppCompatRadioButton;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/RadioButton;\r\n   Interfaces: \r\n    Landroidx/core/widget/l;\r\n    Landroidx/core/view/t;\r\n   Source File: AppCompatRadioButton.java\r\n   \r\n   Method Signature: V( Landroid/graphics/drawable/Drawable;\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f2b61\r\n   Method ID Offset: 0xf7af0\r\n    */\r\n\r\nvoid androidx::appcompat::widget::AppCompatRadioButton::setButtonDrawable\r\n               (AppCompatRadioButton *this,Drawable *p1)\r\n\r\n{\r\n  g *ref;\r\n  \r\n  (*super->setButtonDrawable)(this,p1);\r\n  ref = *this->f;\r\n  if (ref != (g *)0x0) {\r\n    (*ref->f)(ref);\r\n  }\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [
+      {
+        "address": "501dd938", 
+        "name": "setButtonDrawable"
+      }
+    ], 
+    "name": "setButtonDrawable", 
+    "var_types": {
+      "p1": "Drawable *", 
+      "this": "AppCompatRadioButton *", 
+      "ref": "g *", 
+      "f_1121": "undefined"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "p1", 
+      "pDVar2", 
+      "pCVar1", 
+      "this"
+    ], 
+    "address": "501dd960", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/AppCompatRadioButton;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/RadioButton;\r\n   Interfaces: \r\n    Landroidx/core/widget/l;\r\n    Landroidx/core/view/t;\r\n   Source File: AppCompatRadioButton.java\r\n   \r\n   Method Signature: V( I\r\n     )\r\n   Method Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Method Register Size: 3\r\n   Method Incoming Size: 2\r\n   Method Outgoing Size: 2\r\n   Method Debug Info Offset: 0x4f3eaa\r\n   Method ID Offset: 0xf7ae8\r\n    */\r\n\r\nvoid androidx::appcompat::widget::AppCompatRadioButton::setButtonDrawable\r\n               (AppCompatRadioButton *this,int p1)\r\n\r\n{\r\n  Context *pCVar1;\r\n  Drawable *pDVar2;\r\n  \r\n  pCVar1 = (*this->getContext)(this);\r\n  pDVar2 = (*a_d)(pCVar1,p1);\r\n  (*this->setButtonDrawable)(this,pDVar2);\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 2, 
+    "calls": [], 
+    "name": "setButtonDrawable", 
+    "var_types": {
+      "p1": "int", 
+      "this": "AppCompatRadioButton *", 
+      "pCVar1": "Context *", 
+      "pDVar2": "Drawable *"
+    }
+  }, 
+  {
+    "return_type": "void", 
+    "variables": [
+      "f_1553", 
+      "ref", 
+      "this"
+    ], 
+    "address": "501dde80", 
+    "code": "\r\n/* Class: Landroidx/appcompat/widget/p;\r\n   Class Access Flags:\r\n    ACC_PUBLIC\r\n   \r\n   Superclass: Landroid/widget/SeekBar;\r\n   Source File: AppCompatSeekBar.java\r\n   \r\n   Method Signature: V(  )\r\n   Method Access Flags:\r\n    ACC_PROTECTED\r\n   \r\n   Method Register Size: 2\r\n   Method Incoming Size: 1\r\n   Method Outgoing Size: 1\r\n   Method Debug Info Offset: 0x4f1838\r\n   Method ID Offset: 0xf9be8\r\n    */\r\n\r\nvoid androidx::appcompat::widget::p::drawableStateChanged(p *this)\r\n\r\n{\r\n  q *ref;\r\n  \r\n  (*super->drawableStateChanged)(this);\r\n  ref = *this->f;\r\n  (*ref->h)(ref);\r\n  return;\r\n}\r\n\r\n", 
+    "param_count": 1, 
+    "calls": [], 
+    "name": "drawableStateChanged", 
+    "var_types": {
+      "this": "p *", 
+      "ref": "q *", 
+      "f_1553": "undefined"
+    }
+  }
+]

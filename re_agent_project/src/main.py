@@ -114,6 +114,10 @@ def main_pipeline_wrapper(target_file: str, ghidra_path: str, user_goal: str, ou
     
     # We don't delete ghidra_project_dir here because run_ghidra_export handles the project creation/overwriting via flags
     
+    # Ensure the project directory exists for Ghidra
+    if not os.path.exists(ghidra_project_dir):
+        os.makedirs(ghidra_project_dir)
+
     run_ghidra_export(
         ghidra_path=ghidra_path,
         apk_path=target_file,
