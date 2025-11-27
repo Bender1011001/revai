@@ -456,7 +456,7 @@ def create_maker_agent(
 
     # Wrap LLM with Lightning
     if client is None:
-        client = AgentLightningClient(agent_name="TrueMaker_Renamer")
+        client = AgentLightningClient()
         
     wrapped_llm = LightningLLMWrapper(base_llm, client)
     

@@ -6,8 +6,18 @@ import os
 import json
 import sys
 
+print(f"[DEBUG] SSL_CERT_FILE before import: {os.environ.get('SSL_CERT_FILE')}")
+print(f"[DEBUG] sys.path: {sys.path}")
+
 # Import main pipeline wrapper
-from re_agent_project.src.main import main_pipeline_wrapper
+try:
+    print("[DEBUG] Importing main_pipeline_wrapper...")
+    from re_agent_project.src.main import main_pipeline_wrapper
+    print("[DEBUG] Import successful.")
+except Exception as e:
+    print(f"[DEBUG] Import failed: {e}")
+    raise
+
 from re_agent_project.src.calibration import measure_model_difficulty
 
 CONFIG_FILE = "config.json"
