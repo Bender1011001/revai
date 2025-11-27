@@ -2,6 +2,7 @@
 Refactory Agents: Multi-stage AI agents for full reverse engineering.
 """
 import json
+import os
 import re
 from langchain_ollama import ChatOllama
 from langchain_core.messages import SystemMessage, HumanMessage
@@ -15,7 +16,7 @@ llm = ChatOllama(
     model="qwen2.5-coder:7b",
     temperature=0.3,
     format="json",
-    base_url="http://localhost:11434"
+    base_url=os.environ.get("OLLAMA_HOST", "http://localhost:11434")
 )
 
 # ==================== STAGE 1: TYPE RECOVERY ====================
@@ -149,6 +150,8 @@ def _safe_replace(code, target, replacement, context_next=None):
     """
     Safely replace target identifier with replacement, ignoring strings and comments.
     If context_next is provided, only replaces target if followed by context_next.
+    Handles C-style pointer syntax by skipping '*' and whitespace when checking context_next.
+    If replacement ends with '*' and the original has a pointer, avoids double pointers.
     """
     # Regex patterns for C/C++ syntax
     pat_comment_multi = r'/\*[\s\S]*?\*/'
@@ -196,8 +199,19 @@ def _safe_replace(code, target, replacement, context_next=None):
                 while j < len(tokens):
                     t = tokens[j]
                     if t['type'] == 'GAP':
-                        if t['text'].strip(): # Non-whitespace in gap
-                            break
+                        # Check for '*' in GAP
+                        text = t['text']
+                        stripped = text.strip()
+                        if stripped:
+                            if stripped == '*':
+                                # It's a pointer star, continue searching
+                                pass
+                            elif stripped.startswith('*'):
+                                # Could be '* ' or '**'
+                                pass
+                            else:
+                                # Something else, stop
+                                break
                     elif t['type'] == 'COMMENT':
                         pass # Skip comments
                     elif t['type'] == 'ID':
@@ -210,7 +224,49 @@ def _safe_replace(code, target, replacement, context_next=None):
                 should_replace = found
             
             if should_replace:
-                output.append(replacement)
+                # Handle pointer replacement to avoid double pointers
+                if replacement.endswith('*'):
+                    # Look ahead for '*'
+                    k = i + 1
+                    star_token_index = -1
+                    
+                    while k < len(tokens):
+                        tk = tokens[k]
+                        if tk['type'] == 'GAP':
+                            if '*' in tk['text']:
+                                star_token_index = k
+                                break
+                            elif tk['text'].strip():
+                                break # Non-whitespace, non-star GAP
+                        elif tk['type'] == 'COMMENT':
+                            pass
+                        elif tk['type'] == 'ID':
+                            break
+                        else:
+                            break
+                        k += 1
+                    
+                    if star_token_index != -1:
+                        # Found a star in GAP at star_token_index
+                        output.append(replacement)
+                        
+                        # Output everything up to star_token_index (exclusive)
+                        curr = i + 1
+                        while curr < star_token_index:
+                            output.append(tokens[curr]['text'])
+                            curr += 1
+                        
+                        # Handle the token with the star
+                        star_token = tokens[star_token_index]
+                        # Remove ONE '*' from the text
+                        new_text = star_token['text'].replace('*', '', 1)
+                        output.append(new_text)
+                        
+                        i = star_token_index # Advance main loop
+                    else:
+                        output.append(replacement)
+                else:
+                    output.append(replacement)
             else:
                 output.append(token['text'])
         else:

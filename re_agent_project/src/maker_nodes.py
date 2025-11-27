@@ -23,57 +23,49 @@ Your Task: Rename generic variables (iVar1, uVar2, param_1) to semantic names ba
 - Constraint 2: Output JSON ONLY. No commentary.
 - Constraint 3: If you cannot determine a meaningful name, leave it out."""
 
-# Global MAKER agent (initialized on first use)
-_maker_agent = None
-_maker_config = None
-
-
-def get_maker_agent():
-    """Get or create the global MAKER agent."""
-    global _maker_agent, _maker_config
-    
-    if _maker_agent is None:
-        _maker_agent, _maker_config = create_maker_agent(
-            target_reliability=DEFAULT_TARGET_RELIABILITY,
-            estimated_error_rate=DEFAULT_ERROR_RATE,
-            max_output_tokens=DEFAULT_MAX_TOKENS,
-            model="qwen2.5-coder:7b",
-            temperature=0.3
-        )
-    
-    return _maker_agent, _maker_config
+# No global state - agents are instantiated locally per function call
 
 
 def true_maker_rename(state: AgentState) -> dict:
     """
     Use True MAKER framework for variable renaming.
-    
+
     This implements the full MAKER algorithm:
     - Sequential voting (Algorithm 2)
     - Red-flagging (Algorithm 3)
     - Dynamic k calculation (Equation 14)
-    
+
+    Thread-safe: Creates a new agent instance per call to avoid race conditions.
+
     Returns updated state with final_renames.
     """
-    agent, config = get_maker_agent()
-    
+    # Create a new agent instance locally for thread safety
+    agent, config = create_maker_agent(
+        target_reliability=DEFAULT_TARGET_RELIABILITY,
+        estimated_error_rate=DEFAULT_ERROR_RATE,
+        max_output_tokens=DEFAULT_MAX_TOKENS,
+        model="qwen2.5-coder:7b",
+        temperature=0.3
+    )
+
     code = state["original_code"]
     if len(code) > 12000:
         keep_size = 6000
         code = code[:keep_size] + "\n...[TRUNCATED]...\n" + code[-keep_size:]
-    
+
     vars_list = ", ".join(state["existing_variables"])
     prompt = f"Function: {state['function_name']}\nVariables: {vars_list}\n\nCode:\n{code}"
-    
+
     # Run True MAKER voting
     renames, total_samples, valid_samples = agent.do_voting(
         prompt=prompt,
         system_prompt=SYSTEM_PROMPT,
-        existing_variables=state["existing_variables"]
+        existing_variables=state["existing_variables"],
+        callback=state.get("consensus_callback")
     )
-    
+
     print(f"  [MAKER] {state['function_name']}: {total_samples} samples ({valid_samples} valid), k={config.k}")
-    
+
     if renames:
         print(f"    ✓ Consensus: {len(renames)} variables renamed")
         return {"final_renames": renames}
@@ -90,7 +82,7 @@ def micro_agent_generate(state: AgentState):
     DEPRECATED: Use true_maker_rename instead.
     Maintained for backward compatibility with existing code.
     """
-    # This now calls the True MAKER implementation
+    # This now calls the True MAKER implementation (thread-safe)
     return true_maker_rename(state)
 
 

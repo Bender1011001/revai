@@ -107,7 +107,14 @@ class RefactoryPipeline:
         print(f"Output directory: {self.output_dir}")
         print("=" * 60)
     
-    def process_module(self, module: ModuleGroup, stop_event: Optional[threading.Event] = None, pause_event: Optional[threading.Event] = None) -> Dict:
+    def process_module(
+        self,
+        module: ModuleGroup,
+        stop_event: Optional[threading.Event] = None,
+        pause_event: Optional[threading.Event] = None,
+        loot_callback: Optional[callable] = None,
+        consensus_callback: Optional[callable] = None
+    ) -> Dict:
         """Process a single module through all stages."""
         
         if stop_event and stop_event.is_set():
@@ -129,6 +136,12 @@ class RefactoryPipeline:
                         f.write(f"- **{label}**: {', '.join(matches)}\n")
                     f.write("\n")
             print(f"[!] Secrets detected in {module['module_name']}. Logged to SECRETS_REPORT.md")
+            
+            # Live Loot: Push findings to dashboard
+            if loot_callback:
+                for label, matches in findings.items():
+                    for match in matches:
+                        loot_callback(f"FOUND {label}: {match}")
 
         # Initialize state
         state = {
@@ -202,7 +215,7 @@ class RefactoryPipeline:
         
         return state
     
-    def _run_renaming_stage(self, state):
+    def _run_renaming_stage(self, state, consensus_callback: Optional[callable] = None):
         """
         Run variable renaming using True MAKER.
         """
@@ -218,7 +231,8 @@ class RefactoryPipeline:
                 "proposals": [],
                 "attempts": 0,
                 "final_renames": None,
-                "current_draft": None
+                "current_draft": None,
+                "consensus_callback": consensus_callback
             }
             
             # Run True MAKER

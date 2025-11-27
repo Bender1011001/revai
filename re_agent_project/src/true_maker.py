@@ -212,7 +212,8 @@ class SequentialVoting:
         self,
         prompt: str,
         system_prompt: str,
-        existing_variables: list
+        existing_variables: list,
+        callback: Optional[callable] = None
     ) -> Tuple[Optional[Dict[str, str]], int, int]:
         """
         Implements Algorithm 2: First-to-ahead-by-k voting.
@@ -221,6 +222,7 @@ class SequentialVoting:
             prompt: User prompt
             system_prompt: System prompt
             existing_variables: List of valid variable names (for hallucination check)
+            callback: Optional callback for real-time updates
         
         Returns:
             (winner_renames, total_samples, valid_samples) tuple
@@ -251,6 +253,13 @@ class SequentialVoting:
             # Serialize vote for comparison
             vote_key = json.dumps(vote, sort_keys=True)
             vote_counts[vote_key] += 1
+            
+            # Notify dashboard
+            if callback:
+                callback("CONSENSUS_UPDATE", {
+                    "categories": list(vote_counts.keys()),
+                    "values": list(vote_counts.values())
+                })
             
             # Check if we have a winner (Algorithm 2 line 6)
             # if V[y] = k + max_{v≠y} V[v]

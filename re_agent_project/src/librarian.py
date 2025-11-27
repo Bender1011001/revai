@@ -173,3 +173,38 @@ class Librarian:
             print(f"  - {module['module_name']}: {len(module['functions'])} functions")
         
         return modules
+
+    def get_visualization_data(self, functions: List[FunctionUnit]) -> Dict:
+        """
+        Convert call graph into ECharts format for visualization.
+        
+        Args:
+            functions: List of function units
+            
+        Returns:
+            Dict with 'nodes' and 'links' for ECharts
+        """
+        graph = self.build_call_graph(functions)
+        
+        # Create nodes
+        # symbolSize based on complexity (param count as proxy)
+        nodes = []
+        for f in functions:
+            param_count = len(f.get("variables", []))  # Use variable count as proxy for complexity
+            nodes.append({
+                "name": f["name"],
+                "symbolSize": max(5, min(50, param_count * 2)),
+                "value": param_count,
+                "category": 0  # Default category
+            })
+            
+        # Create links
+        links = []
+        for src, targets in graph.items():
+            for tgt in targets:
+                links.append({
+                    "source": src,
+                    "target": tgt
+                })
+                
+        return {"nodes": nodes, "links": links}

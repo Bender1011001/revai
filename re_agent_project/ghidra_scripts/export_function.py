@@ -56,7 +56,7 @@ def run():
 
         # New Generic Filter Logic
         IGNORE_NAMESPACES = [
-            "android", "androidx", "java", "kotlin", "google", # Android Standard
+            "androidx", "kotlin",                              # Android Standard
             "std", "msvcrt", "kernel32", "user32", "ntdll"     # Windows/C++ Standard
         ]
         # Check if any ignored namespace is in the current namespace name (case-insensitive)
