@@ -40,7 +40,16 @@ class RefactoryPipeline:
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
     
-    def run(self, ghidra_export_path: str, max_workers: int = None, stop_event: Optional[threading.Event] = None, pause_event: Optional[threading.Event] = None):
+    def run(
+        self,
+        ghidra_export_path: str,
+        max_workers: int = None,
+        stop_event: Optional[threading.Event] = None,
+        pause_event: Optional[threading.Event] = None,
+        loot_callback: Optional[callable] = None,
+        consensus_callback: Optional[callable] = None,
+        graph_callback: Optional[callable] = None
+    ):
         """Run the full pipeline."""
         # Dynamic worker calculation if not provided
         if max_workers is None:
@@ -70,7 +79,14 @@ class RefactoryPipeline:
         with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
             # Submit all tasks
             future_to_module = {
-                executor.submit(self.process_module, module, stop_event, pause_event): module
+                executor.submit(
+                    self.process_module,
+                    module,
+                    stop_event,
+                    pause_event,
+                    loot_callback,
+                    consensus_callback
+                ): module
                 for module in modules
             }
             
@@ -177,7 +193,7 @@ class RefactoryPipeline:
 
         # Stage 2: Variable Renaming (using True MAKER)
         print(f"\n[Stage 2] The Renamer: Renaming variables...")
-        state = self._run_renaming_stage(state)
+        state = self._run_renaming_stage(state, consensus_callback=consensus_callback)
         print(f"  Renamed {len(state['confirmed_renames'])} variables")
         
         if stop_event and stop_event.is_set(): return {}

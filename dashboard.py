@@ -178,13 +178,26 @@ class AnalysisManager:
                 print(f"Goal: {user_goal}")
                 print(f"Project Dir: {output_dir}")
                 
+                # Define callbacks for data queues
+                def on_loot(item):
+                    loot_queue.put(item)
+                
+                def on_consensus(data):
+                    consensus_queue.put(data)
+                
+                def on_graph(data):
+                    graph_queue.put(data)
+
                 main_pipeline_wrapper(
                     file_path,
                     ghidra_path=ghidra_path,
                     user_goal=user_goal,
                     output_dir=output_dir,
                     stop_event=self.stop_event,
-                    pause_event=self.pause_event
+                    pause_event=self.pause_event,
+                    loot_callback=on_loot,
+                    consensus_callback=on_consensus,
+                    graph_callback=on_graph
                 )
                 
                 if self.stop_event.is_set():

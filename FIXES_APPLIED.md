@@ -84,6 +84,27 @@ Conducted a comprehensive file-by-file review of the RevAI reverse engineering p
 - Updated `AgentLightningClient.__init__` to accept `agent_name` parameter.
 - Added `agent_name` to the logged record.
 
+### 9. **Dashboard Data Flow**
+**Files:**
+- `re_agent_project/src/main.py`
+- `re_agent_project/src/refactory_pipeline.py`
+- `dashboard.py`
+
+**Issue:** Dashboard components were blank because callbacks were not being propagated from the UI to the backend pipeline.
+
+**Fix:**
+- Updated `main_pipeline_wrapper` and `RefactoryPipeline.run` to accept and propagate `loot_callback`, `consensus_callback`, and `graph_callback`.
+- Updated `dashboard.py` to pass queue-putting functions as callbacks.
+- Ensured `consensus_callback` is passed to `_run_renaming_stage` in `refactory_pipeline.py`.
+
+### 10. **ChatOllama Temperature Argument Error**
+**File:** `re_agent_project/src/true_maker.py`
+
+**Issue:** `Client.chat() got an unexpected keyword argument 'temperature'` error when using `bind(temperature=...)` with newer versions of `ollama`/`langchain_ollama`.
+
+**Fix:**
+- Replaced `bind(temperature=...)` with explicit recreation of `ChatOllama` instance using the new temperature. This avoids issues with how `bind` merges arguments in the underlying library.
+
 ## Optimizations
 
 ### 1. **Parallel Variable Renaming**
@@ -190,6 +211,8 @@ All fixes maintain backward compatibility and don't break existing functionality
 - ✅ Ghidra project directory creation verified
 - ✅ AgentLightningClient initialization verified
 - ✅ Parallel processing logic verified
+- ✅ Dashboard data flow verified
+- ✅ ChatOllama temperature handling verified
 
 ## Conclusion
 

@@ -88,7 +88,19 @@ def run_ghidra_export(ghidra_path: str, apk_path: str, project_dir: str, script_
         print(f"[ERROR] Export file was not created: {output_json}")
         sys.exit(1)
 
-def main_pipeline_wrapper(target_file: str, ghidra_path: str, user_goal: str, output_dir: str = "./refactored_output", limit: int = 100, export_only: bool = False, stop_event: Optional[threading.Event] = None, pause_event: Optional[threading.Event] = None):
+def main_pipeline_wrapper(
+    target_file: str,
+    ghidra_path: str,
+    user_goal: str,
+    output_dir: str = "./refactored_output",
+    limit: int = 100,
+    export_only: bool = False,
+    stop_event: Optional[threading.Event] = None,
+    pause_event: Optional[threading.Event] = None,
+    loot_callback: Optional[callable] = None,
+    consensus_callback: Optional[callable] = None,
+    graph_callback: Optional[callable] = None
+):
     # Setup paths
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     ghidra_scripts_dir = os.path.join(base_dir, "ghidra_scripts")
@@ -139,4 +151,11 @@ def main_pipeline_wrapper(target_file: str, ghidra_path: str, user_goal: str, ou
     from src.refactory_pipeline import RefactoryPipeline
     # Pass the specific refactored output subfolder
     pipeline = RefactoryPipeline(output_dir=refactored_output_dir)
-    pipeline.run(export_json, stop_event=stop_event, pause_event=pause_event)
+    pipeline.run(
+        export_json,
+        stop_event=stop_event,
+        pause_event=pause_event,
+        loot_callback=loot_callback,
+        consensus_callback=consensus_callback,
+        graph_callback=graph_callback
+    )
