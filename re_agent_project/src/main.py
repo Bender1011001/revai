@@ -99,7 +99,9 @@ def main_pipeline_wrapper(
     pause_event: Optional[threading.Event] = None,
     loot_callback: Optional[callable] = None,
     consensus_callback: Optional[callable] = None,
-    graph_callback: Optional[callable] = None
+    graph_callback: Optional[callable] = None,
+    diff_callback: Optional[callable] = None,
+    max_workers: int = None
 ):
     # Setup paths
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -157,5 +159,7 @@ def main_pipeline_wrapper(
         pause_event=pause_event,
         loot_callback=loot_callback,
         consensus_callback=consensus_callback,
-        graph_callback=graph_callback
+        graph_callback=graph_callback,
+        diff_callback=diff_callback,
+        max_workers=max_workers
     )

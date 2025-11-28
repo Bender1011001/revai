@@ -48,7 +48,8 @@ class RefactoryPipeline:
         pause_event: Optional[threading.Event] = None,
         loot_callback: Optional[callable] = None,
         consensus_callback: Optional[callable] = None,
-        graph_callback: Optional[callable] = None
+        graph_callback: Optional[callable] = None,
+        diff_callback: Optional[callable] = None
     ):
         """Run the full pipeline."""
         # Dynamic worker calculation if not provided
@@ -64,10 +65,12 @@ class RefactoryPipeline:
         
         # Stage 0: Load and group functions
         print("\n[Stage 0] The Librarian: Grouping functions into modules...")
+        if loot_callback: loot_callback("Librarian: Grouping functions...")
         modules = self.librarian.group_functions(ghidra_export_path)
         
         if not modules:
             print("[ERROR] No modules generated. Check Ghidra export.")
+            if loot_callback: loot_callback("ERROR: No modules generated.")
             return
         
         # Process modules in parallel
@@ -85,7 +88,8 @@ class RefactoryPipeline:
                     stop_event,
                     pause_event,
                     loot_callback,
-                    consensus_callback
+                    consensus_callback,
+                    diff_callback
                 ): module
                 for module in modules
             }
@@ -135,7 +139,8 @@ class RefactoryPipeline:
         stop_event: Optional[threading.Event] = None,
         pause_event: Optional[threading.Event] = None,
         loot_callback: Optional[callable] = None,
-        consensus_callback: Optional[callable] = None
+        consensus_callback: Optional[callable] = None,
+        diff_callback: Optional[callable] = None
     ) -> Dict:
         """Process a single module through all stages."""
         
@@ -185,24 +190,30 @@ class RefactoryPipeline:
 
         # Stage 1: Type Recovery
         print(f"\n[Stage 1] Type Smith: Recovering types...")
+        if loot_callback: loot_callback(f"Type Smith: Processing {module['module_name']}...")
         state = self._run_stage(state, type_recovery_agent, type_recovery_validator, "type_recovery")
         print(f"  Recovered {len(state['confirmed_types'])} types")
+        if loot_callback: loot_callback(f"Type Smith: Recovered {len(state['confirmed_types'])} types")
         
         if stop_event and stop_event.is_set(): return {}
         if pause_event: pause_event.wait()
 
         # Stage 2: Variable Renaming (using True MAKER)
         print(f"\n[Stage 2] The Renamer: Renaming variables...")
-        state = self._run_renaming_stage(state, consensus_callback=consensus_callback)
+        if loot_callback: loot_callback(f"Renamer: Processing {module['module_name']}...")
+        state = self._run_renaming_stage(state, consensus_callback=consensus_callback, diff_callback=diff_callback)
         print(f"  Renamed {len(state['confirmed_renames'])} variables")
+        if loot_callback: loot_callback(f"Renamer: Renamed {len(state['confirmed_renames'])} variables")
         
         if stop_event and stop_event.is_set(): return {}
         if pause_event: pause_event.wait()
 
         # Stage 3: Code Refactoring
         print(f"\n[Stage 3] The Architect: Refactoring code...")
+        if loot_callback: loot_callback(f"Architect: Refactoring {module['module_name']}...")
         state = self._run_stage(state, refactoring_agent, refactoring_validator, "refactoring")
         print(f"  Refactored {len(state['confirmed_refactorings'])} functions")
+        if loot_callback: loot_callback(f"Architect: Refactored {len(state['confirmed_refactorings'])} functions")
         
         if stop_event and stop_event.is_set(): return {}
         if pause_event: pause_event.wait()
@@ -244,7 +255,7 @@ class RefactoryPipeline:
         
         return state
     
-    def _run_renaming_stage(self, state, consensus_callback: Optional[callable] = None):
+    def _run_renaming_stage(self, state, consensus_callback: Optional[callable] = None, diff_callback: Optional[callable] = None):
         """
         Run variable renaming using True MAKER.
         """
@@ -279,6 +290,13 @@ class RefactoryPipeline:
             
             if result.get("final_renames"):
                 all_renames.update(result["final_renames"])
+            
+            # Send diff update if callback provided
+            if diff_callback and result.get("current_draft"):
+                diff_callback({
+                    "original": func["code"],
+                    "refactored": result["current_draft"]
+                })
         
         state["confirmed_renames"] = all_renames
         return state

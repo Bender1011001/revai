@@ -7,6 +7,8 @@ import sys
 import tkinter as tk
 from tkinter import filedialog
 from nicegui import ui, app
+import httpx
+import asyncio
 
 # Import backend logic
 try:
@@ -23,6 +25,7 @@ log_queue = queue.Queue()
 consensus_queue = queue.Queue()
 loot_queue = queue.Queue()
 graph_queue = queue.Queue()
+diff_queue = queue.Queue()
 
 # --- Theme Configuration ---
 THEME_BG = '#111111'
@@ -166,6 +169,7 @@ class AnalysisManager:
             try:
                 config = ConfigManager.load_config()
                 ghidra_path = config.get("ghidra_path")
+                max_workers = config.get("max_workers", 4)
                 
                 if not ghidra_path:
                     print("Error: Ghidra path not configured.")
@@ -188,6 +192,9 @@ class AnalysisManager:
                 def on_graph(data):
                     graph_queue.put(data)
 
+                def on_diff(data):
+                    diff_queue.put(data)
+
                 main_pipeline_wrapper(
                     file_path,
                     ghidra_path=ghidra_path,
@@ -197,7 +204,9 @@ class AnalysisManager:
                     pause_event=self.pause_event,
                     loot_callback=on_loot,
                     consensus_callback=on_consensus,
-                    graph_callback=on_graph
+                    graph_callback=on_graph,
+                    diff_callback=on_diff,
+                    max_workers=max_workers
                 )
                 
                 if self.stop_event.is_set():
@@ -213,19 +222,31 @@ class AnalysisManager:
 
         threading.Thread(target=run, daemon=True).start()
 
-    def start_feasibility_check(self):
+    def start_feasibility_check(self, project_name=None):
         if self.is_running:
             return
 
-        # Use tkinter for file dialog (hidden root)
-        root = tk.Tk()
-        root.withdraw()
-        root.attributes('-topmost', True)
-        file_path = filedialog.askopenfilename(
-            title="Select dataset_dirty.json",
-            filetypes=[("JSON Files", "*.json"), ("All Files", "*.*")]
-        )
-        root.destroy()
+        file_path = None
+        
+        # Try to find dataset_dirty.json in the current project if provided
+        if project_name:
+            project_dir = os.path.join("projects", project_name)
+            potential_path = os.path.join(project_dir, "ghidra_export", "dataset_dirty.json")
+            if os.path.exists(potential_path):
+                file_path = potential_path
+                print(f"[Feasibility] Using project file: {file_path}")
+
+        # Fallback to file dialog if not found or no project
+        if not file_path:
+            # Use tkinter for file dialog (hidden root)
+            root = tk.Tk()
+            root.withdraw()
+            root.attributes('-topmost', True)
+            file_path = filedialog.askopenfilename(
+                title="Select dataset_dirty.json",
+                filetypes=[("JSON Files", "*.json"), ("All Files", "*.*")]
+            )
+            root.destroy()
 
         if not file_path:
             return
@@ -251,7 +272,8 @@ Your goal is to rename variables in the provided decompiled code to make it more
 Output ONLY a JSON object mapping old variable names to new, descriptive names.
 Do not include any explanation or markdown formatting."""
 
-                model_name = "qwen2.5-coder:3b" # Default
+                config = ConfigManager.load_config()
+                model_name = config.get("ollama_model", "qwen2.5-coder:3b")
                 
                 p, feasible = measure_model_difficulty(model_name, samples, system_prompt, stop_event=self.stop_event)
                 
@@ -350,6 +372,76 @@ def create_dashboard():
 
                     ui.button('CONFIGURE GHIDRA PATH', on_click=select_ghidra).classes('w-full border border-green-500 text-green-500 bg-transparent hover:bg-green-900/50')
 
+                    # Worker Count
+                    worker_input = ui.number(label='WORKER THREADS', value=4, min=1, max=32).classes('w-full').props('input-class="text-green-400" label-color="green"')
+                    
+                    def on_worker_change(e):
+                        config = ConfigManager.load_config()
+                        config["max_workers"] = int(e.value)
+                        ConfigManager.save_config(config)
+                        ui.notify(f"Worker count set to: {int(e.value)}", type='positive')
+                    
+                    worker_input.on('change', on_worker_change)
+                    
+                    # Load saved worker count
+                    config = ConfigManager.load_config()
+                    worker_input.value = config.get("max_workers", 4)
+
+                    # Ollama Model Selection
+                    model_select = ui.select(options=[], label='OLLAMA MODEL').classes('w-full').props('input-class="text-green-400" label-color="green"')
+                    
+                    async def update_models():
+                        try:
+                            async with httpx.AsyncClient() as client:
+                                resp = await client.get("http://localhost:11434/api/tags", timeout=2.0)
+                                if resp.status_code == 200:
+                                    models = [m['name'] for m in resp.json().get('models', [])]
+                                    model_select.options = models
+                                    
+                                    # Load saved model or default
+                                    config = ConfigManager.load_config()
+                                    saved_model = config.get("ollama_model")
+                                    if saved_model and saved_model in models:
+                                        model_select.value = saved_model
+                                    elif models:
+                                        model_select.value = models[0]
+                                        
+                                    ui.notify("Models updated", type='positive')
+                                else:
+                                    ui.notify("Failed to fetch models", type='negative')
+                        except Exception as e:
+                            ui.notify(f"Ollama error: {e}", type='negative')
+
+                    def on_model_change(e):
+                        config = ConfigManager.load_config()
+                        config["ollama_model"] = e.value
+                        ConfigManager.save_config(config)
+                        ui.notify(f"Model set to: {e.value}", type='positive')
+
+                    model_select.on('update:model-value', on_model_change)
+                    
+                    with ui.row().classes('w-full gap-2'):
+                        ui.button('REFRESH MODELS', on_click=update_models).classes('flex-1 border border-blue-500 text-blue-500 bg-transparent hover:bg-blue-900/50')
+                        
+                        def show_available_models():
+                            # This would ideally fetch from ollama.com/library or similar if possible, 
+                            # but for now we can just show a list of popular models or link to the site.
+                            # Since we can't easily scrape the library without a backend proxy or similar,
+                            # we'll just show a dialog with common models to copy-paste for `ollama pull`.
+                            common_models = [
+                                "qwen2.5-coder:7b", "qwen2.5-coder:3b", "llama3:8b", "mistral", "gemma:7b", "deepseek-coder:6.7b"
+                            ]
+                            with ui.dialog() as dialog, ui.card().classes('bg-black border border-green-500'):
+                                ui.label('POPULAR MODELS (Run "ollama pull <name>" in terminal)').classes('text-green-500 font-bold mb-2')
+                                for m in common_models:
+                                    with ui.row().classes('items-center justify-between w-full'):
+                                        ui.label(m).classes('text-green-400')
+                                        ui.button(icon='content_copy', on_click=lambda x=m: [ui.clipboard.write(x), ui.notify(f"Copied {x}")]).props('flat round color=green')
+                                ui.button('CLOSE', on_click=dialog.close).classes('w-full mt-2 border border-red-500 text-red-500')
+                            dialog.open()
+
+                        ui.button('AVAILABLE MODELS', on_click=show_available_models).classes('flex-1 border border-purple-500 text-purple-500 bg-transparent hover:bg-purple-900/50')
+
                     # Project Management
                     def load_project(name):
                         state = ProjectManager.load_project_state(name)
@@ -437,7 +529,7 @@ def create_dashboard():
                         
                         ui.button('STOP', on_click=stop_click).classes('flex-1 border border-red-500 text-red-500 bg-transparent hover:bg-red-900/50')
 
-                    ui.button('CHECK FEASIBILITY', on_click=lambda: analysis_manager.start_feasibility_check()).classes('w-full border border-blue-500 text-blue-500 bg-transparent hover:bg-blue-900/50 mt-2')
+                    ui.button('CHECK FEASIBILITY', on_click=lambda: analysis_manager.start_feasibility_check(project_name_input.value)).classes('w-full border border-blue-500 text-blue-500 bg-transparent hover:bg-blue-900/50 mt-2')
 
             # Star Map
             with ui.card().classes('w-full flex-1 bg-black border border-green-900 rounded-none p-0 flex flex-col'):
@@ -580,7 +672,6 @@ def create_dashboard():
 
     # --- Startup Checks ---
     async def check_ollama():
-        import httpx
         try:
             async with httpx.AsyncClient() as client:
                 resp = await client.get("http://localhost:11434/api/tags", timeout=2.0)
@@ -589,6 +680,9 @@ def create_dashboard():
                     status_label.text = 'SYSTEM ONLINE'
                     status_label.classes(remove='text-red-800', add='text-green-800')
                     status_icon.props(remove='color=red', add='color=green')
+                    
+                    # Initial model fetch
+                    await update_models()
                 else:
                     raise Exception(f"Status {resp.status_code}")
         except Exception as e:

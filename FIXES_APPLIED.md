@@ -103,7 +103,8 @@ Conducted a comprehensive file-by-file review of the RevAI reverse engineering p
 **Issue:** `Client.chat() got an unexpected keyword argument 'temperature'` error when using `bind(temperature=...)` with newer versions of `ollama`/`langchain_ollama`.
 
 **Fix:**
-- Replaced `bind(temperature=...)` with explicit recreation of `ChatOllama` instance using the new temperature. This avoids issues with how `bind` merges arguments in the underlying library.
+- Replaced `bind(temperature=...)` with explicit recreation of `ChatOllama` instance.
+- Passed `temperature` inside the `options` dictionary to ensure compatibility with newer `ollama` library versions.
 
 ## Optimizations
 

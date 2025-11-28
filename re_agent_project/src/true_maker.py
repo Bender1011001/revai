@@ -345,11 +345,13 @@ class SequentialVoting:
             if temperature_override is not None:
                 # Recreate LLM with new temperature to avoid bind() issues with langchain_ollama
                 # which might pass temperature as a top-level arg causing errors
+                # We pass temperature in 'options' dict to be safe with newer ollama versions
                 new_llm = ChatOllama(
                     model=self.config.model,
-                    temperature=temperature_override,
+                    # temperature=temperature_override, # Avoid top-level arg
                     format="json",
-                    base_url=os.environ.get("OLLAMA_HOST", "http://localhost:11434")
+                    base_url=os.environ.get("OLLAMA_HOST", "http://localhost:11434"),
+                    options={"temperature": temperature_override}
                 )
                 llm_to_use = LightningLLMWrapper(new_llm, self.lightning)
 
